@@ -7,310 +7,187 @@
     <title>Sistema Restaurante - Inicio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="">
 
-    <!-- AdminLTE -->
     <link rel="stylesheet" href="/utilities/css/adminlte.min.css">
     <link rel="stylesheet" href="/utilities/css/all.min.css">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
-    <!-- SweetAlert2 -->
     <link rel="stylesheet" href="/utilities/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-    <!-- Toastr -->
     <link rel="stylesheet" href="/utilities/plugins/toastr/toastr.min.css">
-    <!-- Select2 -->
     <link rel="stylesheet" href="/utilities/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/utilities/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
     <link rel="stylesheet" href="/utilities/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="/utilities/plugins/datatables-test/datatables.min.css">
+    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
 
-   <!-- jQuery -->
-   <script src="/utilities/js/jquery.min.js"></script>
-   <!-- Bootstrap JS -->
-   <script src="/utilities/js/bootstrap.bundle.min.js"></script>
-   <!-- AdminLTE JS -->
-   <script src="/utilities/js/adminlte.min.js"></script>
-
-   <!-- Moment.js (para formateo de fechas) -->
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-
-   <!-- SweetAlert2 -->
-   <script src="/utilities/plugins/sweetalert2/sweetalert2.min.js"></script>
-   <!-- Toastr -->
-   <script src="/utilities/plugins/toastr/toastr.min.js"></script>
-   <!-- Select2 -->
-   <script src="/utilities/plugins/select2/js/select2.full.min.js"></script>
-   <!-- InputMask -->
-   <script src="/utilities/plugins/inputmask/jquery.inputmask.min.js"></script>
-   <!-- Tempusdominus Bootstrap 4 -->
-   <script src="/utilities/plugins/moment/moment.min.js"></script>
-   <script src="/utilities/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-
-   <!-- Datatables -->
-   <link rel="stylesheet" href="/utilities/plugins/datatables-test/datatables.min.css">
-   <script src="/utilities/plugins/datatables-test/datatables.min.js"></script>
+    <%-- CORRECCIÓN: Estilos movidos al HEAD --%>
+    <style>
+        div.dts div.dt-length,
+        div.dts div.dt-paging,
+        div.dts div.dataTables_paginate,
+        div.dts div.dataTables_length {
+            display: block!important;
+        }
+        div.dt-search {
+            display: flex;
+            align-items: center;
+        }
+        div.dt-search input[type="search"] {
+            width: 100%!important;
+            transition: width 0.3s ease;
+        }
+        div.dt-search input[type="search"]:focus {
+            width: 100%!important;
+        }
+        div.dt-scroll-body {
+            height: auto!important;
+        }
+        .page-item.disabled .page-link {
+            background-color: #ececec00!important;
+        }
+        .table-short-rows td {
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+        .table-short-rows th {
+            padding-top: 0.4rem;
+            padding-bottom: 0.4rem;
+        }
+        .overlay.dark {
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1050;
+        }
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini layout-footer-fixed">
-    <div class="wrapper">
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-dark bg-dark">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a href="inicio.html" class="nav-link">Inicio</a>
-                </li>
-            </ul>
+    
+    <%-- CORRECCIÓN: Se agrega la etiqueta FORM que envuelve todo el contenido --%>
+    <form id="form1" runat="server">
+        <div class="wrapper">
+            <nav class="main-header navbar navbar-expand navbar-dark bg-dark">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="inicio.html" class="nav-link">Inicio</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <button id="btn-darkmode" class="btn btn-outline-light btn-sm">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <a href="wfLogout.aspx" class="btn btn-danger btn-sm ml-2">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <button id="btn-darkmode" class="btn btn-outline-light btn-sm">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <a href="wfLogout.aspx" class="btn btn-danger btn-sm ml-2">
-                        <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-                    </a>
-                </li>
-            </ul>
-        </nav>
+            <aside class="main-sidebar sidebar-dark-primary elevation-4">
+                <a href="inicio.html" class="brand-link">
+                    <img src="bannerSistemaChico.png" alt="Logo" class="brand-image img-circle elevation-3">
+                    <span class="brand-text font-weight-light">Restaurante</span>
+                </a>
+                <div class="sidebar">
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                            <li id="liInicio" runat="server" class="nav-item">
+                                <a id="aInicio" runat="server" href="wfInicio.aspx" class="nav-link">
+                                    <i class="nav-icon fas fa-home"></i><p>Inicio</p>
+                                </a>
+                            </li>
+                            <li id="liMantenimientos" runat="server" class="nav-item">
+                                <a id="aMantenimientos" runat="server" href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-tools"></i><p>Mantenimientos<i class="right fas fa-angle-left"></i></p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li id="liUsuario" runat="server" class="nav-item"><a id="aUsuario" runat="server" href="wfUsuario.aspx" class="nav-link"><i class="fas fa-user nav-icon"></i><p>Usuario</p></a></li>
+                                    <li id="liTipoUsuario" runat="server" class="nav-item"><a id="aTipoUsuario" runat="server" href="wfTipoUsuario.aspx" class="nav-link"><i class="fas fa-user-tag nav-icon"></i><p>Tipo Usuario</p></a></li>
+                                    <li id="liCarta" runat="server" class="nav-item"><a id="aCarta" runat="server" href="wfCarta.aspx" class="nav-link"><i class="fas fa-book nav-icon"></i><p>Carta</p></a></li>
+                                    <li id="liMesa" runat="server" class="nav-item"><a id="aMesa" runat="server" href="wfMesa.aspx" class="nav-link"><i class="fas fa-chair nav-icon"></i><p>Mesa</p></a></li>
+                                    <li id="liMesero" runat="server" class="nav-item"><a id="aMesero" runat="server" href="wfMesero.aspx" class="nav-link"><i class="fas fa-user-tie nav-icon"></i><p>Mesero</p></a></li>
+                                    <li id="liCajero" runat="server" class="nav-item"><a id="aCajero" runat="server" href="wfCajero.aspx" class="nav-link"><i class="fas fa-cash-register nav-icon"></i><p>Cajero</p></a></li>
+                                    <li id="liProducto" runat="server" class="nav-item"><a id="aProducto" runat="server" href="wfProducto.aspx" class="nav-link"><i class="fas fa-utensils nav-icon"></i><p>Producto</p></a></li>
+                                    <li id="liTipoProducto" runat="server" class="nav-item"><a id="aTipoProducto" runat="server" href="wfTipoProducto.aspx" class="nav-link"><i class="fas fa-tags nav-icon"></i><p>Tipo Producto</p></a></li>
+                                    <li id="liCliente" runat="server" class="nav-item"><a id="aCliente" runat="server" href="wfCliente.aspx" class="nav-link"><i class="fas fa-user-friends nav-icon"></i><p>Cliente</p></a></li>
+                                </ul>
+                            </li>
+                            <li id="liOperaciones" runat="server" class="nav-item">
+                                <a id="aOperaciones" runat="server" href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-cash-register"></i><p>Operaciones<i class="right fas fa-angle-left"></i></p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li id="liPedidos" runat="server" class="nav-item"><a id="aPedidos" runat="server" href="wfPedidos.aspx" class="nav-link"><i class="fas fa-concierge-bell nav-icon"></i><p>Pedidos</p></a></li>
+                                    <li id="liApertura" runat="server" class="nav-item"><a id="aApertura" runat="server" href="wfCajaApertura.aspx" class="nav-link"><i class="fas fa-door-open nav-icon"></i><p>Apertura de Caja</p></a></li>
+                                    <li id="liCierre" runat="server" class="nav-item"><a id="aCierre" runat="server" href="wfCajaCierre.aspx" class="nav-link"><i class="fas fa-door-closed nav-icon"></i><p>Cierre de Caja</p></a></li>
+                                </ul>
+                            </li>
+                            <li id="liReportes" runat="server" class="nav-item">
+                                <a id="aReportes" runat="server" href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-chart-bar"></i><p>Reportes<i class="right fas fa-angle-left"></i></p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li id="liReporte1" runat="server" class="nav-item"><a id="aReporte1" runat="server" href="wfReporte1.aspx" class="nav-link"><i class="fas fa-file-alt nav-icon"></i><p>Reporte 1</p></a></li>
+                                    <li id="liReporte2" runat="server" class="nav-item"><a id="aReporte2" runat="server" href="wfReporte2.aspx" class="nav-link"><i class="fas fa-file-alt nav-icon"></i><p>Reporte 2</p></a></li>
+                                    <li id="liReporte3" runat="server" class="nav-item"><a id="aReporte3" runat="server" href="wfReporte3.aspx" class="nav-link"><i class="fas fa-file-alt nav-icon"></i><p>Reporte 3</p></a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
 
-        <!-- Sidebar -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <a href="inicio.html" class="brand-link">
-                <img src="bannerSistemaChico.png" alt="Logo" class="brand-image img-circle elevation-3">
-                <span class="brand-text font-weight-light">Restaurante</span>
-            </a>
+            <div class="content-wrapper p-3" id="contenido">
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder" runat="server" />
+            </div>
 
-            <div class="sidebar">
-    <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
-        <li id="liInicio" runat="server" class="nav-item">
-            <a id="aInicio" runat="server" href="wfInicio.aspx" class="nav-link">
-                <i class="nav-icon fas fa-home"></i>
-                <p>Inicio</p>
-            </a>
-        </li>
-        <!-- MANTENIMIENTOS -->
-        <li id="liMantenimientos" runat="server" class="nav-item">
-            <a id="aMantenimientos" runat="server" href="#" class="nav-link">
-                <i class="nav-icon fas fa-tools"></i>
-                <p>
-                    Mantenimientos
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li id="liUsuario" runat="server" class="nav-item">
-                    <a id="aUsuario" runat="server" href="wfUsuario.aspx" class="nav-link">
-                        <i class="fas fa-user nav-icon"></i>
-                        <p>Usuario</p>
-                    </a>
-                </li>
-                <li id="liTipoUsuario" runat="server" class="nav-item">
-                    <a id="aTipoUsuario" runat="server" href="wfTipoUsuario.aspx" class="nav-link">
-                        <i class="fas fa-user-tag nav-icon"></i>
-                        <p>Tipo Usuario</p>
-                    </a>
-                </li>
-                <li id="liCarta" runat="server" class="nav-item">
-                    <a id="aCarta" runat="server" href="wfCarta.aspx" class="nav-link">
-                        <i class="fas fa-book nav-icon"></i>
-                        <p>Carta</p>
-                    </a>
-                </li>
-                <li id="liMesa" runat="server" class="nav-item">
-                    <a id="aMesa" runat="server" href="wfMesa.aspx" class="nav-link">
-                        <i class="fas fa-chair nav-icon"></i>
-                        <p>Mesa</p>
-                    </a>
-                </li>
-                <li id="liMesero" runat="server" class="nav-item">
-                    <a id="aMesero" runat="server" href="wfMesero.aspx" class="nav-link">
-                        <i class="fas fa-user-tie nav-icon"></i>
-                        <p>Mesero</p>
-                    </a>
-                </li>
-                <li id="liCajero" runat="server" class="nav-item">
-                    <a id="aCajero" runat="server" href="wfCajero.aspx" class="nav-link">
-                        <i class="fas fa-cash-register nav-icon"></i>
-                        <p>Cajero</p>
-                    </a>
-                </li>
-                <li id="liProducto" runat="server" class="nav-item">
-                    <a id="aProducto" runat="server" href="wfProducto.aspx" class="nav-link">
-                        <i class="fas fa-utensils nav-icon"></i>
-                        <p>Producto</p>
-                    </a>
-                </li>
-                <li id="liTipoProducto" runat="server" class="nav-item">
-                    <a id="aTipoProducto" runat="server" href="wfTipoProducto.aspx" class="nav-link">
-                        <i class="fas fa-tags nav-icon"></i>
-                        <p>Tipo Producto</p>
-                    </a>
-                </li>
-                <li id="liCliente" runat="server" class="nav-item">
-                    <a id="aCliente" runat="server" href="wfCliente.aspx" class="nav-link">
-                        <i class="fas fa-user-friends nav-icon"></i>
-                        <p>Cliente</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <!-- OPERACIONES -->
-        <li id="liOperaciones" runat="server" class="nav-item">
-            <a id="aOperaciones" runat="server" href="#" class="nav-link">
-                <i class="nav-icon fas fa-cash-register"></i>
-                <p>
-                    Operaciones
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li id="liPedidos" runat="server" class="nav-item">
-                    <a id="aPedidos" runat="server" href="wfPedidos.aspx" class="nav-link">
-                        <i class="fas fa-concierge-bell nav-icon"></i>
-                        <p>Pedidos</p>
-                    </a>
-                </li>
-                <li id="liApertura" runat="server" class="nav-item">
-                    <a id="aApertura" runat="server" href="wfCajaApertura.aspx" class="nav-link">
-                        <i class="fas fa-door-open nav-icon"></i>
-                        <p>Apertura de Caja</p>
-                    </a>
-                </li>
-                <li id="liCierre" runat="server" class="nav-item">
-                    <a id="aCierre" runat="server" href="wfCajaCierre.aspx" class="nav-link">
-                        <i class="fas fa-door-closed nav-icon"></i>
-                        <p>Cierre de Caja</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <!-- REPORTES -->
-        <li id="liReportes" runat="server" class="nav-item">
-            <a id="aReportes" runat="server" href="#" class="nav-link">
-                <i class="nav-icon fas fa-chart-bar"></i>
-                <p>
-                    Reportes
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li id="liReporte1" runat="server" class="nav-item">
-                    <a id="aReporte1" runat="server" href="wfReporte1.aspx" class="nav-link">
-                        <i class="fas fa-file-alt nav-icon"></i>
-                        <p>Reporte 1</p>
-                    </a>
-                </li>
-                <li id="liReporte2" runat="server" class="nav-item">
-                    <a id="aReporte2" runat="server" href="wfReporte2.aspx" class="nav-link">
-                        <i class="fas fa-file-alt nav-icon"></i>
-                        <p>Reporte 2</p>
-                    </a>
-                </li>
-                <li id="liReporte3" runat="server" class="nav-item">
-                    <a id="aReporte3" runat="server" href="wfReporte3.aspx" class="nav-link">
-                        <i class="fas fa-file-alt nav-icon"></i>
-                        <p>Reporte 3</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
-    </nav>
-</div>
-
-        </aside>
-
-        <!-- Contenido principal -->
-        <div class="content-wrapper p-3" id="contenido">
-            <!-- Aquí va el contenido específico de cada página -->
-             <asp:ContentPlaceHolder ID="ContentPlaceHolder" runat="server" />
+            <footer class="main-footer text-center">
+                <strong>© 2025 USAT</strong> - Todos los derechos reservados.
+            </footer>
         </div>
 
-        <!-- Footer -->
-        <footer class="main-footer text-center">
-            <strong>© 2025 USAT</strong> - Todos los derechos reservados.
-        </footer>
-    </div>
-    <script>
-        document.getElementById('btn-darkmode').addEventListener('click', function () {
-            document.body.classList.toggle('dark-mode');
-        });
-    </script>
+        <script src="/utilities/js/jquery.min.js"></script>
+        <script src="/utilities/js/bootstrap.bundle.min.js"></script>
+        <script src="/utilities/js/adminlte.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+        <script src="/utilities/plugins/sweetalert2/sweetalert2.min.js"></script>
+        <script src="/utilities/plugins/toastr/toastr.min.js"></script>
+        <script src="/utilities/plugins/select2/js/select2.full.min.js"></script>
+        <script src="/utilities/plugins/inputmask/jquery.inputmask.min.js"></script>
+        <script src="/utilities/plugins/moment/moment.min.js"></script>
+        <script src="/utilities/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+        <script src="/utilities/plugins/datatables-test/datatables.min.js"></script>
+        
+        <script>
+            document.getElementById('btn-darkmode').addEventListener('click', function () {
+                document.body.classList.toggle('dark-mode');
+            });
+
+            // CORRECCIÓN: Script de Toastr movido aquí, al final del body.
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+        </script>
+    </form>
 </body>
-
 </html>
-<script>
-    toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": true,
-        "progressBar": true,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    };
-</script>
-<style>
-        div.dts div.dt-length,
-    div.dts div.dt - paging,
-            div.dts div.dataTables_paginate,
-                div.dts div.dataTables_length {
-        display: block!important;
-    }
-
-    div.dt-search {
-        display: flex;
-        align - items: center;
-    }
-
-    div.dt - search input[type = "search"] {
-        width: 100 % !important;
-        transition: width 0.3s ease;
-    }
-
-    /* Al hacer foco, se expande suavemente */
-    div.dt - search input[type = "search"]:focus {
-        width: 100 % !important;
-    }
-
-    div.dt - scroll - body {
-        height: auto!important;
-    }
-
-    .page - item.disabled.page - link {
-        background - color: #ececec00!important;
-    }
-
-    .table - short - rows td {
-        padding - top: 0.25rem;
-        padding - bottom: 0.25rem;
-    }
-
-    .table - short - rows th {
-        padding - top: 0.4rem;
-        padding - bottom: 0.4rem;
-    }
-
-    .overlay.dark {
-        background: rgba(0, 0, 0, 0.5);
-        z - index: 1050;
-    }
-</style>
