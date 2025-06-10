@@ -19,17 +19,28 @@
 
     <section class="content">
         <div class="container-fluid p-4">
-            <div id="vistaMesas">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h1>Salón Principal</h1>
-                    <div>
-                        <button class="btn btn-sm btn-light" onclick="fct_CargarDatosIniciales()"><i class="fas fa-sync-alt"></i> Actualizar</button>
-                    </div>
+            <div class="panel-heading">
+                <h1>Gestión de Pedidos</h1>
+                <div class="text-right mb-2">
+                    <button class="btn btn-success" onclick="fct_NuevoPedido()">
+                        <i class="fas fa-plus"></i> Nuevo Pedido
+                    </button>
                 </div>
-                <hr />
-                <div class="row" id="cardContainer_MesasPedido" runat="server">
-                    <div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="sr-only">Cargando...</span></div></div>
-                </div>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Monto</th>
+                            <th>Estado</th>
+                            <th>Mesa</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody_Pedido" runat="server"></tbody>
+                </table>
             </div>
         </div>
     </section>
@@ -50,81 +61,54 @@
                                 <div class="col-8"><div class="tab-content" id="menu-productos-content"></div></div>
                             </div>
                         </div>
-                        <div class="col-md-7 bg-light p-3 rounded">
-                            <h5 class="mb-3">Comanda</h5>
-                            <div class="comanda-items">
-                                <table class="table table-sm">
-                                    <thead><tr><th>Producto</th><th style="width: 120px;">Cantidad</th><th class="text-right">Subtotal</th><th class="text-center"></th></tr></thead>
-                                    <tbody id="tbody_comanda"></tbody>
-                                </table>
-                            </div><hr />
-                            <div class="d-flex justify-content-end comanda-total"><span>TOTAL: S/ </span><span id="comanda_total">0.00</span></div>
-                            <div class="mt-3 text-right">
-                                <button class="btn btn-warning" id="btnGuardarPedido"><i class="fas fa-save"></i> Registrar Pedido</button>
-                                <button class="btn btn-success" id="btnProcederPago"><i class="fas fa-dollar-sign"></i> Proceder al Pago</button>
-                            </div>
+                        <div class="form-group col-md-4">
+                            <label>Mesa</label>
+                            <select id="select_mesa" class="form-control"></select>
                         </div>
                     </div>
+                    <hr>
+                    <h5>Detalles del Pedido</h5>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Producto</label>
+                            <select id="select_producto" class="form-control"></select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Precio</label>
+                            <input type="number" class="form-control" id="txt_precio" step="0.01">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Cantidad</label>
+                            <input type="number" class="form-control" id="txt_cantidad">
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <button class="btn btn-secondary" onclick="fct_AgregarDetalle()">
+                            <i class="fas fa-plus-circle"></i> Agregar Detalle
+                        </button>
+                    </div>
+                    <table class="table table-sm mt-3">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody_Detalles"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="fct_GuardarPedido()">Guardar</button>
                 </div>
             </div>
         </div>
     </div>
-    
-    <div class="modal fade" id="modalPago" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-lg" role="document">
-             <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="tituloModalPago"></h5>
-                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                </div>
-                <div class="modal-body">
-                     <div class="row">
-                        <div class="col-md-7">
-                            <h5>Resumen de Cuenta</h5>
-                            <div class="pago-items border rounded bg-light p-2">
-                                <table class="table table-sm">
-                                    <thead><tr><th>Cant.</th><th>Producto</th><th class="text-right">Subtotal</th></tr></thead>
-                                    <tbody id="tbody_pago_resumen"></tbody>
-                                </table>
-                            </div>
-                             <hr/>
-                            <div class="d-flex justify-content-end pago-total"><span>TOTAL A PAGAR: S/ </span><span id="pago_total">0.00</span></div>
-                        </div>
-                        <div class="col-md-5">
-                             <h5>Datos de Pago</h5>
-                             <div class="form-group">
-                                 <label>Cliente</label>
-                                 <select class="form-control" id="ddlPagoCliente"></select>
-                             </div>
-                             <div class="form-group">
-                                 <label>Cajero</label>
-                                 <select class="form-control" id="ddlPagoCajero"></select>
-                             </div>
-                             <div class="form-group">
-                                 <label>Método de Pago</label>
-                                 <select class="form-control" id="ddlPagoMetodo">
-                                     <option>Efectivo</option>
-                                     <option>Tarjeta</option>
-                                     <option>Yape/Plin</option>
-                                 </select>
-                             </div>
-                             <div class="form-group text-center">
-                                <button class="btn btn-lg btn-success" id="btnConfirmarPago"><i class="fas fa-check-circle"></i> Confirmar Pago y Liberar Mesa</button>
-                             </div>
-                        </div>
-                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</asp:Content>
-
-<%-- BLOQUE 2: Scripts específicos de la página --%>
-<asp:Content ID="Content2" ContentPlaceHolderID="PageSpecificScripts" runat="server">
-    <script>
-        // Versión Final y Defensiva
-        let pedidoActual = {};
-        let menuCompleto = [], categorias = [], clientes = [], cajeros = [];
+<script>
+    let detallesPedido = [];
 
         // Variable para guardar el ID del contenedor de mesas generado por ASP.NET
         const idContenedorMesas = '#<%= cardContainer_MesasPedido.ClientID %>';
@@ -193,35 +177,23 @@
             });
         }
 
-        // Abre el modal de pedidos, ya sea para un pedido nuevo o para uno existente
-        function fct_AbrirPedido(idMesa, estaDisponible) {
-            if (estaDisponible) {
-                pedidoActual = { IdPedido: 0, IdMesa: idMesa, IdCliente: 1, IdMesero: 1, /*TODO: Obtener ID del mesero logueado*/ Items: [] };
-                $('#tituloModalPedido').text(`Nuevo Pedido - Mesa #${idMesa}`);
-                $('#btnProcederPago').hide();
-                $('#btnGuardarPedido').text('Registrar Pedido').show();
-                fct_RenderizarCategorias();
-                fct_RenderizarComanda();
-                $('#modalTomaPedido').modal('show');
-            } else {
-                $.ajax({
-                    type: "POST", url: "wfPedidos.aspx/GetPedidoPorMesa", contentType: "application/json; charset=utf-8",
-                    dataType: "json", data: JSON.stringify({ idMesa: idMesa }),
-                    success: function (r) {
-                        if (r.d) {
-                            pedidoActual = r.d;
-                            $('#tituloModalPedido').text(`Viendo Pedido #${pedidoActual.IdPedido} - Mesa #${idMesa}`);
-                            $('#btnProcederPago').show();
-                            $('#btnGuardarPedido').hide();
-                            fct_RenderizarCategorias();
-                            fct_RenderizarComanda();
-                            $('#modalTomaPedido').modal('show');
-                        } else { toastr.error("No se pudo cargar el pedido de esta mesa."); }
-                    },
-                    error: function (xhr) { toastr.error("Error al obtener el pedido."); console.error(xhr.responseText); }
-                });
-            }
-        }
+    function fct_RenderizarDetalles() {
+        const tbody = $('#tbody_Detalles');
+        tbody.empty();
+        detallesPedido.forEach((det, idx) => {
+            const row = `<tr>
+            <td>${det.nombre}</td>
+            <td>${det.precio}</td>
+            <td>${det.cantidad}</td>
+            <td>${(det.precio * det.cantidad).toFixed(2)}</td>
+            <td>
+                <button class='btn btn-sm btn-info' onclick='fct_EditarDetalle(${idx})'><i class='fas fa-edit'></i></button>
+                <button class='btn btn-sm btn-danger' onclick='fct_EliminarDetalle(${idx})'><i class='fas fa-trash'></i></button>
+            </td>
+        </tr>`;
+            tbody.append(row);
+        });
+    }
 
         // --- Funciones para manejar el menú y la comanda dentro del modal ---
 
