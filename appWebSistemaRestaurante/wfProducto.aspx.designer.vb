@@ -23,20 +23,20 @@ Partial Public Class wfProducto
     Protected WithEvents tbody_Producto As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
-    '''Control select_tipo.
+    '''Control ddlTipoProducto.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents select_tipo As Global.System.Web.UI.HtmlControls.HtmlSelect
+    Protected WithEvents ddlTipoProducto As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
-    '''Control select_carta.
+    '''Control ddlCarta.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents select_carta As Global.System.Web.UI.HtmlControls.HtmlSelect
+    Protected WithEvents ddlCarta As Global.System.Web.UI.WebControls.DropDownList
 End Class
