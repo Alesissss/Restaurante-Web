@@ -75,15 +75,11 @@ Public Class wfPedidos
                 End If
             Next
 
-            ' Cargar Clientes
-            datos.Clientes = New List(Of ClienteDTO)
-            Dim objCliente As New clsCliente()
-            Dim dtClientes As DataTable = objCliente.listarClientesVigentes()
-            datos.Clientes.Add(New ClienteDTO With {.Id = 1, .Nombre = "Cliente Varios"}) ' Añadir cliente por defecto
-            For Each row As DataRow In dtClientes.Rows
-                datos.Clientes.Add(New ClienteDTO With {
-                    .Id = CInt(row("idCliente")), .Nombre = $"{row("nombres")} {row("apellidos")}"
-                })
+            ' Insertar botón de editar con JSON seguro
+            html.Append("<td>")
+            html.AppendFormat("<button class='btn btn-primary btn-sm' onclick=""fct_EditarPedido({0}, {1}, {2}, {3}, {4})""><i class='fas fa-edit'></i></button>", id, idCliente, idMesero, idMesa, detallesJson)
+            html.Append("</td>")
+            html.Append("</tr>")
             Next
 
             ' Cargar Cajeros
