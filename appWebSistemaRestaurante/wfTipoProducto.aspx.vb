@@ -1,97 +1,116 @@
-﻿' wfTipoProducto.aspx.vb
-Imports libNegocio
+﻿Imports System.Web.Services
+Imports System.Text
+Imports System.Data
+Imports libNegocio ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
 
 Public Class wfTipoProducto
     Inherits System.Web.UI.Page
 
-    Dim objTipoProducto As New clsTipoProducto
+    Private objTipoProducto As New clsTipoProducto()
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not IsPostBack Then
-            CargarTabla()
+            ListarTiposProducto()
         End If
     End Sub
 
-    Private Sub CargarTabla()
-        Dim lista As DataTable = objTipoProducto.listarTiposProducto()
-        Dim html As New StringBuilder()
+    Private Sub ListarTiposProducto()
+        Try
+            Dim dt As DataTable = objTipoProducto.listarTiposProducto()
+            Dim sb As New StringBuilder()
 
-        For Each fila As DataRow In lista.Rows
-            Dim id As String = fila("idTipo").ToString()
-            Dim nombre As String = fila("nombre").ToString().Replace("'", "\'")
-            Dim descripcion As String = fila("descripcion").ToString().Replace("'", "\'")
-            Dim estadoTexto As String = fila("estado").ToString()
-            Dim estadoBool As String = If(estadoTexto = "Activo", "true", "false")
+            For Each row As DataRow In dt.Rows
+                Dim id As Integer = CInt(row("idTipo"))
+                Dim nombre As String = row("nombre").ToString()
+                Dim descripcion As String = row("descripcion").ToString()
+                Dim estado As String = row("estado").ToString()
+                Dim esVigente As Boolean = (estado.ToLower() = "activo")
 
-            html.Append("<tr>")
-            html.AppendFormat("<td>{0}</td>", id)
-            html.AppendFormat("<td>{0}</td>", nombre)
-            html.AppendFormat("<td>{0}</td>", descripcion)
-            html.AppendFormat("<td>{0}</td>", estadoTexto)
-            html.Append("<td>")
-            html.AppendFormat("<button class='btn btn-primary btn-sm' onclick=""fct_EditarTipoProducto('{0}', '{1}', '{2}', {3})""><i class='fas fa-edit'></i></button> ", id, nombre, descripcion.Replace("'", "\'"), estadoBool)
-            html.AppendFormat("<button class='btn btn-warning btn-sm' onclick=""fct_DarBajaTipoProducto('{0}')""><i class='fas fa-arrow-down'></i></button> ", id)
-            html.AppendFormat("<button class='btn btn-danger btn-sm' onclick=""fct_EliminarTipoProducto('{0}')""><i class='fas fa-trash'></i></button>", id)
-            html.Append("</td>")
-            html.Append("</tr>")
-        Next
+                sb.Append("<tr>")
+                sb.Append($"<td>{id}</td>")
+                sb.Append($"<td>{nombre}</td>")
+                sb.Append($"<td>{descripcion}</td>")
 
-        tbody_TipoProducto.InnerHtml = html.ToString()
+                If esVigente Then
+                    sb.Append("<td><span class='badge badge-success'>Activo</span></td>")
+                Else
+                    sb.Append("<td><span class='badge badge-danger'>Inactivo</span></td>")
+                End If
+
+                sb.Append("<td>")
+                sb.Append($"<button type='button' class='btn btn-primary btn-sm' onclick=""fct_EditarTipoProducto({id}, '{nombre.Replace("'", "\'")}', '{descripcion.Replace("'", "\'")}', '{estado}')""><i class='fas fa-edit'></i></button> ")
+                sb.Append($"<button type='button' class='btn btn-danger btn-sm' onclick='fct_EliminarTipoProducto({id})'><i class='fas fa-trash'></i></button> ")
+
+                If esVigente Then
+                    sb.Append($"<button type='button' class='btn btn-warning btn-sm' onclick='fct_DarBajaTipoProducto({id})'><i class='fas fa-arrow-down'></i></button>")
+                Else
+                    sb.Append($"<button type='button' class='btn btn-info btn-sm' onclick='fct_DarAltaTipoProducto({id})'><i class='fas fa-arrow-up'></i></button>")
+                End If
+                sb.Append("</td>")
+                sb.Append("</tr>")
+            Next
+
+            tbody_TipoProducto.InnerHtml = sb.ToString()
+
+        Catch ex As Exception
+            tbody_TipoProducto.InnerHtml = $"<tr><td colspan='5'>Error al listar los tipos de producto: {ex.Message}</td></tr>"
+        End Try
     End Sub
 
-    <System.Web.Services.WebMethod()>
-    Public Shared Function GuardarTipoProducto(id As String, nombre As String, descripcion As String, vigente As Boolean) As String
+    ' --- WEBMETHODS ---
+
+    <WebMethod>
+    Public Shared Function GuardarTipoProducto(id As Integer, nombre As String, descripcion As String, vigente As Boolean) As String
+        Dim objTP As New clsTipoProducto()
         Try
-            Dim obj As New clsTipoProducto
-            If id = "" Then
-                obj.guardarTipoProducto(obj.generarIDTipoProducto(), nombre, descripcion, vigente)
+            If id = 0 Then
+                Dim newId As Integer = objTP.generarIDTipoProducto()
+                objTP.guardarTipoProducto(newId, nombre, descripcion, vigente)
             Else
-                obj.modificarTipoProducto(id, nombre, descripcion, vigente)
+                objTP.modificarTipoProducto(id, nombre, descripcion, vigente)
             End If
             Return "success"
         Catch ex As Exception
-            Return "error: " & ex.Message
+            Return ex.Message
         End Try
     End Function
 
-    <System.Web.Services.WebMethod()>
-    Public Shared Function EliminarTipoProducto(id As String) As String
+    <WebMethod>
+    Public Shared Function EliminarTipoProducto(id As Integer) As String
+        Dim objTP As New clsTipoProducto()
         Try
-            Dim obj As New clsTipoProducto
-            obj.eliminarTipoProducto(id)
+            ' NOTA: La eliminación fallará si hay productos que usan este tipo (debido a restricciones de clave foránea en la BD).
+            ' Esto es un comportamiento deseado para mantener la integridad de los datos.
+            objTP.eliminarTipoProducto(id)
             Return "success"
         Catch ex As Exception
-            Return "error: " & ex.Message
+            If ex.Message.Contains("FK_") Or ex.Message.Contains("conflicto") Then
+                Return "No se puede eliminar: El tipo está siendo utilizado por uno o más productos."
+            End If
+            Return ex.Message
         End Try
     End Function
 
-    <System.Web.Services.WebMethod()>
-    Public Shared Function DarBajaTipoProducto(id As String) As String
+    <WebMethod>
+    Public Shared Function DarBajaTipoProducto(id As Integer) As String
+        Dim objTP As New clsTipoProducto()
         Try
-            Dim obj As New clsTipoProducto
-            obj.darBajaTipoProducto(id)
+            objTP.darBajaTipoProducto(id)
             Return "success"
         Catch ex As Exception
-            Return "error: " & ex.Message
+            Return ex.Message
         End Try
     End Function
 
-    <System.Web.Services.WebMethod()>
-    Public Shared Function ObtenerTipoProducto(id As String) As Dictionary(Of String, Object)
-        Dim obj As New clsTipoProducto
-        Dim dt As DataTable = obj.buscarTipoProducto(id)
-
-        If dt.Rows.Count > 0 Then
-            Dim row = dt.Rows(0)
-            Return New Dictionary(Of String, Object) From {
-                {"idTipo", row("idTipo").ToString()},
-                {"Nombre", row("nombre").ToString()},
-                {"Descripcion", row("descripcion").ToString()},
-                {"Vigencia", CBool(row("vigencia"))}
-            }
-        Else
-            Throw New Exception("Tipo de producto no encontrado.")
-        End If
+    <WebMethod>
+    Public Shared Function DarAltaTipoProducto(id As Integer) As String
+        Dim objTP As New clsTipoProducto()
+        Try
+            objTP.darAltaTipoProducto(id)
+            Return "success"
+        Catch ex As Exception
+            Return ex.Message
+        End Try
     End Function
 
 End Class
