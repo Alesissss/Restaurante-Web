@@ -1,4 +1,4 @@
-﻿' Archivo: clsPedido.vb (Versión Final)
+﻿' Archivo: clsPedido.vb (Versión Final, Limpia y Segura)
 Imports System.Data
 Imports System.Data.SqlClient
 Imports libDatos
@@ -7,9 +7,10 @@ Imports System.Linq
 Public Class clsPedido
     Private objMan As New clsMantenimiento()
     Private objCon As New clsConectaBD()
+    Private strSQL As String = ""
 
     Public Function BuscarPedidoActivoPorMesa(ByVal idMesa As Integer) As DataTable
-        Dim strSQL As String = "SELECT * FROM PEDIDO WHERE idMesa = @idMesa AND estadoPedido = 1"
+        strSQL = "SELECT * FROM PEDIDO WHERE idMesa = @idMesa AND estadoPedido = 1"
         Dim parametros As New Dictionary(Of String, Object) From {{"@idMesa", idMesa}}
         Try
             Return objMan.listarComando(strSQL, parametros)
@@ -19,9 +20,9 @@ Public Class clsPedido
     End Function
 
     Public Function ListarDetallesPorId(ByVal idPedido As Integer) As DataTable
-        Dim strSQL As String = "SELECT d.idProducto, p.nombre, d.cantidad, d.precioVenta FROM DETALLE_PEDIDO d " &
-                             "INNER JOIN PRODUCTO p ON d.idProducto = p.idProducto " &
-                             "WHERE d.idPedido = @idPedido"
+        strSQL = "SELECT d.idProducto, p.nombre, d.cantidad, d.precioVenta FROM DETALLE_PEDIDO d " &
+                 "INNER JOIN PRODUCTO p ON d.idProducto = p.idProducto " &
+                 "WHERE d.idPedido = @idPedido"
         Dim parametros As New Dictionary(Of String, Object) From {{"@idPedido", idPedido}}
         Try
             Return objMan.listarComando(strSQL, parametros)
@@ -77,7 +78,7 @@ Public Class clsPedido
         End Using
     End Sub
 
-    Public Sub ProcesarPago(ByVal idPedido As Integer, ByVal idCajero As Integer)
+    Public Sub ProcesarPago(ByVal idPedido As Integer, ByVal idCajero As Integer, ByVal idCliente As Integer)
         Using conn As New SqlConnection(objCon.gen_cad_cloud())
             conn.Open()
             Dim transaction As SqlTransaction = conn.BeginTransaction()
@@ -88,9 +89,10 @@ Public Class clsPedido
                     idMesa = CInt(cmdMesaId.ExecuteScalar())
                 End Using
 
-                Dim sqlPedido As String = "UPDATE PEDIDO SET estadoPago = 0, estadoPedido = 0, idCajero = @idCajero WHERE idPedido = @idPedido"
+                Dim sqlPedido As String = "UPDATE PEDIDO SET estadoPago = 0, estadoPedido = 0, idCajero = @idCajero, idCliente = @idCliente WHERE idPedido = @idPedido"
                 Using cmd As New SqlCommand(sqlPedido, conn, transaction)
                     cmd.Parameters.AddWithValue("@idCajero", idCajero)
+                    cmd.Parameters.AddWithValue("@idCliente", idCliente)
                     cmd.Parameters.AddWithValue("@idPedido", idPedido)
                     cmd.ExecuteNonQuery()
                 End Using
@@ -107,8 +109,38 @@ Public Class clsPedido
             End Try
         End Using
     End Sub
+
+    ' --- MÉTODOS ADICIONALES PARA REPORTES (VERSIÓN SEGURA) ---
+
+    Public Function ContarPedidosHoy() As Integer
+        strSQL = "SELECT COUNT(*) FROM PEDIDO WHERE CONVERT(DATE, fecha) = CONVERT(DATE, GETDATE())"
+        Return Convert.ToInt32(objMan.listarComando(strSQL).Rows(0)(0))
+    End Function
+
+    Public Function ContarPedidosPendientes() As Integer
+        strSQL = "SELECT COUNT(*) FROM PEDIDO WHERE estadoPedido = 1" ' estadoPedido=1 es pendiente/activo
+        Return Convert.ToInt32(objMan.listarComando(strSQL).Rows(0)(0))
+    End Function
+
+    Public Function ProductoMasVendido() As String
+        strSQL = "SELECT TOP 1 p.nombre FROM DETALLE_PEDIDO dp INNER JOIN PRODUCTO p ON dp.idProducto = p.idProducto GROUP BY p.nombre ORDER BY SUM(dp.cantidad) DESC"
+        Dim dt = objMan.listarComando(strSQL)
+        Return If(dt.Rows.Count > 0, dt.Rows(0)("nombre").ToString(), "N/A")
+    End Function
+
+    Public Function VentasUltimos7Dias() As DataTable
+        strSQL = "SELECT CONVERT(DATE, fecha) AS fecha, SUM(monto) AS totalVentas FROM PEDIDO WHERE fecha >= DATEADD(DAY, -7, GETDATE()) AND estadoPedido = 0 GROUP BY CONVERT(DATE, fecha) ORDER BY fecha ASC"
+        Return objMan.listarComando(strSQL)
+    End Function
+
+    Public Function ContarPedidosPorEstado(estadoPago As Integer) As Integer
+        strSQL = "SELECT COUNT(*) FROM PEDIDO WHERE estadoPago = " & estadoPago
+        Return Convert.ToInt32(objMan.listarComando(strSQL).Rows(0)(0))
+    End Function
+
 End Class
 
+' La clase DTO se mantiene aquí para que clsPedido la pueda usar.
 Public Class DetalleDTO
     Public Property IdProducto As Integer
     Public Property Nombre As String

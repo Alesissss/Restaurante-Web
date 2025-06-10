@@ -250,6 +250,7 @@
                 "hideMethod": "fadeOut"
             };
         </script>
+        <asp:ContentPlaceHolder ID="PageSpecificScripts" runat="server" />
     </form>
 </body>
 </html>

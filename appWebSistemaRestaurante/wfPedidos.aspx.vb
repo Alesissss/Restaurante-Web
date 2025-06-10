@@ -1,7 +1,8 @@
-﻿' Archivo: wfPedidos.aspx.vb (Versión Final)
+﻿' Archivo: wfPedidos.aspx.vb (Versión Final con Pago Corregido)
 Imports System.Web.Services
 Imports System.Data
 Imports libNegocio
+Imports System.Web
 
 Public Class wfPedidos
     Inherits System.Web.UI.Page
@@ -47,6 +48,19 @@ Public Class wfPedidos
     End Class
 
     ' --- WEBMETHODS ---
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function GetSessionInfo() As Object
+        Dim session As SessionState.HttpSessionState = HttpContext.Current.Session
+        If session("idUsuario") IsNot Nothing AndAlso session("nombreUsuario") IsNot Nothing Then
+            Return New With {
+                .IdUsuario = CInt(session("idUsuario")),
+                .NombreUsuario = session("nombreUsuario").ToString()
+            }
+        End If
+        Return Nothing
+    End Function
+
     <WebMethod(EnableSession:=True)>
     Public Shared Function GetDatosIniciales() As DatosInicialesDTO
         Dim datos As New DatosInicialesDTO()
@@ -75,11 +89,15 @@ Public Class wfPedidos
                 End If
             Next
 
-            ' Insertar botón de editar con JSON seguro
-            html.Append("<td>")
-            html.AppendFormat("<button class='btn btn-primary btn-sm' onclick=""fct_EditarPedido({0}, {1}, {2}, {3}, {4})""><i class='fas fa-edit'></i></button>", id, idCliente, idMesero, idMesa, detallesJson)
-            html.Append("</td>")
-            html.Append("</tr>")
+            ' Cargar Clientes
+            datos.Clientes = New List(Of ClienteDTO)
+            Dim objCliente As New clsCliente()
+            Dim dtClientes As DataTable = objCliente.listarClientesVigentes()
+            datos.Clientes.Add(New ClienteDTO With {.Id = 1, .Nombre = "Cliente Varios"}) ' Añadir cliente por defecto
+            For Each row As DataRow In dtClientes.Rows
+                datos.Clientes.Add(New ClienteDTO With {
+                    .Id = CInt(row("idCliente")), .Nombre = $"{row("nombres")} {row("apellidos")}"
+                })
             Next
 
             ' Cargar Cajeros
@@ -142,10 +160,13 @@ Public Class wfPedidos
     End Function
 
     <WebMethod(EnableSession:=True)>
-    Public Shared Function ProcesarPago(idPedido As Integer, idCajero As Integer) As String
+    Public Shared Function ProcesarPago(idPedido As Integer, idCajero As Integer, idCliente As Integer) As String
         Dim objPedido As New clsPedido()
         Try
-            objPedido.ProcesarPago(idPedido, idCajero)
+            ' ===== CORRECCIÓN AQUÍ =====
+            ' Se pasa el idCliente que faltaba al método de la clase de negocio.
+            ' El código temporal que actualizaba al cliente por separado ya no es necesario.
+            objPedido.ProcesarPago(idPedido, idCajero, idCliente)
             Return "ok"
         Catch ex As Exception
             Return "Error: " & ex.Message
