@@ -1385,6 +1385,7 @@
     <Content Include="wfPedidos.aspx" />
     <Content Include="wfProducto.aspx" />
     <Content Include="wfPrueba.aspx" />
+    <Content Include="wfReporte1.aspx" />
     <Content Include="wfTipoProducto.aspx" />
     <Content Include="wfTipoUsuario.aspx" />
     <Content Include="wfUsuario.aspx" />
@@ -1492,6 +1493,13 @@
     <Compile Include="wfPrueba.aspx.vb">
       <DependentUpon>wfPrueba.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="wfReporte1.aspx.designer.vb">
+      <DependentUpon>wfReporte1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="wfReporte1.aspx.vb">
+      <DependentUpon>wfReporte1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="wfTipoProducto.aspx.designer.vb">
       <DependentUpon>wfTipoProducto.aspx</DependentUpon>

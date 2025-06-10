@@ -125,7 +125,7 @@
         $('#txtContrasena').attr('placeholder', 'Dejar en blanco para no cambiar');
 
         // Convertimos a booleano
-        const estadoBool = (estado === true || estado.toLowerCase() === "true");
+        const estadoBool = (estado === true || estado === "true");
         $("#chkVigencia").prop('checked', estadoBool);
 
         $("#btnGuardar").text("Actualizar");

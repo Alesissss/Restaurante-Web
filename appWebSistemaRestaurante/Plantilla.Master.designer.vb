@@ -59,24 +59,6 @@ Partial Public Class Plantilla
     Protected WithEvents aMantenimientos As Global.System.Web.UI.HtmlControls.HtmlAnchor
 
     '''<summary>
-    '''Control liUsuario.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents liUsuario As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
-    '''<summary>
-    '''Control aUsuario.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents aUsuario As Global.System.Web.UI.HtmlControls.HtmlAnchor
-
-    '''<summary>
     '''Control liTipoUsuario.
     '''</summary>
     '''<remarks>
@@ -93,6 +75,24 @@ Partial Public Class Plantilla
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents aTipoUsuario As Global.System.Web.UI.HtmlControls.HtmlAnchor
+
+    '''<summary>
+    '''Control liUsuario.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents liUsuario As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''Control aUsuario.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents aUsuario As Global.System.Web.UI.HtmlControls.HtmlAnchor
 
     '''<summary>
     '''Control liCarta.
@@ -167,24 +167,6 @@ Partial Public Class Plantilla
     Protected WithEvents aCajero As Global.System.Web.UI.HtmlControls.HtmlAnchor
 
     '''<summary>
-    '''Control liProducto.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents liProducto As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
-    '''<summary>
-    '''Control aProducto.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents aProducto As Global.System.Web.UI.HtmlControls.HtmlAnchor
-
-    '''<summary>
     '''Control liTipoProducto.
     '''</summary>
     '''<remarks>
@@ -201,6 +183,24 @@ Partial Public Class Plantilla
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents aTipoProducto As Global.System.Web.UI.HtmlControls.HtmlAnchor
+
+    '''<summary>
+    '''Control liProducto.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents liProducto As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''Control aProducto.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents aProducto As Global.System.Web.UI.HtmlControls.HtmlAnchor
 
     '''<summary>
     '''Control liCliente.
