@@ -54,6 +54,16 @@ Public Class clsMesero
         End Try
     End Sub
 
+    Public Sub darAltaMesero(ByVal id As Integer)
+        strSQL = "UPDATE mesero SET estado = 1 WHERE idMesero = " & id
+        Try
+            objMan.ejecutarComando(strSQL)
+        Catch ex As Exception
+            ' Puedes usar un mensaje más específico si lo deseas
+            Throw New Exception("Error al reactivar al Mesero: " & ex.Message)
+        End Try
+    End Sub
+
     Public Function buscarMesero(id As Integer) As DataTable
         strSQL = "select * from mesero where idMesero=" & id
         Try

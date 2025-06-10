@@ -14,11 +14,11 @@ Option Explicit On
 Partial Public Class wfMesa
 
     '''<summary>
-    '''Control tbody_Mesa.
+    '''Control cardContainer_Mesa.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents tbody_Mesa As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents cardContainer_Mesa As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 End Class
