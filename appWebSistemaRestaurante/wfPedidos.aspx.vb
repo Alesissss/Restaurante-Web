@@ -1,7 +1,7 @@
-﻿' Archivo: wfPedidos.aspx.vb (Versión Final con Pago Corregido)
+﻿' Archivo: wfPedidos.aspx.vb (Versión Final Completa)
 Imports System.Web.Services
 Imports System.Data
-Imports libNegocio
+Imports libNegocio ' Asegúrate que este sea tu namespace de lógica
 Imports System.Web
 
 Public Class wfPedidos
@@ -12,7 +12,7 @@ Public Class wfPedidos
         Public Property Mesas As List(Of MesaDTO)
         Public Property Menu As List(Of ProductoDTO)
         Public Property Clientes As List(Of ClienteDTO)
-        Public Property Cajeros As List(Of CajeroDTO)
+        Public Property UsuariosParaCobro As List(Of UsuarioDTO)
     End Class
 
     Public Class MesaDTO
@@ -34,7 +34,7 @@ Public Class wfPedidos
         Public Property Nombre As String
     End Class
 
-    Public Class CajeroDTO
+    Public Class UsuarioDTO
         Public Property Id As Integer
         Public Property Nombre As String
     End Class
@@ -93,21 +93,27 @@ Public Class wfPedidos
             datos.Clientes = New List(Of ClienteDTO)
             Dim objCliente As New clsCliente()
             Dim dtClientes As DataTable = objCliente.listarClientesVigentes()
-            datos.Clientes.Add(New ClienteDTO With {.Id = 1, .Nombre = "Cliente Varios"}) ' Añadir cliente por defecto
+            datos.Clientes.Add(New ClienteDTO With {.Id = 1, .Nombre = "Cliente Varios"})
             For Each row As DataRow In dtClientes.Rows
                 datos.Clientes.Add(New ClienteDTO With {
                     .Id = CInt(row("idCliente")), .Nombre = $"{row("nombres")} {row("apellidos")}"
                 })
             Next
 
-            ' Cargar Cajeros
-            datos.Cajeros = New List(Of CajeroDTO)
-            Dim objCajero As New clsCajero()
-            Dim dtCajeros As DataTable = objCajero.listarCajerosVigentes()
-            For Each row As DataRow In dtCajeros.Rows
-                datos.Cajeros.Add(New CajeroDTO With {
-                    .Id = CInt(row("idCajero")), .Nombre = $"{row("nombres")} {row("apellidos")}"
-                })
+            ' Cargar Usuarios que pueden cobrar (Admin, Mesero, Cajero)
+            datos.UsuariosParaCobro = New List(Of UsuarioDTO)
+            Dim objUsuario As New clsUsuario()
+            Dim dtUsuarios As DataTable = objUsuario.listarUsuarios()
+
+            ' ===== IMPORTANTE: CAMBIA ESTOS NÚMEROS POR LOS IDs DE TUS ROLES =====
+            Dim rolesPermitidos As List(Of Integer) = New List(Of Integer) From {1, 2, 3} ' EJEMPLO: 1=Admin, 2=Mesero, 3=Cajero
+
+            For Each row As DataRow In dtUsuarios.Rows
+                If CBool(row("vigencia")) AndAlso rolesPermitidos.Contains(CInt(row("idTipoUsuario"))) Then
+                    datos.UsuariosParaCobro.Add(New UsuarioDTO With {
+                        .Id = CInt(row("idUsuario")), .Nombre = row("nombresCompletos").ToString()
+                    })
+                End If
             Next
 
         Catch ex As Exception
@@ -151,7 +157,7 @@ Public Class wfPedidos
             If pedido.IdPedido = 0 Then
                 objPedido.RegistrarPedido(pedido.IdCliente, pedido.IdMesero, pedido.IdMesa, pedido.Items)
             Else
-                Throw New NotSupportedException("La modificación de pedidos aún no está implementada en esta versión.")
+                objPedido.ActualizarPedido(pedido.IdPedido, pedido.Items)
             End If
             Return "ok"
         Catch ex As Exception
@@ -163,14 +169,10 @@ Public Class wfPedidos
     Public Shared Function ProcesarPago(idPedido As Integer, idCajero As Integer, idCliente As Integer) As String
         Dim objPedido As New clsPedido()
         Try
-            ' ===== CORRECCIÓN AQUÍ =====
-            ' Se pasa el idCliente que faltaba al método de la clase de negocio.
-            ' El código temporal que actualizaba al cliente por separado ya no es necesario.
             objPedido.ProcesarPago(idPedido, idCajero, idCliente)
             Return "ok"
         Catch ex As Exception
             Return "Error: " & ex.Message
         End Try
     End Function
-
 End Class

@@ -1,4 +1,4 @@
-﻿' Archivo: clsPedido.vb (Versión Final, Limpia y Segura)
+﻿' Archivo: clsPedido.vb (Versión Final Completa)
 Imports System.Data
 Imports System.Data.SqlClient
 Imports libDatos
@@ -78,6 +78,42 @@ Public Class clsPedido
         End Using
     End Sub
 
+    Public Sub ActualizarPedido(ByVal idPedido As Integer, ByVal nuevosDetalles As List(Of DetalleDTO))
+        Using conn As New SqlConnection(objCon.gen_cad_cloud())
+            conn.Open()
+            Dim transaction As SqlTransaction = conn.BeginTransaction()
+            Try
+                Dim sqlDetalle As String = "INSERT INTO DETALLE_PEDIDO (idPedido, idProducto, cantidad, precioVenta) VALUES (@idPedido, @idProducto, @cantidad, @precioVenta)"
+                For Each item In nuevosDetalles
+                    Using cmdDet As New SqlCommand(sqlDetalle, conn, transaction)
+                        cmdDet.Parameters.AddWithValue("@idPedido", idPedido)
+                        cmdDet.Parameters.AddWithValue("@idProducto", item.IdProducto)
+                        cmdDet.Parameters.AddWithValue("@cantidad", item.Cantidad)
+                        cmdDet.Parameters.AddWithValue("@precioVenta", item.Precio)
+                        cmdDet.ExecuteNonQuery()
+                    End Using
+                Next
+
+                Dim montoTotalActualizado As Decimal
+                Using cmdMonto As New SqlCommand("SELECT SUM(cantidad * precioVenta) FROM DETALLE_PEDIDO WHERE idPedido = @idPedido", conn, transaction)
+                    cmdMonto.Parameters.AddWithValue("@idPedido", idPedido)
+                    montoTotalActualizado = CDec(cmdMonto.ExecuteScalar())
+                End Using
+
+                Using cmdUpdateMonto As New SqlCommand("UPDATE PEDIDO SET monto = @monto WHERE idPedido = @idPedido", conn, transaction)
+                    cmdUpdateMonto.Parameters.AddWithValue("@monto", montoTotalActualizado)
+                    cmdUpdateMonto.Parameters.AddWithValue("@idPedido", idPedido)
+                    cmdUpdateMonto.ExecuteNonQuery()
+                End Using
+
+                transaction.Commit()
+            Catch ex As Exception
+                transaction.Rollback()
+                Throw New Exception("Error transaccional al actualizar pedido: " & ex.Message)
+            End Try
+        End Using
+    End Sub
+
     Public Sub ProcesarPago(ByVal idPedido As Integer, ByVal idCajero As Integer, ByVal idCliente As Integer)
         Using conn As New SqlConnection(objCon.gen_cad_cloud())
             conn.Open()
@@ -110,37 +146,30 @@ Public Class clsPedido
         End Using
     End Sub
 
-    ' --- MÉTODOS ADICIONALES PARA REPORTES (VERSIÓN SEGURA) ---
-
+    ' --- MÉTODOS DE REPORTE ---
     Public Function ContarPedidosHoy() As Integer
         strSQL = "SELECT COUNT(*) FROM PEDIDO WHERE CONVERT(DATE, fecha) = CONVERT(DATE, GETDATE())"
         Return Convert.ToInt32(objMan.listarComando(strSQL).Rows(0)(0))
     End Function
-
     Public Function ContarPedidosPendientes() As Integer
-        strSQL = "SELECT COUNT(*) FROM PEDIDO WHERE estadoPedido = 1" ' estadoPedido=1 es pendiente/activo
+        strSQL = "SELECT COUNT(*) FROM PEDIDO WHERE estadoPedido = 1"
         Return Convert.ToInt32(objMan.listarComando(strSQL).Rows(0)(0))
     End Function
-
     Public Function ProductoMasVendido() As String
         strSQL = "SELECT TOP 1 p.nombre FROM DETALLE_PEDIDO dp INNER JOIN PRODUCTO p ON dp.idProducto = p.idProducto GROUP BY p.nombre ORDER BY SUM(dp.cantidad) DESC"
         Dim dt = objMan.listarComando(strSQL)
         Return If(dt.Rows.Count > 0, dt.Rows(0)("nombre").ToString(), "N/A")
     End Function
-
     Public Function VentasUltimos7Dias() As DataTable
         strSQL = "SELECT CONVERT(DATE, fecha) AS fecha, SUM(monto) AS totalVentas FROM PEDIDO WHERE fecha >= DATEADD(DAY, -7, GETDATE()) AND estadoPedido = 0 GROUP BY CONVERT(DATE, fecha) ORDER BY fecha ASC"
         Return objMan.listarComando(strSQL)
     End Function
-
     Public Function ContarPedidosPorEstado(estadoPago As Integer) As Integer
         strSQL = "SELECT COUNT(*) FROM PEDIDO WHERE estadoPago = " & estadoPago
         Return Convert.ToInt32(objMan.listarComando(strSQL).Rows(0)(0))
     End Function
-
 End Class
 
-' La clase DTO se mantiene aquí para que clsPedido la pueda usar.
 Public Class DetalleDTO
     Public Property IdProducto As Integer
     Public Property Nombre As String
