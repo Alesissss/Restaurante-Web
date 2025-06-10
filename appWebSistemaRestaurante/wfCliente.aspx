@@ -1,19 +1,26 @@
 ﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/Plantilla.Master" CodeBehind="wfCliente.aspx.vb" Inherits="appWebSistemaRestaurante.wfCliente" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder" Runat="Server">
+<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder" runat="server">
     <section class="content">
         <div class="container-fluid p-4">
             <div class="panel-heading">
-                <h1>Gestionar clientes</h1>
-                <div class="text-right mb-2">
-                    <button class="btn btn-success" onclick="fct_NuevoCliente()">
-                        <i class="fas fa-user-plus"></i> Nuevo Cliente
-                    </button>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>Gestionar Clientes</h1>
+                    </div>
                 </div>
             </div>
             <div class="panel-body">
-                <table class="table table-bordered table-hover text-center">
-                    <thead class="thead-dark">
+                <div class="row mb-2">
+                    <div class="col-md-12 text-right">
+                        <button type="button" class="btn btn-success" onclick="fct_AbrirModalNuevoCliente()">
+                            <i class="fas fa-plus-circle"></i> Nuevo Cliente
+                        </button>
+                    </div>
+                </div>
+
+                <table class="table table-bordered table-hover text-center" id="tbl_Cliente">
+                    <thead class="bg-dark text-white">
                         <tr>
                             <th>ID</th>
                             <th>DNI</th>
@@ -25,185 +32,229 @@
                             <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="tbody_Cliente" runat="server"></tbody>
+                    <tbody id="tbody_Cliente" runat="server">
+                        </tbody>
                 </table>
             </div>
         </div>
     </section>
 
-    <!-- Modal -->
-    <div class="modal fade" id="modalCliente" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
+    <div class="modal fade" id="modal_Cliente" tabindex="-1" aria-labelledby="tituloModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Registrar Cliente</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
+                    <h5 class="modal-title" id="tituloModal">Registrar / Editar Cliente</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span>×</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="txt_idCliente" />
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label>DNI</label>
-                            <input type="text" class="form-control" id="txt_dni" />
+                    <div class="row">
+                        <input type="hidden" id="txtIdCliente">
+
+                        <div class="col-md-6 mb-3">
+                            <label for="txtDni" class="form-label">DNI</label>
+                            <input type="text" class="form-control" id="txtDni" placeholder="Ingrese el DNI" maxlength="8">
                         </div>
-                        <div class="form-group col-md-6">
-                            <label>Teléfono</label>
-                            <input type="text" class="form-control" id="txt_telefono" />
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="txtCorreo" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="txtCorreo" placeholder="ejemplo@correo.com">
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label>Nombres</label>
-                            <input type="text" class="form-control" id="txt_nombres" />
+
+                        <div class="col-md-6 mb-3">
+                            <label for="txtNombres" class="form-label">Nombres</label>
+                            <input type="text" class="form-control" id="txtNombres" placeholder="Ingrese los nombres">
                         </div>
-                        <div class="form-group col-md-6">
-                            <label>Apellidos</label>
-                            <input type="text" class="form-control" id="txt_apellidos" />
+
+                        <div class="col-md-6 mb-3">
+                            <label for="txtApellidos" class="form-label">Apellidos</label>
+                            <input type="text" class="form-control" id="txtApellidos" placeholder="Ingrese los apellidos">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Correo</label>
-                        <input type="email" class="form-control" id="txt_correo" />
-                    </div>
-                    <div class="form-group">
-                        <label>¿Está vigente?</label>
-                        <select class="form-control" id="select_estado">
-                            <option value="true">Sí</option>
-                            <option value="false">No</option>
-                        </select>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="txtTelefono" class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" id="txtTelefono" placeholder="Ingrese el teléfono (opcional)" maxlength="9">
+                        </div>
+
+                        <div class="col-md-6 mb-3 align-self-center">
+                             <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="chkEstado" checked>
+                                <label class="form-check-label" for="chkEstado">Activo</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="fct_GuardarCliente()">Guardar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardar" onclick="fct_GuardarCliente()">Guardar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        function fct_NuevoCliente() {
-            $('#txt_idCliente').val('');
-            $('#txt_dni').val('');
-            $('#txt_nombres').val('');
-            $('#txt_apellidos').val('');
-            $('#txt_telefono').val('');
-            $('#txt_correo').val('');
-            $('#select_estado').val('true');
-            $('.modal-title').text('Registrar Cliente');
-            $('#modalCliente').modal('show');
+<script>
+    function fct_AbrirModalNuevoCliente() {
+        $('#tituloModal').text('Nuevo Cliente');
+        $('#txtIdCliente').val('0');
+        $('#txtDni').val('');
+        $('#txtNombres').val('');
+        $('#txtApellidos').val('');
+        $('#txtTelefono').val('');
+        $('#txtCorreo').val('');
+        $('#chkEstado').prop('checked', true);
+        $('#btnGuardar').text('Guardar');
+        $('#modal_Cliente').modal('show');
+    }
+
+    function fct_EditarCliente(id, dni, nombres, apellidos, telefono, correo, estado) {
+        $('#tituloModal').text('Editar Cliente');
+
+        $('#txtIdCliente').val(id);
+        $('#txtDni').val(dni);
+        $('#txtNombres').val(nombres);
+        $('#txtApellidos').val(apellidos);
+        $('#txtTelefono').val(telefono);
+        $('#txtCorreo').val(correo);
+
+        const estadoBool = (estado.toLowerCase() === 'activo');
+        $('#chkEstado').prop('checked', estadoBool);
+
+        $('#btnGuardar').text('Actualizar');
+        $('#modal_Cliente').modal('show');
+    }
+
+    function fct_GuardarCliente() {
+        let id = $('#txtIdCliente').val() || "0";
+        let dni = $('#txtDni').val().trim();
+        let nombres = $('#txtNombres').val().trim();
+        let apellidos = $('#txtApellidos').val().trim();
+        let telefono = $('#txtTelefono').val().trim();
+        let correo = $('#txtCorreo').val().trim();
+        let estado = $('#chkEstado').is(':checked');
+
+        if (dni === '' || nombres === '' || apellidos === '') {
+            toastr.warning('DNI, Nombres y Apellidos son obligatorios.');
+            return;
         }
 
-        function fct_EditarCliente(id, dni, nombres, apellidos, telefono, correo, estado) {
-            $('#txt_idCliente').val(id);
-            $('#txt_dni').val(dni);
-            $('#txt_nombres').val(nombres);
-            $('#txt_apellidos').val(apellidos);
-            $('#txt_telefono').val(telefono);
-            $('#txt_correo').val(correo);
-            $('#select_estado').val(estado.toString());
-            $('.modal-title').text('Editar Cliente');
-            $('#modalCliente').modal('show');
+        if (dni.length !== 8) {
+            toastr.warning('El DNI debe tener 8 dígitos.');
+            return;
         }
 
-        function fct_GuardarCliente() {
-            const id = $('#txt_idCliente').val() || 0;
-            const dni = $('#txt_dni').val().trim();
-            const nombres = $('#txt_nombres').val().trim();
-            const apellidos = $('#txt_apellidos').val().trim();
-            const telefono = $('#txt_telefono').val().trim();
-            const correo = $('#txt_correo').val().trim();
-            const estado = $('#select_estado').val() === "true";
-
-            if (!dni || !nombres || !apellidos || !correo) {
-                toastr.warning("Complete todos los campos requeridos");
-                return;
+        $.ajax({
+            url: 'wfCliente.aspx/GuardarCliente',
+            method: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                id: id,
+                dni: dni,
+                nombres: nombres,
+                apellidos: apellidos,
+                telefono: telefono,
+                correo: correo,
+                estado: estado
+            }),
+            success: function (response) {
+                if (response.d === 'success') {
+                    toastr.success('Guardado correctamente');
+                    setTimeout(() => location.reload(), 800);
+                } else {
+                    toastr.error(response.d);
+                }
+            },
+            error: function () {
+                toastr.error('Error en la solicitud al servidor.');
             }
+        });
+    }
 
-            const metodo = id == 0 ? 'guardarCliente' : 'modificarCliente';
-
-            $.ajax({
-                type: "POST",
-                url: "wfCliente.aspx/" + metodo,
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({
-                    id: parseInt(id),
-                    dni: dni,
-                    nom: nombres,
-                    ape: apellidos,
-                    tel: telefono,
-                    cor: correo,
-                    est: estado
-                }),
-                success: function () {
-                    toastr.success("Cliente guardado correctamente");
-                    $('#modalCliente').modal('hide');
-                    __doPostBack();
-                },
-                error: function () {
-                    toastr.error("Error al guardar cliente");
-                }
-            });
-        }
-
-        function fct_DarBajaCliente(id) {
-            Swal.fire({
-                title: '¿Deseas dar de baja a este cliente?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, dar de baja',
-                cancelButtonText: 'Cancelar',
-                cancelButtonColor: '#d33',
-                confirmButtonColor: '#3085d6',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: "POST",
-                        url: "wfCliente.aspx/darBajaCliente",
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify({ id: id }),
-                        success: function () {
-                            toastr.success("Cliente dado de baja");
-                            __doPostBack();
-                        },
-                        error: function () {
-                            toastr.error("Error al dar de baja cliente");
+    function fct_EliminarCliente(id) {
+        Swal.fire({
+            title: "¿Deseas eliminar este cliente?",
+            text: "Esta acción no se puede revertir.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Sí, eliminar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: 'wfCliente.aspx/EliminarCliente',
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({ id: id }),
+                    success: function (response) {
+                        if (response.d === 'success') {
+                            toastr.success('Eliminado correctamente');
+                            setTimeout(() => location.reload(), 800);
+                        } else {
+                            toastr.error(response.d);
                         }
-                    });
-                }
-            });
-        }
+                    },
+                    error: function () { toastr.error('Error en el servidor'); }
+                });
+            }
+        });
+    }
 
-        function fct_EliminarCliente(id) {
-            Swal.fire({
-                title: '¿Eliminar cliente permanentemente?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar',
-                cancelButtonColor: '#d33',
-                confirmButtonColor: '#3085d6',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: "POST",
-                        url: "wfCliente.aspx/eliminarCliente",
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify({ id: id }),
-                        success: function () {
-                            toastr.success("Cliente eliminado correctamente");
-                            __doPostBack();
-                        },
-                        error: function () {
-                            toastr.error("Error al eliminar cliente");
+    function fct_DarBajaCliente(id) {
+        Swal.fire({
+            title: "¿Dar de baja a este cliente?",
+            text: "El cliente se marcará como inactivo.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, dar de baja"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: 'wfCliente.aspx/DarBajaCliente',
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({ id: id }),
+                    success: function (response) {
+                        if (response.d === 'success') {
+                            toastr.info('Cliente dado de baja');
+                            setTimeout(() => location.reload(), 800);
+                        } else {
+                            toastr.error(response.d);
                         }
-                    });
-                }
-            });
-        }
-    </script>
+                    },
+                    error: function () { toastr.error('Error en el servidor'); }
+                });
+            }
+        });
+    }
+
+    function fct_DarAltaCliente(id) {
+        Swal.fire({
+            title: "¿Reactivar a este cliente?",
+            text: "El cliente se marcará como activo.",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#28a745",
+            confirmButtonText: "Sí, reactivar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: 'wfCliente.aspx/DarAltaCliente',
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({ id: id }),
+                    success: function (response) {
+                        if (response.d === 'success') {
+                            toastr.success('Cliente reactivado correctamente');
+                            setTimeout(() => location.reload(), 800);
+                        } else {
+                            toastr.error(response.d);
+                        }
+                    },
+                    error: function () { toastr.error('Error en el servidor'); }
+                });
+            }
+        });
+    }
+</script>
 </asp:Content>
