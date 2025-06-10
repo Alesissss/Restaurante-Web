@@ -1,4 +1,4 @@
-﻿' Archivo: clsPedido.vb (Versión Final Completa)
+﻿' Archivo: clsPedido.vb (Versión Final con Historial)
 Imports System.Data
 Imports System.Data.SqlClient
 Imports libDatos
@@ -12,11 +12,7 @@ Public Class clsPedido
     Public Function BuscarPedidoActivoPorMesa(ByVal idMesa As Integer) As DataTable
         strSQL = "SELECT * FROM PEDIDO WHERE idMesa = @idMesa AND estadoPedido = 1"
         Dim parametros As New Dictionary(Of String, Object) From {{"@idMesa", idMesa}}
-        Try
-            Return objMan.listarComando(strSQL, parametros)
-        Catch ex As Exception
-            Throw New Exception("Error al buscar pedido activo por mesa: " & ex.Message)
-        End Try
+        Return objMan.listarComando(strSQL, parametros)
     End Function
 
     Public Function ListarDetallesPorId(ByVal idPedido As Integer) As DataTable
@@ -24,10 +20,25 @@ Public Class clsPedido
                  "INNER JOIN PRODUCTO p ON d.idProducto = p.idProducto " &
                  "WHERE d.idPedido = @idPedido"
         Dim parametros As New Dictionary(Of String, Object) From {{"@idPedido", idPedido}}
+        Return objMan.listarComando(strSQL, parametros)
+    End Function
+
+    Public Function ListarHistorialDePedidos() As DataTable
+        ' ===== CORRECCIÓN EN ESTA CONSULTA =====
+        strSQL = "SELECT p.idPedido, p.fecha, p.monto, m.numero AS Mesa, " &
+             "ISNULL(c.nombres + ' ' + c.apellidos, 'Cliente Varios') AS Cliente, " &
+             "ISNULL(u.nombresCompletos, 'Mesero Eliminado') AS Mesero, " & ' <- SE QUITÓ EL CONCAT() INCORRECTO DE AQUÍ
+             "CASE p.estadoPago WHEN 0 THEN 'Pagado' ELSE 'Pendiente' END AS Estado " &
+             "FROM PEDIDO p " &
+             "LEFT JOIN MESA m ON p.idMesa = m.idMesa " &
+             "LEFT JOIN CLIENTE c ON p.idCliente = c.idCliente " &
+             "LEFT JOIN USUARIO u ON p.idMesero = u.idUsuario " &
+             "WHERE p.estadoPedido = 0 ORDER BY p.fecha DESC"
         Try
-            Return objMan.listarComando(strSQL, parametros)
+            Return objMan.listarComando(strSQL)
         Catch ex As Exception
-            Throw New Exception("Error al listar detalles del pedido: " & ex.Message)
+            ' Propagamos el error por si algo más falla
+            Throw New Exception("Error en ListarHistorialDePedidos: " & ex.Message)
         End Try
     End Function
 

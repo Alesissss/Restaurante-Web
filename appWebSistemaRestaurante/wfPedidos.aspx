@@ -7,9 +7,10 @@
         .card-mesa-pedido .icono-mesa { font-size: 2.5rem; }
         .card-mesa-pedido .numero-mesa { font-size: 1.5rem; font-weight: 700; }
         #modalTomaPedido .modal-dialog, #modalPago .modal-dialog { max-width: 95%; }
-        .menu-categorias { list-style: none; padding: 0; }
+        .menu-categorias { list-style: none; padding: 0; max-height: 45vh; overflow-y: auto; }
         .menu-categorias .nav-link { cursor: pointer; text-align: center; border: 1px solid #dee2e6; margin-bottom: 5px; }
         .menu-categorias .nav-link.active { background-color: var(--primary); color: white; }
+        #menu-productos-content { max-height: 45vh; overflow-y: auto; }
         .producto-item { cursor: pointer; transition: background-color 0.2s ease; }
         .producto-item:hover { background-color: #f0f0f0; }
         .comanda-items, .pago-items { max-height: 40vh; overflow-y: auto; }
@@ -17,24 +18,56 @@
     </style>
 
     <section class="content">
-        <div class="container-fluid p-4">
-            <div id="vistaMesas">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h1>Salón Principal</h1>
-                    <div>
-                        <button class="btn btn-sm btn-light" onclick="fct_CargarDatosIniciales()"><i class="fas fa-sync-alt"></i> Actualizar</button>
+        <div class="container-fluid pt-3">
+            
+            <ul class="nav nav-pills mb-3" id="pedidosTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="salon-tab" data-toggle="tab" href="#salon" role="tab" aria-controls="salon" aria-selected="true">
+                        <i class="fas fa-th-large mr-1"></i> Salón Principal
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="historial-tab" data-toggle="tab" href="#historial" role="tab" aria-controls="historial" aria-selected="false">
+                        <i class="fas fa-history mr-1"></i> Historial de Pedidos
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="pedidosTabContent">
+                <div class="tab-pane fade show active" id="salon" role="tabpanel" aria-labelledby="salon-tab">
+                    <div class="d-flex justify-content-between align-items-center py-3">
+                        <h4 class="mb-0">Mesas disponibles</h4>
+                        <div><button class="btn btn-sm btn-light border" onclick="fct_CargarDatosIniciales()"><i class="fas fa-sync-alt"></i></button></div>
+                    </div>
+                    <div class="row" id="cardContainer_MesasPedido" runat="server">
+                        <div class="col-12 text-center p-5"><div class="spinner-border text-primary" role="status"></div></div>
                     </div>
                 </div>
-                <hr />
-                <div class="row" id="cardContainer_MesasPedido" runat="server">
-                    <div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="sr-only">Cargando...</span></div></div>
+
+                <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="historial-tab">
+                    <div class="py-3">
+                        <table id="tbl_HistorialPedidos" class="table table-bordered table-striped" style="width:100%;">
+                            <thead class="bg-dark text-white">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fecha</th>
+                                    <th>Mesa</th>
+                                    <th>Cliente</th>
+                                    <th>Mesero</th>
+                                    <th>Monto</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <div class="modal fade" id="modalTomaPedido" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="tituloModalPedido"></h5>
@@ -46,14 +79,19 @@
                             <h4>Menú</h4>
                             <div class="row">
                                 <div class="col-4"><ul class="nav nav-pills flex-column menu-categorias" id="menu-categorias-tabs"></ul></div>
-                                <div class="col-8"><div class="tab-content" id="menu-productos-content"></div></div>
+                                <div class="col-8"><div class="list-group" id="menu-productos-content"></div></div>
                             </div>
                         </div>
                         <div class="col-md-7 bg-light p-3 rounded">
+                            <div class="form-group">
+                                <label for="ddlPedidoMesero" class="font-weight-bold">Atendido por:</label>
+                                <select id="ddlPedidoMesero" class="form-control"></select>
+                            </div>
+                            <hr class="mt-2 mb-2"/>
                             <h5 class="mb-3">Comanda</h5>
                             <div class="comanda-items">
                                 <table class="table table-sm">
-                                    <thead><tr><th>Producto</th><th style="width: 120px;">Cantidad</th><th class="text-right">Subtotal</th><th class="text-center"></th></tr></thead>
+                                    <thead><tr><th>Producto</th><th style="width: 150px;">Cantidad</th><th class="text-right">Subtotal</th><th class="text-center"></th></tr></thead>
                                     <tbody id="tbody_comanda"></tbody>
                                 </table>
                             </div><hr />
@@ -120,16 +158,15 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="PageSpecificScripts" runat="server">
     <script>
-        let pedidoActual = {};
-        let itemsOriginales = [];
-        let menuCompleto = [], categorias = [], clientes = [], usuariosParaCobro = [];
-        let usuarioLogueado = {};
-
+        let pedidoActual = {}, itemsOriginales = [];
+        let menuCompleto = [], categorias = [], clientes = [], usuariosParaCobro = [], meseros = [];
         const idContenedorMesas = '#<%= cardContainer_MesasPedido.ClientID %>';
+        let tablaHistorial;
 
         $(document).ready(function () {
             fct_CargarDatosIniciales();
-            $('#menu-categorias-tabs').on('click', '.nav-link', function () {
+            $('#menu-categorias-tabs').on('click', '.nav-link', function (e) {
+                e.preventDefault();
                 const categoria = $(this).data('categoria');
                 $('#menu-categorias-tabs .nav-link').removeClass('active');
                 $(this).addClass('active');
@@ -143,31 +180,26 @@
         });
 
         function fct_CargarDatosIniciales() {
-            $(idContenedorMesas).html('<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"></div></div>');
+            $(idContenedorMesas).html('<div class="col-12 text-center p-5"><div class="spinner-border text-primary" role="status"></div></div>');
             $.ajax({
-                type: "POST", url: "wfPedidos.aspx/GetSessionInfo", contentType: "application/json; charset=utf-8", dataType: "json",
-                success: function (sessionResponse) {
-                    if (sessionResponse.d) { usuarioLogueado = sessionResponse.d; }
-                    else {
-                        toastr.warning("No se pudo identificar al usuario. Se usará un mesero por defecto.");
-                        usuarioLogueado = { IdUsuario: 1, NombreUsuario: "Mesero Default" };
-                    }
-                    $.ajax({
-                        type: "POST", url: "wfPedidos.aspx/GetDatosIniciales", contentType: "application/json; charset=utf-8", dataType: "json",
-                        success: function (response) {
-                            if (response.d) {
-                                menuCompleto = response.d.Menu || [];
-                                clientes = response.d.Clientes || [];
-                                usuariosParaCobro = response.d.UsuariosParaCobro || [];
-                                const mesas = response.d.Mesas || [];
-                                categorias = [...new Set(menuCompleto.map(p => p.Categoria))].map(c => ({ nombre: c }));
-                                fct_RenderizarMesas(mesas);
-                            } else { toastr.error("La respuesta del servidor está vacía."); }
-                        },
-                        error: function (xhr) { toastr.error("Error crítico al cargar datos."); console.error(xhr.responseText); }
-                    });
+                type: "POST", url: "wfPedidos.aspx/GetPaginaPedidos", contentType: "application/json; charset=utf-8", dataType: "json",
+                success: function (response) {
+                    if (response.d) {
+                        menuCompleto = response.d.Menu || [];
+                        clientes = response.d.Clientes || [];
+                        usuariosParaCobro = response.d.UsuariosParaCobro || [];
+                        meseros = response.d.Meseros || [];
+                        const mesas = response.d.Mesas || [];
+                        categorias = [...new Set(menuCompleto.map(p => p.Categoria))].filter(Boolean).map(c => ({ nombre: c }));
+                        fct_RenderizarMesas(mesas);
+                        fct_RenderizarHistorial(response.d.Historial || []);
+                    } else { toastr.error("La respuesta del servidor está vacía."); }
                 },
-                error: function () { toastr.error("Fallo al obtener la sesión."); }
+                error: function (xhr) {
+                    toastr.error("Error crítico al cargar datos.");
+                    $(idContenedorMesas).html(`<div class='col-12 alert alert-danger'>${xhr.responseText}</div>`);
+                    console.error(xhr.responseText);
+                }
             });
         }
 
@@ -178,15 +210,40 @@
                 let cardClass = mesa.EsVigente ? (mesa.EstaDisponible ? 'bg-success' : 'bg-danger') : 'bg-secondary';
                 let textoEstado = mesa.EsVigente ? (mesa.EstaDisponible ? 'Disponible' : 'Ocupada') : 'Mantenimiento';
                 let onClickAction = mesa.EsVigente ? `fct_AbrirPedido(${mesa.Id}, ${mesa.EstaDisponible})` : '';
-                container.append(`<div class="col-lg-2 col-md-3 col-sm-4 mb-4"><div class="card card-mesa-pedido text-white text-center ${cardClass}" onclick="${onClickAction}"><div class="card-body p-3"><i class="fas fa-chair icono-mesa"></i><div class="numero-mesa mt-1">${mesa.Numero}</div><div class="estado-mesa">${textoEstado}</div></div></div></div>`);
+                container.append(`<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4"><div class="card card-mesa-pedido text-white text-center ${cardClass}" onclick="${onClickAction}"><div class="card-body p-3"><i class="fas fa-chair icono-mesa"></i><div class="numero-mesa mt-1">${mesa.Numero}</div><div class="estado-mesa">${textoEstado}</div></div></div></div>`);
             });
         }
 
+        function fct_RenderizarHistorial(dataHistorial) {
+            if ($.fn.DataTable.isDataTable('#tbl_HistorialPedidos')) {
+                tablaHistorial.clear().rows.add(dataHistorial).draw();
+            } else {
+                tablaHistorial = $('#tbl_HistorialPedidos').DataTable({
+                    data: dataHistorial,
+                    columns: [
+                        { data: 'IdPedido' }, { data: 'Fecha' }, { data: 'Mesa' }, { data: 'Cliente' },
+                        { data: 'Mesero' }, { data: 'Monto', render: $.fn.dataTable.render.number(',', '.', 2, 'S/ ') },
+                        {
+                            data: 'Estado', render: function (data) {
+                                let badge = data === 'Pagado' ? 'badge-success' : 'badge-warning';
+                                return `<span class="badge ${badge}">${data}</span>`;
+                            }
+                        }
+                    ],
+                    responsive: true, order: [[0, 'desc']],
+                    language: { url: '//cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json' }
+                });
+            }
+        }
+
         function fct_AbrirPedido(idMesa, estaDisponible) {
+            const ddl = $('#ddlPedidoMesero'); ddl.empty();
+            meseros.forEach(m => ddl.append(`<option value="${m.Id}">${m.Nombre}</option>`));
+
             if (estaDisponible) {
-                pedidoActual = { IdPedido: 0, IdMesa: idMesa, IdCliente: 1, IdMesero: usuarioLogueado.IdUsuario, Items: [] };
+                pedidoActual = { IdPedido: 0, IdMesa: idMesa, IdCliente: 1, IdMesero: 0, Items: [] };
                 itemsOriginales = [];
-                $('#tituloModalPedido').text(`Nuevo Pedido - Mesa #${idMesa} (Atendido por: ${usuarioLogueado.NombreUsuario})`);
+                $('#tituloModalPedido').text(`Nuevo Pedido - Mesa #${idMesa}`);
                 $('#btnProcederPago').hide();
                 $('#btnGuardarPedido').text('Registrar Pedido').show();
                 fct_RenderizarCategorias(); fct_RenderizarComanda();
@@ -202,6 +259,7 @@
                             $('#tituloModalPedido').text(`Viendo Pedido #${pedidoActual.IdPedido} - Mesa #${idMesa}`);
                             $('#btnProcederPago').show();
                             $('#btnGuardarPedido').text('Añadir y Enviar').show();
+                            $('#ddlPedidoMesero').val(pedidoActual.IdMesero);
                             fct_RenderizarCategorias(); fct_RenderizarComanda();
                             $('#modalTomaPedido').modal('show');
                         } else { toastr.error("No se pudo cargar el pedido de esta mesa."); }
@@ -265,6 +323,8 @@
         function fct_GuardarPedido() {
             let datosParaEnviar = {};
             let esNuevo = (pedidoActual.IdPedido === 0);
+            pedidoActual.IdMesero = parseInt($('#ddlPedidoMesero').val());
+            if (!pedidoActual.IdMesero) { toastr.warning("Debe seleccionar un mesero."); return; }
 
             if (esNuevo) {
                 if (pedidoActual.Items.length === 0) { toastr.warning("Debe agregar productos al pedido."); return; }
@@ -311,7 +371,9 @@
             const ddlCobro = $('#ddlPagoUsuarioCobro');
             ddlCobro.empty();
             usuariosParaCobro.forEach(u => ddlCobro.append(`<option value="${u.Id}">${u.Nombre}</option>`));
-            ddlCobro.val(usuarioLogueado.IdUsuario);
+            if (usuariosParaCobro.some(u => u.Id === usuarioLogueado.IdUsuario)) {
+                ddlCobro.val(usuarioLogueado.IdUsuario);
+            }
 
             $('#ddlPagoCliente').empty();
             clientes.forEach(c => $('#ddlPagoCliente').append(`<option value="${c.Id}">${c.Nombre}</option>`));

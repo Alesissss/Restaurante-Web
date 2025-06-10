@@ -1,108 +1,62 @@
-﻿Imports System.Data
+﻿' Archivo: clsMantenimiento.vb (Versión Final, Segura y Profesional)
+Imports System.Data
 Imports System.Data.SqlClient
 
 Public Class clsMantenimiento
-    Dim objConecta As New clsConectaBD
-    Dim cm As New SqlCommand
+    Private objCon As New clsConectaBD()
 
-    'Insert, update y delete
-    Sub ejecutarComando(strConsulta As String)
-        Try
-            'objConecta.abrirconexionTrans()
-            objConecta.abrirconexion()
-            cm.Connection = objConecta.miConexion
-            cm.CommandText = strConsulta
-            'If transaccion = True Then
-            '    cm.Transaction = tsql
-            'End If
-            cm.ExecuteNonQuery()
-            'objConecta.cerrarconexionTrans()
-            objConecta.cerrarconexion()
-        Catch ex As Exception
-            'objConecta.cancelarconexionTrans()
-            Throw New Exception("Error al realizar la operación...")
-        End Try
-    End Sub
-
-    'select
-    Public Function listarComando(strConsulta As String) As DataTable
-        Dim dt As New DataTable
-        Dim da As SqlDataAdapter
-        Try
-            'objConecta.abrirconexionTrans()
-            objConecta.abrirconexion()
-            da = New SqlDataAdapter(strConsulta, objConecta.miConexion)
-            'If transaccion = True Then
-            '    da.SelectCommand.Transaction = tsql
-            'End If
-            da.Fill(dt)
-            'objConecta.cerrarconexionTrans()
-            objConecta.cerrarconexion()
-            Return dt
-        Catch ex As Exception
-            objConecta.cancelarconexionTrans()
-            Throw New Exception("Error al realizar la consulta...")
-        End Try
-        Return Nothing
+    Private Function CrearConexion() As SqlConnection
+        Return New SqlConnection(objCon.gen_cad_cloud())
     End Function
 
-    Public Function listarComando(Optional strConsulta As String = "", Optional strConsulta1 As String = "") As DataSet
-        Dim ds As New DataSet
-        Dim da As SqlDataAdapter
-        Try
-            objConecta.abrirconexionTrans()
-            da = New SqlDataAdapter(strConsulta, objConecta.miConexion)
-            'If transaccion = True Then
-            '    da.SelectCommand.Transaction = tsql
-            'End If
-            da.Fill(ds, "Tabla1")
-            objConecta.cerrarconexionTrans()
-            Return ds
-        Catch ex As Exception
-            objConecta.cancelarconexionTrans()
-            Throw New Exception("Error al realizar la consulta...")
-        End Try
-        Return Nothing
-    End Function
-    Public Sub ejecutarComando(strConsulta As String, parametros As Dictionary(Of String, Object))
-        Try
-            objConecta.abrirconexion()
-            cm.Connection = objConecta.miConexion
-            cm.CommandText = strConsulta
-
-            ' Añadir parámetros al comando
-            For Each param In parametros
-                cm.Parameters.AddWithValue(param.Key, param.Value)
+    Private Sub AsignarParametros(ByRef cmd As SqlCommand, Optional parametros As Dictionary(Of String, Object) = Nothing)
+        If parametros IsNot Nothing Then
+            cmd.Parameters.Clear() ' Limpiar parámetros anteriores
+            For Each p In parametros
+                ' Usamos AddWithValue para manejar los tipos de datos automáticamente.
+                ' Si el valor es Nothing, lo convertimos a DBNull.Value.
+                cmd.Parameters.AddWithValue(p.Key, If(p.Value, DBNull.Value))
             Next
-
-            cm.ExecuteNonQuery()
-            objConecta.cerrarconexion()
-        Catch ex As Exception
-            objConecta.cerrarconexion()
-            Throw New Exception("Error al ejecutar el comando: " & ex.Message)
-        End Try
+        End If
     End Sub
 
-    ' Método para listar datos (SELECT) con parámetros
-    Public Function listarComando(strConsulta As String, parametros As Dictionary(Of String, Object)) As DataTable
+    ' Método para SELECT que devuelve una tabla de datos
+    Public Function listarComando(ByVal sql As String, Optional parametros As Dictionary(Of String, Object) = Nothing) As DataTable
         Dim dt As New DataTable()
-        Dim da As SqlDataAdapter
-        Try
-            objConecta.abrirconexion()
-            da = New SqlDataAdapter(strConsulta, objConecta.miConexion)
+        ' 'Using' asegura que la conexión se cierre incluso si hay un error
+        Using conn As SqlConnection = CrearConexion()
+            Try
+                conn.Open()
+                ' Se crea un comando nuevo y limpio para esta operación específica
+                Using cmd As New SqlCommand(sql, conn)
+                    AsignarParametros(cmd, parametros)
+                    Using da As New SqlDataAdapter(cmd)
+                        da.Fill(dt)
+                    End Using
+                End Using
+            Catch ex As Exception
+                ' Lanzamos el error original y detallado para un mejor diagnóstico
+                Throw New Exception("Error en capa de datos (listarComando): " & ex.Message)
+            End Try
+        End Using
+        Return dt
+    End Function
 
-            ' Añadir parámetros al comando
-            For Each param In parametros
-                da.SelectCommand.Parameters.AddWithValue(param.Key, param.Value)
-            Next
-
-            da.Fill(dt)
-            objConecta.cerrarconexion()
-            Return dt
-        Catch ex As Exception
-            objConecta.cerrarconexion()
-            Throw New Exception("Error al listar los datos: " & ex.Message)
-        End Try
-        Return Nothing
+    ' Método para INSERT, UPDATE, DELETE
+    Public Function ejecutarComando(ByVal sql As String, Optional parametros As Dictionary(Of String, Object) = Nothing) As Boolean
+        Dim filasAfectadas As Integer = 0
+        Using conn As SqlConnection = CrearConexion()
+            Try
+                conn.Open()
+                ' Se crea un comando nuevo y limpio para esta operación
+                Using cmd As New SqlCommand(sql, conn)
+                    AsignarParametros(cmd, parametros)
+                    filasAfectadas = cmd.ExecuteNonQuery()
+                End Using
+            Catch ex As Exception
+                Throw New Exception("Error en capa de datos (ejecutarComando): " & ex.Message)
+            End Try
+        End Using
+        Return (filasAfectadas > 0)
     End Function
 End Class

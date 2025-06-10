@@ -1,18 +1,20 @@
 ﻿' Archivo: wfPedidos.aspx.vb (Versión Final Completa)
 Imports System.Web.Services
 Imports System.Data
-Imports libNegocio ' Asegúrate que este sea tu namespace de lógica
+Imports libNegocio
 Imports System.Web
 
 Public Class wfPedidos
     Inherits System.Web.UI.Page
 
     ' --- DTOs (Data Transfer Objects) ---
-    Public Class DatosInicialesDTO
+    Public Class PaginaPedidosDTO
         Public Property Mesas As List(Of MesaDTO)
         Public Property Menu As List(Of ProductoDTO)
         Public Property Clientes As List(Of ClienteDTO)
         Public Property UsuariosParaCobro As List(Of UsuarioDTO)
+        Public Property Meseros As List(Of UsuarioDTO)
+        Public Property Historial As List(Of PedidoHistorialDTO)
     End Class
 
     Public Class MesaDTO
@@ -47,6 +49,16 @@ Public Class wfPedidos
         Public Property Items As List(Of DetalleDTO)
     End Class
 
+    Public Class PedidoHistorialDTO
+        Public Property IdPedido As Integer
+        Public Property Fecha As String
+        Public Property Mesa As Integer
+        Public Property Cliente As String
+        Public Property Mesero As String
+        Public Property Monto As Decimal
+        Public Property Estado As String
+    End Class
+
     ' --- WEBMETHODS ---
 
     <WebMethod(EnableSession:=True)>
@@ -62,8 +74,8 @@ Public Class wfPedidos
     End Function
 
     <WebMethod(EnableSession:=True)>
-    Public Shared Function GetDatosIniciales() As DatosInicialesDTO
-        Dim datos As New DatosInicialesDTO()
+    Public Shared Function GetPaginaPedidos() As PaginaPedidosDTO
+        Dim datos As New PaginaPedidosDTO()
         Try
             ' Cargar Mesas
             datos.Mesas = New List(Of MesaDTO)()
@@ -104,20 +116,37 @@ Public Class wfPedidos
             datos.UsuariosParaCobro = New List(Of UsuarioDTO)
             Dim objUsuario As New clsUsuario()
             Dim dtUsuarios As DataTable = objUsuario.listarUsuarios()
-
-            ' ===== IMPORTANTE: CAMBIA ESTOS NÚMEROS POR LOS IDs DE TUS ROLES =====
-            Dim rolesPermitidos As List(Of Integer) = New List(Of Integer) From {1, 2, 3} ' EJEMPLO: 1=Admin, 2=Mesero, 3=Cajero
-
+            Dim rolesParaCobro As List(Of Integer) = New List(Of Integer) From {1, 3, 4} ' Reemplaza con tus IDs: 1=Admin, 3=Mesero, 4=Cajero
             For Each row As DataRow In dtUsuarios.Rows
-                If CBool(row("vigencia")) AndAlso rolesPermitidos.Contains(CInt(row("idTipoUsuario"))) Then
-                    datos.UsuariosParaCobro.Add(New UsuarioDTO With {
-                        .Id = CInt(row("idUsuario")), .Nombre = row("nombresCompletos").ToString()
-                    })
+                If CBool(row("vigencia")) AndAlso rolesParaCobro.Contains(CInt(row("idTipoUsuario"))) Then
+                    datos.UsuariosParaCobro.Add(New UsuarioDTO With {.Id = CInt(row("idUsuario")), .Nombre = row("nombresCompletos").ToString()})
                 End If
             Next
 
+            ' Cargar Meseros para el dropdown del pedido
+            datos.Meseros = New List(Of UsuarioDTO)
+            Dim rolesMesero As List(Of Integer) = New List(Of Integer) From {1, 3} ' Reemplaza con tus IDs: 1=Admin, 3=Mesero
+            For Each row As DataRow In dtUsuarios.Rows
+                If CBool(row("vigencia")) AndAlso rolesMesero.Contains(CInt(row("idTipoUsuario"))) Then
+                    datos.Meseros.Add(New UsuarioDTO With {.Id = CInt(row("idUsuario")), .Nombre = row("nombresCompletos").ToString()})
+                End If
+            Next
+
+            ' Cargar Historial
+            datos.Historial = New List(Of PedidoHistorialDTO)
+            Dim objPedido As New clsPedido()
+            Dim dtHistorial As DataTable = objPedido.ListarHistorialDePedidos()
+            For Each row As DataRow In dtHistorial.Rows
+                datos.Historial.Add(New PedidoHistorialDTO With {
+                    .IdPedido = CInt(row("idPedido")), .Fecha = Convert.ToDateTime(row("fecha")).ToString("g"),
+                    .Mesa = CInt(row("Mesa")), .Cliente = row("Cliente").ToString(),
+                    .Mesero = row("Mesero").ToString(), .Monto = CDec(row("monto")),
+                    .Estado = row("Estado").ToString()
+                })
+            Next
+
         Catch ex As Exception
-            Throw New Exception("Error cargando datos iniciales: " & ex.Message)
+            Throw New Exception("Error cargando datos de página: " & ex.Message)
         End Try
         Return datos
     End Function
@@ -175,4 +204,5 @@ Public Class wfPedidos
             Return "Error: " & ex.Message
         End Try
     End Function
+
 End Class
