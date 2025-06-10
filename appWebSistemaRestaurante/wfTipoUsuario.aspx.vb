@@ -28,9 +28,9 @@ Public Class wfTipoUsuario
             html.AppendFormat("<td>{0}</td>", descripcion)
             html.AppendFormat("<td>{0}</td>", estadoTexto)
             html.Append("<td>")
-            html.AppendFormat("<button class='btn btn-primary btn-sm' onclick=""fct_EditarTipoUsuario('{0}', '{1}', '{2}', {3})""><i class='fas fa-edit'></i></button> ", id, nombre, descripcion, estadoBool)
-            html.AppendFormat("<button class='btn btn-warning btn-sm' onclick=""fct_DarBajaTipoUsuario('{0}')""><i class='fas fa-arrow-down'></i></button> ", id)
-            html.AppendFormat("<button class='btn btn-danger btn-sm' onclick=""fct_EliminarTipoUsuario('{0}')""><i class='fas fa-trash'></i></button>", id)
+            html.AppendFormat("<button type='button' class='btn btn-primary btn-sm' onclick=""fct_EditarTipoUsuario('{0}', '{1}', '{2}', {3})""><i class='fas fa-edit'></i></button> ", id, nombre, descripcion, estadoBool)
+            html.AppendFormat("<button type='button' class='btn btn-warning btn-sm' onclick=""fct_DarBajaTipoUsuario('{0}')""><i class='fas fa-arrow-down'></i></button> ", id)
+            html.AppendFormat("<button type='button' class='btn btn-danger btn-sm' onclick=""fct_EliminarTipoUsuario('{0}')""><i class='fas fa-trash'></i></button>", id)
             html.Append("</td>")
             html.Append("</tr>")
         Next
