@@ -6,15 +6,15 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1>Gestionar tipos de usuario</h1>
+                        <h1>Gestionar Tipos de Usuario</h1>
                     </div>
                 </div>
             </div>
             <div class="panel-body">
-                 <div class="row mb-2">
+                <div class="row mb-2">
                     <div class="col-md-12 text-right">
-                        <button type="button" class="btn btn-success" onclick="fct_AbrirModalNuevo()">
-                            <i class="fas fa-plus-circle"></i> Nuevo Tipo Usuario
+                        <button type="button" class="btn btn-success" onclick="fct_AbrirModalNuevoTipoUsuario()">
+                            <i class="fas fa-plus-circle"></i> Nuevo Tipo de Usuario
                         </button>
                     </div>
                 </div>
@@ -30,41 +30,35 @@
                         </tr>
                     </thead>
                     <tbody id="tbody_TipoUsuario" runat="server">
-                        <!-- Se llenará desde el backend -->
-                    </tbody>
+                        </tbody>
                 </table>
-            </div>                       
+            </div>
         </div>
     </section>
 
-    <!-- Modal -->
     <div class="modal fade" id="modal_TipoUsuario" tabindex="-1" aria-labelledby="tituloModal" aria-hidden="true">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="tituloModal">Registrar / Editar Tipo Usuario</h5>
+                    <h5 class="modal-title" id="tituloModal">Registrar / Editar Tipo de Usuario</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span>×</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <!-- Campo oculto para ID -->
                         <input type="hidden" id="txtIdTipoUsuario">
 
-                        <!-- Nombre -->
                         <div class="col-md-12 mb-3">
                             <label for="txtNombre" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="txtNombre" placeholder="Ingrese el nombre">
+                            <input type="text" class="form-control" id="txtNombre" placeholder="Ej: Administrador, Mesero, Cajero">
                         </div>
 
-                        <!-- Descripción -->
                         <div class="col-md-12 mb-3">
                             <label for="txtDescripcion" class="form-label">Descripción</label>
-                            <textarea class="form-control" id="txtDescripcion" rows="3" placeholder="Ingrese la descripción"></textarea>
+                            <textarea class="form-control" id="txtDescripcion" rows="3" placeholder="Ingrese una descripción opcional"></textarea>
                         </div>
 
-                        <!-- Vigencia -->
                         <div class="col-md-12 form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="chkVigencia" checked>
                             <label class="form-check-label" for="chkVigencia">Vigente</label>
@@ -80,43 +74,38 @@
     </div>
 
 <script>
-    function fct_AbrirModalNuevo() {
-        $('#tituloModal').text('Nuevo Tipo Usuario');
-        $('#hdnIdTipoUsuario').val('');
+    function fct_AbrirModalNuevoTipoUsuario() {
+        $('#tituloModal').text('Nuevo Tipo de Usuario');
+        $('#txtIdTipoUsuario').val('0');
         $('#txtNombre').val('');
         $('#txtDescripcion').val('');
         $('#chkVigencia').prop('checked', true);
+        $('#btnGuardar').text('Guardar');
         $('#modal_TipoUsuario').modal('show');
     }
 
     function fct_EditarTipoUsuario(id, nombre, descripcion, estado) {
-        $('#tituloModal').text('Editar Tipo Usuario');
+        $('#tituloModal').text('Editar Tipo de Usuario');
 
-        // Llenamos los campos del modal
-        document.getElementById("txtIdTipoUsuario").value = id;
-        document.getElementById("txtNombre").value = nombre;
-        document.getElementById("txtDescripcion").value = descripcion;
+        $('#txtIdTipoUsuario').val(id);
+        $('#txtNombre').val(nombre);
+        $('#txtDescripcion').val(descripcion);
 
-        // Convertimos a booleano por si viene como texto
-        const estadoBool = (estado === true || estado === "true");
-        document.getElementById("chkVigencia").checked = estadoBool;
+        const estadoBool = (estado.toLowerCase() === 'activo');
+        $('#chkVigencia').prop('checked', estadoBool);
 
-        // Cambiamos el texto del botón
-        document.getElementById("btnGuardar").innerText = "Actualizar";
-
-        // Mostramos el modal
-        const modal = new bootstrap.Modal(document.getElementById("modal_TipoUsuario"));
-        modal.show();
+        $('#btnGuardar').text('Actualizar');
+        $('#modal_TipoUsuario').modal('show');
     }
 
     function fct_GuardarTipoUsuario() {
-        let id = $('#txtIdTipoUsuario').val() || "";
+        let id = $('#txtIdTipoUsuario').val() || "0";
         let nombre = $('#txtNombre').val().trim();
         let descripcion = $('#txtDescripcion').val().trim();
         let vigente = $('#chkVigencia').is(':checked');
 
         if (nombre === '') {
-            toastr.warning('Ingrese un nombre');
+            toastr.warning('El nombre del tipo de usuario es obligatorio.');
             return;
         }
 
@@ -134,22 +123,21 @@
                 }
             },
             error: function () {
-                toastr.error('Error en la solicitud');
+                toastr.error('Error en la solicitud al servidor.');
             }
         });
     }
 
     function fct_EliminarTipoUsuario(id) {
         Swal.fire({
-            title: "¿Deseas eliminar este tipo usuario?",
-            text: "El registro no se podrá recuperar.",
+            title: "¿Deseas eliminar este tipo?",
+            text: "No podrás eliminarlo si está siendo usado por algún usuario.",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
             confirmButtonText: "Sí, eliminar",
-            cancelButtonText: "Cancelar",
-            reverseButtons: true
+            cancelButtonText: "Cancelar"
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
@@ -165,9 +153,7 @@
                             toastr.error(response.d);
                         }
                     },
-                    error: function () {
-                        toastr.error('Error en el servidor');
-                    }
+                    error: function () { toastr.error('Error en el servidor'); }
                 });
             }
         });
@@ -175,15 +161,11 @@
 
     function fct_DarBajaTipoUsuario(id) {
         Swal.fire({
-            title: "¿Dar de baja?",
-            text: "El registro se marcará como no vigente.",
+            title: "¿Dar de baja a este tipo?",
+            text: "El tipo de usuario se marcará como no vigente.",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Sí, dar de baja",
-            cancelButtonText: "Cancelar",
-            reverseButtons: true
+            confirmButtonText: "Sí, dar de baja"
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
@@ -193,15 +175,42 @@
                     data: JSON.stringify({ id: id }),
                     success: function (response) {
                         if (response.d === 'success') {
-                            toastr.success('Tipo usuario dado de baja correctamente');
+                            toastr.info('Tipo de usuario dado de baja');
                             setTimeout(() => location.reload(), 800);
                         } else {
                             toastr.error(response.d);
                         }
                     },
-                    error: function () {
-                        toastr.error('Error en el servidor');
-                    }
+                    error: function () { toastr.error('Error en el servidor'); }
+                });
+            }
+        });
+    }
+
+    function fct_DarAltaTipoUsuario(id) {
+        Swal.fire({
+            title: "¿Reactivar este tipo?",
+            text: "El tipo de usuario se marcará como vigente.",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#28a745",
+            confirmButtonText: "Sí, reactivar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: 'wfTipoUsuario.aspx/DarAltaTipoUsuario',
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({ id: id }),
+                    success: function (response) {
+                        if (response.d === 'success') {
+                            toastr.success('Tipo de usuario reactivado');
+                            setTimeout(() => location.reload(), 800);
+                        } else {
+                            toastr.error(response.d);
+                        }
+                    },
+                    error: function () { toastr.error('Error en el servidor'); }
                 });
             }
         });

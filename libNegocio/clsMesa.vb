@@ -1,4 +1,5 @@
-﻿Imports libDatos
+﻿' Archivo: clsMesa.vb
+Imports libDatos
 
 Public Class clsMesa
     Private objMan As New clsMantenimiento()
@@ -18,12 +19,13 @@ Public Class clsMesa
         Return 0
     End Function
 
-    Public Sub guardarMesa(ByVal id As Integer, ByVal numero As Integer, ByVal capacidad As Byte, ByVal est As Boolean)
-        strSQL = "INSERT INTO MESA (idMesa, numero, capacidad, estado) VALUES (" &
+    ' Maneja VIGENCIA. Deja que estadoMesa sea manejado por la BD (default) o por la lógica de pedidos.
+    Public Sub guardarMesa(ByVal id As Integer, ByVal numero As Integer, ByVal capacidad As Byte, ByVal vig As Boolean)
+        strSQL = "INSERT INTO MESA (idMesa, numero, capacidad, vigencia) VALUES (" &
                  id & ", " &
                  numero & ", " &
                  capacidad & ", " &
-                 IIf(est, 1, 0) & ")"
+                 IIf(vig, 1, 0) & ")"
         Try
             objMan.ejecutarComando(strSQL)
         Catch ex As Exception
@@ -31,11 +33,12 @@ Public Class clsMesa
         End Try
     End Sub
 
-    Public Sub modificarMesa(ByVal id As Integer, ByVal numero As Integer, ByVal capacidad As Byte, ByVal est As Boolean)
+    ' Maneja VIGENCIA. No toca estadoMesa.
+    Public Sub modificarMesa(ByVal id As Integer, ByVal numero As Integer, ByVal capacidad As Byte, ByVal vig As Boolean)
         strSQL = "UPDATE MESA SET " &
                  "numero = " & numero & ", " &
                  "capacidad = " & capacidad & ", " &
-                 "estado = " & IIf(est, 1, 0) & " " &
+                 "vigencia = " & IIf(vig, 1, 0) & " " &
                  "WHERE idMesa = " & id
         Try
             objMan.ejecutarComando(strSQL)
@@ -53,7 +56,7 @@ Public Class clsMesa
         End Try
     End Sub
 
-    Public Sub darBajaMesa(ByVal id As Integer) ' Cambia vigencia a 0
+    Public Sub darBajaMesa(ByVal id As Integer)
         strSQL = "UPDATE MESA SET vigencia = 0 WHERE idMesa = " & id
         Try
             objMan.ejecutarComando(strSQL)
@@ -62,7 +65,7 @@ Public Class clsMesa
         End Try
     End Sub
 
-    Public Sub darAltaTipoProducto(ByVal id As Integer) ' Cambia vigencia a 1
+    Public Sub darAltaMesa(ByVal id As Integer)
         strSQL = "UPDATE MESA SET vigencia = 1 WHERE idMesa = " & id
         Try
             objMan.ejecutarComando(strSQL)
@@ -71,36 +74,22 @@ Public Class clsMesa
         End Try
     End Sub
 
-    Public Function buscarMesa(ByVal id As Integer) As DataTable
-        strSQL = "SELECT * FROM MESA WHERE idMesa = " & id
-        Try
-            Return objMan.listarComando(strSQL)
-        Catch ex As Exception
-            Throw New Exception("Error al buscar Mesa: " & ex.Message)
-        End Try
-    End Function
-
+    ' Selecciona las dos columnas de estado para usarlas en la interfaz
     Public Function listarMesas() As DataTable
-        strSQL = "SELECT idMesa,numero,capacidad, " &
-         "CASE estado " &
-         "WHEN 1 THEN 'Activo' " &
-         "WHEN 0 THEN 'Inactivo' " &
-         "ELSE 'Desconocido' END AS estado " &
-         "FROM MESA"
+        strSQL = "SELECT idMesa, numero, capacidad, vigencia, estadoMesa FROM MESA"
         Try
             Return objMan.listarComando(strSQL)
         Catch ex As Exception
             Throw New Exception("Error al listar Mesas: " & ex.Message)
         End Try
     End Function
-    Public Function listarMesasVigentes() As DataTable
-        strSQL = "SELECT idMesa,capacidad, " &
-         "estado, numero " &
-         "FROM MESA WHERE estado = 1"
+
+    Public Function buscarMesa(ByVal id As Integer) As DataTable
+        strSQL = "SELECT * FROM MESA WHERE idMesa = " & id
         Try
             Return objMan.listarComando(strSQL)
         Catch ex As Exception
-            Throw New Exception("Error al listar Mesas disponibles: " & ex.Message)
+            Throw New Exception("Error al buscar Mesa: " & ex.Message)
         End Try
     End Function
 
@@ -119,5 +108,4 @@ Public Class clsMesa
         End Try
         Return False
     End Function
-
 End Class
