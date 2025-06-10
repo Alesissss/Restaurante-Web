@@ -1,4 +1,4 @@
-﻿' Archivo: clsPedido.vb (Versión Final con Historial)
+﻿' Archivo: clsPedido.vb (Versión Final Definitiva)
 Imports System.Data
 Imports System.Data.SqlClient
 Imports libDatos
@@ -24,22 +24,16 @@ Public Class clsPedido
     End Function
 
     Public Function ListarHistorialDePedidos() As DataTable
-        ' ===== CORRECCIÓN EN ESTA CONSULTA =====
         strSQL = "SELECT p.idPedido, p.fecha, p.monto, m.numero AS Mesa, " &
-             "ISNULL(c.nombres + ' ' + c.apellidos, 'Cliente Varios') AS Cliente, " &
-             "ISNULL(u.nombresCompletos, 'Mesero Eliminado') AS Mesero, " & ' <- SE QUITÓ EL CONCAT() INCORRECTO DE AQUÍ
-             "CASE p.estadoPago WHEN 0 THEN 'Pagado' ELSE 'Pendiente' END AS Estado " &
-             "FROM PEDIDO p " &
-             "LEFT JOIN MESA m ON p.idMesa = m.idMesa " &
-             "LEFT JOIN CLIENTE c ON p.idCliente = c.idCliente " &
-             "LEFT JOIN USUARIO u ON p.idMesero = u.idUsuario " &
-             "WHERE p.estadoPedido = 0 ORDER BY p.fecha DESC"
-        Try
-            Return objMan.listarComando(strSQL)
-        Catch ex As Exception
-            ' Propagamos el error por si algo más falla
-            Throw New Exception("Error en ListarHistorialDePedidos: " & ex.Message)
-        End Try
+                 "ISNULL(c.nombres + ' ' + c.apellidos, 'Cliente Varios') AS Cliente, " &
+                 "ISNULL(u.nombresCompletos, 'Mesero Eliminado') AS Mesero, " &
+                 "CASE p.estadoPago WHEN 0 THEN 'Pagado' ELSE 'Pendiente' END AS Estado " &
+                 "FROM PEDIDO p " &
+                 "LEFT JOIN MESA m ON p.idMesa = m.idMesa " &
+                 "LEFT JOIN CLIENTE c ON p.idCliente = c.idCliente " &
+                 "LEFT JOIN USUARIO u ON p.idMesero = u.idUsuario " &
+                 "WHERE p.estadoPedido = 0 ORDER BY p.fecha DESC"
+        Return objMan.listarComando(strSQL)
     End Function
 
     Public Sub RegistrarPedido(ByVal idCliente As Integer, ByVal idMesero As Integer, ByVal idMesa As Integer, ByVal detalles As List(Of DetalleDTO))

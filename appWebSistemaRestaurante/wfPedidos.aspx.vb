@@ -7,7 +7,6 @@ Imports System.Web
 Public Class wfPedidos
     Inherits System.Web.UI.Page
 
-    ' --- DTOs (Data Transfer Objects) ---
     Public Class PaginaPedidosDTO
         Public Property Mesas As List(Of MesaDTO)
         Public Property Menu As List(Of ProductoDTO)
@@ -59,25 +58,10 @@ Public Class wfPedidos
         Public Property Estado As String
     End Class
 
-    ' --- WEBMETHODS ---
-
-    <WebMethod(EnableSession:=True)>
-    Public Shared Function GetSessionInfo() As Object
-        Dim session As SessionState.HttpSessionState = HttpContext.Current.Session
-        If session("idUsuario") IsNot Nothing AndAlso session("nombreUsuario") IsNot Nothing Then
-            Return New With {
-                .IdUsuario = CInt(session("idUsuario")),
-                .NombreUsuario = session("nombreUsuario").ToString()
-            }
-        End If
-        Return Nothing
-    End Function
-
-    <WebMethod(EnableSession:=True)>
+    <WebMethod()>
     Public Shared Function GetPaginaPedidos() As PaginaPedidosDTO
         Dim datos As New PaginaPedidosDTO()
         Try
-            ' Cargar Mesas
             datos.Mesas = New List(Of MesaDTO)()
             Dim objMesa As New clsMesa()
             Dim dtMesas As DataTable = objMesa.listarMesas()
@@ -88,7 +72,6 @@ Public Class wfPedidos
                 })
             Next
 
-            ' Cargar Menú
             datos.Menu = New List(Of ProductoDTO)()
             Dim objProducto As New clsProducto()
             Dim dtProductos As DataTable = objProducto.listarProductos()
@@ -101,7 +84,6 @@ Public Class wfPedidos
                 End If
             Next
 
-            ' Cargar Clientes
             datos.Clientes = New List(Of ClienteDTO)
             Dim objCliente As New clsCliente()
             Dim dtClientes As DataTable = objCliente.listarClientesVigentes()
@@ -112,18 +94,17 @@ Public Class wfPedidos
                 })
             Next
 
-            ' Cargar Usuarios que pueden cobrar (Admin, Mesero, Cajero)
-            datos.UsuariosParaCobro = New List(Of UsuarioDTO)
             Dim objUsuario As New clsUsuario()
             Dim dtUsuarios As DataTable = objUsuario.listarUsuarios()
-            Dim rolesParaCobro As List(Of Integer) = New List(Of Integer) From {1, 3, 4} ' Reemplaza con tus IDs: 1=Admin, 3=Mesero, 4=Cajero
+
+            datos.UsuariosParaCobro = New List(Of UsuarioDTO)
+            Dim rolesParaCobro As List(Of Integer) = New List(Of Integer) From {1, 2, 3} ' Reemplaza con tus IDs: 1=Admin, 2=Cajero, 3=Mesero
             For Each row As DataRow In dtUsuarios.Rows
                 If CBool(row("vigencia")) AndAlso rolesParaCobro.Contains(CInt(row("idTipoUsuario"))) Then
                     datos.UsuariosParaCobro.Add(New UsuarioDTO With {.Id = CInt(row("idUsuario")), .Nombre = row("nombresCompletos").ToString()})
                 End If
             Next
 
-            ' Cargar Meseros para el dropdown del pedido
             datos.Meseros = New List(Of UsuarioDTO)
             Dim rolesMesero As List(Of Integer) = New List(Of Integer) From {1, 3} ' Reemplaza con tus IDs: 1=Admin, 3=Mesero
             For Each row As DataRow In dtUsuarios.Rows
@@ -132,7 +113,6 @@ Public Class wfPedidos
                 End If
             Next
 
-            ' Cargar Historial
             datos.Historial = New List(Of PedidoHistorialDTO)
             Dim objPedido As New clsPedido()
             Dim dtHistorial As DataTable = objPedido.ListarHistorialDePedidos()
@@ -151,7 +131,7 @@ Public Class wfPedidos
         Return datos
     End Function
 
-    <WebMethod(EnableSession:=True)>
+    <WebMethod()>
     Public Shared Function GetPedidoPorMesa(idMesa As Integer) As PedidoDTO
         Dim objPedido As New clsPedido()
         Try
@@ -179,7 +159,7 @@ Public Class wfPedidos
         Return Nothing
     End Function
 
-    <WebMethod(EnableSession:=True)>
+    <WebMethod()>
     Public Shared Function RegistrarOModificarPedido(pedido As PedidoDTO) As String
         Dim objPedido As New clsPedido()
         Try
@@ -194,7 +174,7 @@ Public Class wfPedidos
         End Try
     End Function
 
-    <WebMethod(EnableSession:=True)>
+    <WebMethod()>
     Public Shared Function ProcesarPago(idPedido As Integer, idCajero As Integer, idCliente As Integer) As String
         Dim objPedido As New clsPedido()
         Try

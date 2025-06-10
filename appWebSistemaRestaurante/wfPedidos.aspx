@@ -19,45 +19,24 @@
 
     <section class="content">
         <div class="container-fluid pt-3">
-            
             <ul class="nav nav-pills mb-3" id="pedidosTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="salon-tab" data-toggle="tab" href="#salon" role="tab" aria-controls="salon" aria-selected="true">
-                        <i class="fas fa-th-large mr-1"></i> Salón Principal
-                    </a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="historial-tab" data-toggle="tab" href="#historial" role="tab" aria-controls="historial" aria-selected="false">
-                        <i class="fas fa-history mr-1"></i> Historial de Pedidos
-                    </a>
-                </li>
+                <li class="nav-item" role="presentation"><a class="nav-link active" id="salon-tab" data-toggle="tab" href="#salon" role="tab"><i class="fas fa-th-large mr-1"></i> Salón Principal</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" id="historial-tab" data-toggle="tab" href="#historial" role="tab"><i class="fas fa-history mr-1"></i> Historial de Pedidos</a></li>
             </ul>
-
             <div class="tab-content" id="pedidosTabContent">
-                <div class="tab-pane fade show active" id="salon" role="tabpanel" aria-labelledby="salon-tab">
+                <div class="tab-pane fade show active" id="salon" role="tabpanel">
                     <div class="d-flex justify-content-between align-items-center py-3">
                         <h4 class="mb-0">Mesas disponibles</h4>
-                        <div><button class="btn btn-sm btn-light border" onclick="fct_CargarDatosIniciales()"><i class="fas fa-sync-alt"></i></button></div>
+                        <div><button type="button" class="btn btn-sm btn-light border" onclick="fct_CargarDatosIniciales()"><i class="fas fa-sync-alt"></i></button></div>
                     </div>
                     <div class="row" id="cardContainer_MesasPedido" runat="server">
                         <div class="col-12 text-center p-5"><div class="spinner-border text-primary" role="status"></div></div>
                     </div>
                 </div>
-
-                <div class="tab-pane fade" id="historial" role="tabpanel" aria-labelledby="historial-tab">
+                <div class="tab-pane fade" id="historial" role="tabpanel">
                     <div class="py-3">
                         <table id="tbl_HistorialPedidos" class="table table-bordered table-striped" style="width:100%;">
-                            <thead class="bg-dark text-white">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Fecha</th>
-                                    <th>Mesa</th>
-                                    <th>Cliente</th>
-                                    <th>Mesero</th>
-                                    <th>Monto</th>
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
+                            <thead class="bg-dark text-white"><tr><th>ID</th><th>Fecha</th><th>Mesa</th><th>Cliente</th><th>Mesero</th><th>Monto</th><th>Estado</th></tr></thead>
                             <tbody></tbody>
                         </table>
                     </div>
@@ -67,98 +46,66 @@
     </section>
 
     <div class="modal fade" id="modalTomaPedido" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="tituloModalPedido"></h5>
-                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <h4>Menú</h4>
-                            <div class="row">
-                                <div class="col-4"><ul class="nav nav-pills flex-column menu-categorias" id="menu-categorias-tabs"></ul></div>
-                                <div class="col-8"><div class="list-group" id="menu-productos-content"></div></div>
-                            </div>
-                        </div>
-                        <div class="col-md-7 bg-light p-3 rounded">
-                            <div class="form-group">
-                                <label for="ddlPedidoMesero" class="font-weight-bold">Atendido por:</label>
-                                <select id="ddlPedidoMesero" class="form-control"></select>
-                            </div>
-                            <hr class="mt-2 mb-2"/>
-                            <h5 class="mb-3">Comanda</h5>
-                            <div class="comanda-items">
-                                <table class="table table-sm">
-                                    <thead><tr><th>Producto</th><th style="width: 150px;">Cantidad</th><th class="text-right">Subtotal</th><th class="text-center"></th></tr></thead>
-                                    <tbody id="tbody_comanda"></tbody>
-                                </table>
-                            </div><hr />
-                            <div class="d-flex justify-content-end comanda-total"><span>TOTAL: S/ </span><span id="comanda_total">0.00</span></div>
-                            <div class="mt-3 text-right">
-                                <button class="btn btn-warning" id="btnGuardarPedido"><i class="fas fa-save"></i> Enviar a Cocina</button>
-                                <button class="btn btn-success" id="btnProcederPago"><i class="fas fa-dollar-sign"></i> Proceder al Pago</button>
-                            </div>
-                        </div>
+        <div class="modal-dialog modal-xl" role="document"><div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="tituloModalPedido"></h5>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body"><div class="row">
+                <div class="col-md-5"><h4>Menú</h4><div class="row">
+                    <div class="col-4"><ul class="nav nav-pills flex-column menu-categorias" id="menu-categorias-tabs"></ul></div>
+                    <div class="col-8"><div class="list-group" id="menu-productos-content"></div></div>
+                </div></div>
+                <div class="col-md-7 bg-light p-3 rounded">
+                    <div class="form-group"><label for="ddlPedidoMesero" class="font-weight-bold">Atendido por:</label><select id="ddlPedidoMesero" class="form-control"></select></div>
+                    <hr class="mt-2 mb-2"/><h5 class="mb-3">Comanda</h5>
+                    <div class="comanda-items"><table class="table table-sm">
+                        <thead><tr><th>Producto</th><th style="width: 150px;">Cantidad</th><th class="text-right">Subtotal</th><th class="text-center"></th></tr></thead>
+                        <tbody id="tbody_comanda"></tbody>
+                    </table></div><hr />
+                    <div class="d-flex justify-content-end comanda-total"><span>TOTAL: S/ </span><span id="comanda_total">0.00</span></div>
+                    <div class="mt-3 text-right">
+                        <button type="button" class="btn btn-warning" id="btnGuardarPedido"><i class="fas fa-save"></i> Enviar a Cocina</button>
+                        <button type="button" class="btn btn-success" id="btnProcederPago"><i class="fas fa-dollar-sign"></i> Proceder al Pago</button>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div></div>
+        </div></div>
     </div>
     
     <div class="modal fade" id="modalPago" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-lg" role="document">
-             <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="tituloModalPago"></h5>
-                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        <div class="modal-dialog modal-lg" role="document"><div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="tituloModalPago"></h5>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body"><div class="row">
+                <div class="col-md-7">
+                    <h5>Resumen de Cuenta</h5>
+                    <div class="pago-items border rounded bg-light p-2"><table class="table table-sm">
+                        <thead><tr><th>Cant.</th><th>Producto</th><th class="text-right">Subtotal</th></tr></thead>
+                        <tbody id="tbody_pago_resumen"></tbody>
+                    </table></div><hr/>
+                    <div class="d-flex justify-content-end pago-total"><span>TOTAL A PAGAR: S/ </span><span id="pago_total">0.00</span></div>
                 </div>
-                <div class="modal-body">
-                     <div class="row">
-                        <div class="col-md-7">
-                            <h5>Resumen de Cuenta</h5>
-                            <div class="pago-items border rounded bg-light p-2">
-                                <table class="table table-sm">
-                                    <thead><tr><th>Cant.</th><th>Producto</th><th class="text-right">Subtotal</th></tr></thead>
-                                    <tbody id="tbody_pago_resumen"></tbody>
-                                </table>
-                            </div>
-                             <hr/>
-                            <div class="d-flex justify-content-end pago-total"><span>TOTAL A PAGAR: S/ </span><span id="pago_total">0.00</span></div>
-                        </div>
-                        <div class="col-md-5">
-                             <h5>Datos de Pago</h5>
-                             <div class="form-group">
-                                 <label>Cliente</label>
-                                 <select class="form-control" id="ddlPagoCliente"></select>
-                             </div>
-                             <div class="form-group">
-                                 <label>Cobrado por</label>
-                                 <select class="form-control" id="ddlPagoUsuarioCobro"></select>
-                             </div>
-                             <div class="form-group">
-                                 <label>Método de Pago</label>
-                                 <select class="form-control" id="ddlPagoMetodo">
-                                     <option>Efectivo</option>
-                                     <option>Tarjeta</option>
-                                     <option>Yape/Plin</option>
-                                 </select>
-                             </div>
-                             <div class="form-group text-center">
-                                <button class="btn btn-lg btn-success" id="btnConfirmarPago"><i class="fas fa-check-circle"></i> Confirmar Pago y Liberar Mesa</button>
-                             </div>
-                        </div>
+                <div class="col-md-5">
+                     <h5>Datos de Pago</h5>
+                     <div class="form-group"><label>Cliente</label><select class="form-control" id="ddlPagoCliente"></select></div>
+                     <div class="form-group"><label>Cobrado por</label><select class="form-control" id="ddlPagoUsuarioCobro"></select></div>
+                     <div class="form-group"><label>Método de Pago</label><select class="form-control" id="ddlPagoMetodo"><option>Efectivo</option><option>Tarjeta</option><option>Yape/Plin</option></select></div>
+                     <div class="form-group text-center">
+                        <button type="button" class="btn btn-lg btn-success" id="btnConfirmarPago"><i class="fas fa-check-circle"></i> Confirmar Pago y Liberar Mesa</button>
                      </div>
                 </div>
-            </div>
-        </div>
+            </div></div>
+        </div></div>
     </div>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="PageSpecificScripts" runat="server">
     <script>
-        let pedidoActual = {}, itemsOriginales = [];
+        let pedidoActual = {};
+        let itemsOriginales = [];
         let menuCompleto = [], categorias = [], clientes = [], usuariosParaCobro = [], meseros = [];
         const idContenedorMesas = '#<%= cardContainer_MesasPedido.ClientID %>';
         let tablaHistorial;
@@ -237,7 +184,7 @@
         }
 
         function fct_AbrirPedido(idMesa, estaDisponible) {
-            const ddl = $('#ddlPedidoMesero'); ddl.empty();
+            const ddl = $('#ddlPedidoMesero'); ddl.empty().append('<option value="">-- Seleccione Mesero --</option>');
             meseros.forEach(m => ddl.append(`<option value="${m.Id}">${m.Nombre}</option>`));
 
             if (estaDisponible) {
@@ -323,6 +270,7 @@
         function fct_GuardarPedido() {
             let datosParaEnviar = {};
             let esNuevo = (pedidoActual.IdPedido === 0);
+
             pedidoActual.IdMesero = parseInt($('#ddlPedidoMesero').val());
             if (!pedidoActual.IdMesero) { toastr.warning("Debe seleccionar un mesero."); return; }
 
@@ -336,7 +284,7 @@
                     if (!itemOriginal) { nuevosItems.push(itemActual); }
                     else if (itemActual.Cantidad > itemOriginal.Cantidad) { nuevosItems.push({ ...itemActual, Cantidad: itemActual.Cantidad - itemOriginal.Cantidad }); }
                 });
-                if (nuevosItems.length === 0) { toastr.info("No hay nuevos productos para añadir."); return; }
+                if (nuevosItems.length === 0) { toastr.info("No hay nuevos productos o cambios de cantidad para añadir."); return; }
                 datosParaEnviar = { IdPedido: pedidoActual.IdPedido, Items: nuevosItems };
             }
 
@@ -369,15 +317,13 @@
             });
 
             const ddlCobro = $('#ddlPagoUsuarioCobro');
-            ddlCobro.empty();
+            ddlCobro.empty().append('<option value="">-- Seleccione Usuario --</option>');
             usuariosParaCobro.forEach(u => ddlCobro.append(`<option value="${u.Id}">${u.Nombre}</option>`));
-            if (usuariosParaCobro.some(u => u.Id === usuarioLogueado.IdUsuario)) {
-                ddlCobro.val(usuarioLogueado.IdUsuario);
-            }
 
             $('#ddlPagoCliente').empty();
             clientes.forEach(c => $('#ddlPagoCliente').append(`<option value="${c.Id}">${c.Nombre}</option>`));
             $('#ddlPagoCliente').val(pedidoActual.IdCliente);
+
             $('#modalPago').modal('show');
         }
 
