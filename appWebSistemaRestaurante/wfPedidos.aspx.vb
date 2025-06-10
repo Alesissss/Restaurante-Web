@@ -1,175 +1,159 @@
-﻿Imports System.Web.Services
-Imports System.Web.Script.Services
-Imports Newtonsoft.Json
+﻿' Archivo: wfPedidos.aspx.vb (Versión Final)
+Imports System.Web.Services
+Imports System.Data
 Imports libNegocio
-Imports System.Web.Script.Serialization
 
 Public Class wfPedidos
     Inherits System.Web.UI.Page
 
-    Private objPedido As New clsPedido()
+    ' --- DTOs (Data Transfer Objects) ---
+    Public Class DatosInicialesDTO
+        Public Property Mesas As List(Of MesaDTO)
+        Public Property Menu As List(Of ProductoDTO)
+        Public Property Clientes As List(Of ClienteDTO)
+        Public Property Cajeros As List(Of CajeroDTO)
+    End Class
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
-        If Not IsPostBack Then
-            CargarTabla()
-        End If
-    End Sub
-    Private Sub CargarTabla()
-        Dim dt As DataTable = objPedido.listarPedidosVigentes()
-        Dim html As New StringBuilder()
-        Dim serializer As New JavaScriptSerializer()
+    Public Class MesaDTO
+        Public Property Id As Integer
+        Public Property Numero As Integer
+        Public Property EsVigente As Boolean
+        Public Property EstaDisponible As Boolean
+    End Class
 
-        For Each row As DataRow In dt.Rows
-            Dim id = row("idPedido")
-            Dim fecha = Convert.ToDateTime(row("fecha")).ToString("yyyy-MM-dd HH:mm")
-            Dim monto = String.Format("{0:0.00}", row("monto"))
-            Dim estadoPago = If(row("estadoPago") = 0, "Pagado", "Pendiente")
-            Dim numeroMesa = row("numeroMesa")
-            Dim idCliente = row("idCliente")
-            Dim idMesero = row("idMesero")
-            Dim idMesa = row("idMesa")
+    Public Class ProductoDTO
+        Public Property IdProducto As Integer
+        Public Property Nombre As String
+        Public Property Precio As Decimal
+        Public Property Categoria As String
+    End Class
 
-            ' Serializar detalles del pedido
-            Dim detalles As DataTable = objPedido.listarDetallesPedido(id)
-            Dim listaDetalles As New List(Of Object)
-            For Each dr As DataRow In detalles.Rows
-                listaDetalles.Add(New With {
-                .idProducto = Convert.ToInt32(dr("idProducto")),
-                .nombre = dr("nombre").ToString(),
-                .precio = Convert.ToDecimal(dr("precio")),
-                .cantidad = Convert.ToInt32(dr("cantidad")),
-                .carta = dr("carta").ToString(),
-                .subtotal = Convert.ToDecimal(dr("subtotal"))
-            })
-            Next
-            Dim detallesJson = serializer.Serialize(listaDetalles).Replace("""", "'")
+    Public Class ClienteDTO
+        Public Property Id As Integer
+        Public Property Nombre As String
+    End Class
 
-            html.Append("<tr>")
-            html.AppendFormat("<td>{0}</td>", id)
-            html.AppendFormat("<td>{0}</td>", fecha)
-            html.AppendFormat("<td>S/. {0}</td>", monto)
-            html.AppendFormat("<td>{0}</td>", estadoPago)
-            html.AppendFormat("<td>{0}</td>", numeroMesa)
+    Public Class CajeroDTO
+        Public Property Id As Integer
+        Public Property Nombre As String
+    End Class
 
-            ' Insertar botón de editar con JSON seguro
-            html.Append("<td>")
-            html.AppendFormat("<button class='btn btn-primary btn-sm' onclick=""fct_EditarPedido({0}, {1}, {2}, {3}, {4})""><i class='fas fa-edit'></i></button>", id, idCliente, idMesero, idMesa, detallesJson)
-            html.Append("</td>")
-            html.Append("</tr>")
-        Next
+    Public Class PedidoDTO
+        Public Property IdPedido As Integer
+        Public Property IdMesa As Integer
+        Public Property IdCliente As Integer
+        Public Property IdMesero As Integer
+        Public Property Items As List(Of DetalleDTO)
+    End Class
 
-        tbody_Pedido.InnerHtml = html.ToString()
-    End Sub
-
-    <WebMethod()>
-    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
-    Public Shared Function registrarPedidoWeb(idCliente As Integer, idMesero As Integer, idMesa As Integer, detalles As Object) As String
-        Dim objPedido As New clsPedido()
-        Dim nuevoID = objPedido.generarIDPedido()
-
+    ' --- WEBMETHODS ---
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function GetDatosIniciales() As DatosInicialesDTO
+        Dim datos As New DatosInicialesDTO()
         Try
-            ' Convertimos la lista dinámica a DataTable
-            Dim json = JsonConvert.SerializeObject(detalles)
-            Dim dt As DataTable = JsonConvert.DeserializeObject(Of DataTable)(json)
-
-            objPedido.RegistrarPedidoDesdeWeb(nuevoID, idCliente, idMesero, idMesa, dt)
-            Return "Pedido registrado correctamente"
-        Catch ex As Exception
-            Throw New Exception("Error al registrar el pedido: " & ex.Message)
-        End Try
-    End Function
-
-    <WebMethod()>
-    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
-    Public Shared Function modificarPedidoWeb(idPedido As Integer, idCliente As Integer, idMesero As Integer, idMesa As Integer, detalles As Object) As String
-        Dim objPedido As New clsPedido()
-        Try
-            Dim json = JsonConvert.SerializeObject(detalles)
-            Dim dt As DataTable = JsonConvert.DeserializeObject(Of DataTable)(json)
-
-            objPedido.ModificarPedidoDesdeWeb(idPedido, idCliente, idMesero, idMesa, dt)
-            Return "Pedido modificado correctamente"
-        Catch ex As Exception
-            Throw New Exception("Error al modificar el pedido: " & ex.Message)
-        End Try
-    End Function
-
-    <WebMethod()>
-    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
-    Public Shared Function obtenerDetalles(idPedido As Integer) As Object
-        Dim objPedido As New clsPedido()
-        Try
-            Dim dt As DataTable = objPedido.listarDetallesPedido(idPedido)
-            Return dt
-        Catch ex As Exception
-            Throw New Exception("Error al obtener detalles: " & ex.Message)
-        End Try
-    End Function
-
-    <System.Web.Services.WebMethod()>
-    Public Shared Function listarClientes() As List(Of Object)
-        Dim cls As New clsCliente()
-        Dim dt As DataTable = cls.listarClientesVigentes()
-        Dim lista = New List(Of Object)
-
-        For Each row As DataRow In dt.Rows
-            lista.Add(New With {
-            .id = Convert.ToInt32(row("idCliente")),
-            .nombre = row("nombres").ToString() & " " & row("apellidos").ToString()
-        })
-        Next
-
-        Return lista
-    End Function
-
-    <System.Web.Services.WebMethod()>
-    Public Shared Function listarMeseros() As List(Of Object)
-        Dim cls As New clsMesero()
-        Dim dt As DataTable = cls.listarMesero()
-        Dim lista = New List(Of Object)
-
-        For Each row As DataRow In dt.Rows
-            lista.Add(New With {
-            .id = Convert.ToInt32(row("idMesero")),
-            .nombre = row("nombres").ToString() & " " & row("apellidos").ToString()
-        })
-        Next
-
-        Return lista
-    End Function
-
-    <System.Web.Services.WebMethod()>
-    Public Shared Function listarMesasDisponibles() As List(Of Object)
-        Dim cls As New clsMesa()
-        Dim dt As DataTable = cls.listarMesas()
-        Dim lista = New List(Of Object)
-
-        For Each row As DataRow In dt.Rows
-            lista.Add(New With {
-                .id = Convert.ToInt32(row("idMesa")),
-                .nombre = "Mesa " & row("numero").ToString()
-            })
-        Next
-
-        Return lista
-    End Function
-    <System.Web.Services.WebMethod()>
-    Public Shared Function listarProductosVigentes() As List(Of Object)
-        Dim cls As New clsProducto()
-        Dim dt As DataTable = cls.listarProductos()
-        Dim lista = New List(Of Object)
-
-        For Each row As DataRow In dt.Rows
-            If row("estado") = "Activo" Then
-                lista.Add(New With {
-                    .id = Convert.ToInt32(row("idProducto")),
-                    .nombre = row("nombre").ToString(),
-                    .precio = Convert.ToDecimal(row("precio"))
+            ' Cargar Mesas
+            datos.Mesas = New List(Of MesaDTO)()
+            Dim objMesa As New clsMesa()
+            Dim dtMesas As DataTable = objMesa.listarMesas()
+            For Each row As DataRow In dtMesas.Rows
+                datos.Mesas.Add(New MesaDTO With {
+                    .Id = CInt(row("idMesa")), .Numero = CInt(row("numero")),
+                    .EsVigente = CBool(row("vigencia")), .EstaDisponible = CBool(row("estadoMesa"))
                 })
-            End If
-        Next
+            Next
 
-        Return lista
+            ' Cargar Menú
+            datos.Menu = New List(Of ProductoDTO)()
+            Dim objProducto As New clsProducto()
+            Dim dtProductos As DataTable = objProducto.listarProductos()
+            For Each row As DataRow In dtProductos.Rows
+                If row("estado").ToString().Equals("Activo", StringComparison.OrdinalIgnoreCase) Then
+                    datos.Menu.Add(New ProductoDTO With {
+                        .IdProducto = CInt(row("idProducto")), .Nombre = row("nombre").ToString(),
+                        .Precio = CDec(row("precio")), .Categoria = row("tipo_producto").ToString()
+                    })
+                End If
+            Next
+
+            ' Cargar Clientes
+            datos.Clientes = New List(Of ClienteDTO)
+            Dim objCliente As New clsCliente()
+            Dim dtClientes As DataTable = objCliente.listarClientesVigentes()
+            datos.Clientes.Add(New ClienteDTO With {.Id = 1, .Nombre = "Cliente Varios"}) ' Añadir cliente por defecto
+            For Each row As DataRow In dtClientes.Rows
+                datos.Clientes.Add(New ClienteDTO With {
+                    .Id = CInt(row("idCliente")), .Nombre = $"{row("nombres")} {row("apellidos")}"
+                })
+            Next
+
+            ' Cargar Cajeros
+            datos.Cajeros = New List(Of CajeroDTO)
+            Dim objCajero As New clsCajero()
+            Dim dtCajeros As DataTable = objCajero.listarCajerosVigentes()
+            For Each row As DataRow In dtCajeros.Rows
+                datos.Cajeros.Add(New CajeroDTO With {
+                    .Id = CInt(row("idCajero")), .Nombre = $"{row("nombres")} {row("apellidos")}"
+                })
+            Next
+
+        Catch ex As Exception
+            Throw New Exception("Error cargando datos iniciales: " & ex.Message)
+        End Try
+        Return datos
+    End Function
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function GetPedidoPorMesa(idMesa As Integer) As PedidoDTO
+        Dim objPedido As New clsPedido()
+        Try
+            Dim dtPedidoActivo As DataTable = objPedido.BuscarPedidoActivoPorMesa(idMesa)
+            If dtPedidoActivo IsNot Nothing AndAlso dtPedidoActivo.Rows.Count > 0 Then
+                Dim pedidoRow = dtPedidoActivo.Rows(0)
+                Dim pedidoResult As New PedidoDTO With {
+                    .IdPedido = CInt(pedidoRow("idPedido")), .IdMesa = CInt(pedidoRow("idMesa")),
+                    .IdCliente = CInt(pedidoRow("idCliente")), .IdMesero = CInt(pedidoRow("idMesero")),
+                    .Items = New List(Of DetalleDTO)()
+                }
+
+                Dim dtDetalles As DataTable = objPedido.ListarDetallesPorId(pedidoResult.IdPedido)
+                For Each detRow As DataRow In dtDetalles.Rows
+                    pedidoResult.Items.Add(New DetalleDTO With {
+                        .IdProducto = CInt(detRow("idProducto")), .Nombre = detRow("nombre").ToString(),
+                        .Precio = CDec(detRow("precioVenta")), .Cantidad = CInt(detRow("cantidad"))
+                    })
+                Next
+                Return pedidoResult
+            End If
+        Catch ex As Exception
+            Throw New Exception("Error al obtener pedido por mesa: " & ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function RegistrarOModificarPedido(pedido As PedidoDTO) As String
+        Dim objPedido As New clsPedido()
+        Try
+            If pedido.IdPedido = 0 Then
+                objPedido.RegistrarPedido(pedido.IdCliente, pedido.IdMesero, pedido.IdMesa, pedido.Items)
+            Else
+                Throw New NotSupportedException("La modificación de pedidos aún no está implementada en esta versión.")
+            End If
+            Return "ok"
+        Catch ex As Exception
+            Return "Error: " & ex.Message
+        End Try
+    End Function
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function ProcesarPago(idPedido As Integer, idCajero As Integer) As String
+        Dim objPedido As New clsPedido()
+        Try
+            objPedido.ProcesarPago(idPedido, idCajero)
+            Return "ok"
+        Catch ex As Exception
+            Return "Error: " & ex.Message
+        End Try
     End Function
 
 End Class

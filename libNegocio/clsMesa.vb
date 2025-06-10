@@ -94,7 +94,7 @@ Public Class clsMesa
     End Function
 
     Public Function VerificarMesa(idMesa As Integer) As Boolean
-        strSQL = "SELECT COUNT(*) FROM MESA WHERE idMesa = @idMesa AND estado=1"
+        strSQL = "SELECT COUNT(*) FROM MESA WHERE idMesa = @idMesa AND estadoMesa=1"
         Try
             Dim parametros As New Dictionary(Of String, Object) From {
                 {"@idMesa", idMesa}

@@ -63,7 +63,6 @@
 </head>
 
 <body class="hold-transition sidebar-mini layout-footer-fixed">
-    
     <%-- CORRECCIÓN: Se agrega la etiqueta FORM que envuelve todo el contenido --%>
     <form id="form1" runat="server">
         <div class="wrapper">
@@ -188,6 +187,7 @@
                 "hideMethod": "fadeOut"
             };
         </script>
+        <asp:ContentPlaceHolder ID="PageSpecificScripts" runat="server" />
     </form>
 </body>
 </html>
