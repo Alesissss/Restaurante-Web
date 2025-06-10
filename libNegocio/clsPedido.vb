@@ -254,6 +254,31 @@ Public Class clsPedido
             End Try
         End Using
     End Sub
+    Public Function ContarPedidosHoy() As Integer
+        strSQL = "SELECT COUNT(*) FROM PEDIDO WHERE CONVERT(DATE, fecha) = CONVERT(DATE, GETDATE())"
+        Return Convert.ToInt32(objMan.listarComando(strSQL).Rows(0)(0))
+    End Function
+
+    Public Function ContarPedidosPendientes() As Integer
+        strSQL = "SELECT COUNT(*) FROM PEDIDO WHERE estadoPago = 1"
+        Return Convert.ToInt32(objMan.listarComando(strSQL).Rows(0)(0))
+    End Function
+
+    Public Function ProductoMasVendido() As String
+        strSQL = "SELECT TOP 1 p.nombre FROM DETALLE_PEDIDO dp INNER JOIN PRODUCTO p ON dp.idProducto = p.idProducto GROUP BY p.nombre ORDER BY SUM(dp.cantidad) DESC"
+        Dim dt = objMan.listarComando(strSQL)
+        Return If(dt.Rows.Count > 0, dt.Rows(0)("nombre").ToString(), "N/A")
+    End Function
+
+    Public Function ContarPedidosPorEstado(estadoPago As Integer) As Integer
+        strSQL = "SELECT COUNT(*) FROM PEDIDO WHERE estadoPago = " & estadoPago
+        Return Convert.ToInt32(objMan.listarComando(strSQL).Rows(0)(0))
+    End Function
+
+    Public Function VentasUltimos7Dias() As DataTable
+        strSQL = "SELECT CONVERT(DATE, fecha) AS fecha, SUM(monto) AS monto FROM PEDIDO WHERE fecha >= DATEADD(DAY, -6, GETDATE()) GROUP BY CONVERT(DATE, fecha) ORDER BY fecha"
+        Return objMan.listarComando(strSQL)
+    End Function
 
 
 End Class

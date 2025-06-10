@@ -5,7 +5,7 @@
             <div class="panel-heading">
                 <h1>Gestión de Pedidos</h1>
                 <div class="text-right mb-2">
-                    <button class="btn btn-success" onclick="fct_NuevoPedido()">
+                    <button type="button" class="btn btn-success" onclick="fct_NuevoPedido()">
                         <i class="fas fa-plus"></i> Nuevo Pedido
                     </button>
                 </div>
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <button class="btn btn-secondary" onclick="fct_AgregarDetalle()">
+                        <button type="button" class="btn btn-secondary" onclick="fct_AgregarDetalle()">
                             <i class="fas fa-plus-circle"></i> Agregar Detalle
                         </button>
                     </div>
@@ -131,8 +131,8 @@
             <td>${det.cantidad}</td>
             <td>${(det.precio * det.cantidad).toFixed(2)}</td>
             <td>
-                <button class='btn btn-sm btn-info' onclick='fct_EditarDetalle(${idx})'><i class='fas fa-edit'></i></button>
-                <button class='btn btn-sm btn-danger' onclick='fct_EliminarDetalle(${idx})'><i class='fas fa-trash'></i></button>
+                <button type='button' class='btn btn-sm btn-info' onclick='fct_EditarDetalle(${idx})'><i class='fas fa-edit'></i></button>
+                <button type='button' class='btn btn-sm btn-danger' onclick='fct_EliminarDetalle(${idx})'><i class='fas fa-trash'></i></button>
             </td>
         </tr>`;
             tbody.append(row);

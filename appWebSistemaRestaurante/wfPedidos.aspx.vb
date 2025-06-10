@@ -53,7 +53,7 @@ Public Class wfPedidos
 
             ' Insertar botón de editar con JSON seguro
             html.Append("<td>")
-            html.AppendFormat("<button class='btn btn-primary btn-sm' onclick=""fct_EditarPedido({0}, {1}, {2}, {3}, {4})""><i class='fas fa-edit'></i></button>", id, idCliente, idMesero, idMesa, detallesJson)
+            html.AppendFormat("<button type='button' class='btn btn-primary btn-sm' onclick=""fct_EditarPedido({0}, {1}, {2}, {3}, {4})""><i class='fas fa-edit'></i></button>", id, idCliente, idMesero, idMesa, detallesJson)
             html.Append("</td>")
             html.Append("</tr>")
         Next
