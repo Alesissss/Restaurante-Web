@@ -19,12 +19,11 @@ Public Class wfCierreCaja
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not IsPostBack Then
-            txtFechaCierre.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm")
-            txtMontoTexto.Text = "SOLES"
-            txtBase.Text = "0.00"
+            txtFechaCierre.Text = Date.Now.ToString("yyyy-MM-dd HH:mm")
             CargarCajeros()
             CargarCierres()
             InicializarDenominaciones()
+            CalcularTotales()
         End If
     End Sub
 
@@ -82,6 +81,7 @@ Public Class wfCierreCaja
     Protected Sub btnCerrarCaja_Click(sender As Object, e As EventArgs)
         Try
             Dim idCajero As Integer = Integer.Parse(ddlCajero.SelectedValue)
+            Dim nombreUsuario As String = Session("nombreUsuario")
             Dim fecha As DateTime = DateTime.Now
             Dim totalCierre As Decimal = Decimal.Parse(txtMontoTotal.Text)
 
@@ -101,7 +101,8 @@ Public Class wfCierreCaja
                 End If
             Next
 
-            logicaCierre.CerrarCaja(idCajero, fecha, totalCierre, detalles)
+            logicaCierre.CerrarCaja(idCajero, nombreUsuario, fecha, totalCierre, "Soles", detalles)
+
             ClientScript.RegisterStartupScript(Me.GetType(), "msg", "Swal.fire('Éxito','Caja cerrada correctamente','success');", True)
             CargarCierres()
         Catch ex As Exception
@@ -110,6 +111,7 @@ Public Class wfCierreCaja
     End Sub
 
     Public Function NumeroATexto(ByVal numero As Decimal) As String
-        Return "SOLES" ' Puedes usar aquí una función real si lo deseas
+        Return "SOLES" ' Placeholder
     End Function
+
 End Class
