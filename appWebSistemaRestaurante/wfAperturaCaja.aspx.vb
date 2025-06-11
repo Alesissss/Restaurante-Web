@@ -83,8 +83,13 @@ Public Class wfAperturaCaja
     Protected Sub btnGuardar_Click(sender As Object, e As EventArgs)
         Try
             If String.IsNullOrEmpty(hfIdArqueo.Value) Then
+                CalcularTotales()
                 ' Nueva apertura
                 Dim idCajero As Integer = Integer.Parse(ddlCajero.SelectedValue)
+                If logicaApertura.CajeroTieneCajaAbierta(idCajero) Then
+                    ClientScript.RegisterStartupScript(Me.GetType(), "msg", "Swal.fire('Atención','Este cajero ya tiene una caja abierta','warning');", True)
+                    Exit Sub
+                End If
                 Dim nombreUsuario As String = "1"
                 Dim fecha As DateTime = DateTime.Now
                 Dim montoBase As Decimal = Decimal.Parse(txtMontoTotal.Text)

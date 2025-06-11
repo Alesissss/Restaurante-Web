@@ -86,4 +86,30 @@ Public Class clsAperturaCajaLogica
         Dim db As New clsMantenimiento()
         Return db.listarComando(sql)
     End Function
+    ' Verifica si el cajero ya tiene una caja abierta hoy
+    ' Verifica si el cajero ya tiene una caja abierta hoy
+    Public Function CajeroTieneCajaAbierta(idCajero As Integer) As Boolean
+        Dim resultado As Integer = 0
+        Dim objConexion As New clsConectaBD()
+        Dim cadenaConexion As String = objConexion.gen_cad_cloud()
+
+        Using conn As New SqlConnection(cadenaConexion)
+            Dim sql As String = "
+            SELECT COUNT(*) 
+            FROM ArqueoCaja 
+            WHERE idCajero = @idCajero 
+              AND estado = 'ABIERTO'
+              AND CAST(fechaApertura AS DATE) = CAST(GETDATE() AS DATE)"
+
+            Using cmd As New SqlCommand(sql, conn)
+                cmd.Parameters.AddWithValue("@idCajero", idCajero)
+                conn.Open()
+                resultado = Convert.ToInt32(cmd.ExecuteScalar())
+            End Using
+        End Using
+
+        Return resultado > 0
+    End Function
+
+
 End Class
