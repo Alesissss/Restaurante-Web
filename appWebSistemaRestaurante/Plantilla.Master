@@ -181,7 +181,7 @@
                                 <ul class="nav nav-treeview">
                                     <li id="liPedidos" runat="server" class="nav-item"><a id="aPedidos" runat="server" href="wfPedidos.aspx" class="nav-link"><i class="fas fa-concierge-bell nav-icon"></i><p>Pedidos</p></a></li>
                                     <li id="liApertura" runat="server" class="nav-item"><a id="aApertura" runat="server" href="wfAperturaCaja.aspx" class="nav-link"><i class="fas fa-door-open nav-icon"></i><p>Apertura de Caja</p></a></li>
-                                    <li id="liCierre" runat="server" class="nav-item"><a id="aCierre" runat="server" href="wfCajaCierre.aspx" class="nav-link"><i class="fas fa-door-closed nav-icon"></i><p>Cierre de Caja</p></a></li>
+                                    <li id="liCierre" runat="server" class="nav-item"><a id="aCierre" runat="server" href="wfCierreCaja.aspx" class="nav-link"><i class="fas fa-door-closed nav-icon"></i><p>Cierre de Caja</p></a></li>
                                 </ul>
                             </li>
                             <li id="liReportes" runat="server" class="nav-item">
