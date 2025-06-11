@@ -1374,6 +1374,7 @@
     <Content Include="utilities\webfonts\fa-regular-400.svg" />
     <Content Include="utilities\webfonts\fa-solid-900.svg" />
     <Content Include="Web.config" />
+    <Content Include="wfAperturaCaja.aspx" />
     <Content Include="wfReporte2.aspx" />
     <Content Include="wfCajero.aspx" />
     <Content Include="wfCarta.aspx" />
@@ -1417,6 +1418,10 @@
     </Compile>
     <Compile Include="Plantilla.Master.vb">
       <DependentUpon>Plantilla.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="wfAperturaCaja.aspx.vb">
+      <DependentUpon>wfAperturaCaja.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="wfReporte2.aspx.designer.vb">

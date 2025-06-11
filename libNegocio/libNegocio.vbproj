@@ -68,6 +68,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsAperturaCajaLogica.vb" />
     <Compile Include="ValidationManager.vb" />
     <Compile Include="clsCarta.vb" />
     <Compile Include="clsPedido.vb" />

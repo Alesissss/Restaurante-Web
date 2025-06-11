@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.13.35913.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "appWebSistemaRestaurante", "appWebSistemaRestaurante\appWebSistemaRestaurante.vbproj", "{A1ED14AD-69D1-497F-8B44-02BCA3F7B568}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AC023FA5-B4A0-4D8E-BC66-E16998543417} = {AC023FA5-B4A0-4D8E-BC66-E16998543417}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "libDatos", "libDatos\libDatos.vbproj", "{AC023FA5-B4A0-4D8E-BC66-E16998543417}"
 EndProject
