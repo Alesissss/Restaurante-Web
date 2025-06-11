@@ -199,6 +199,50 @@ Public Class clsPedido
         strSQL = "SELECT COUNT(*) FROM PEDIDO WHERE estadoPago = " & estadoPago
         Return Convert.ToInt32(objMan.listarComando(strSQL).Rows(0)(0))
     End Function
+    Public Function GetReporteDesempenoMeseros() As DataTable
+        ' CORRECCIÓN: Ahora la consulta une con la tabla MESERO en lugar de USUARIO.
+        ' y concatena los nombres y apellidos de esa tabla.
+        strSQL = "SELECT (m.nombres + ' ' + m.apellidos) AS Empleado, COUNT(p.idPedido) AS CantidadPedidos, SUM(p.monto) AS TotalVendido " &
+             "FROM PEDIDO p " &
+             "INNER JOIN MESERO m ON p.idMesero = m.idMesero " &
+             "WHERE p.estadoPedido = 0 " &
+             "GROUP BY m.nombres, m.apellidos " &
+             "ORDER BY TotalVendido DESC"
+        Try
+            Return objMan.listarComando(strSQL)
+        Catch ex As Exception
+            Throw New Exception("Error al generar reporte de meseros: " & ex.Message)
+        End Try
+    End Function
+
+    Public Function GetReporteProductosVendidos() As DataTable
+        ' Devuelve una lista de productos ordenados por la cantidad total vendida.
+        strSQL = "SELECT TOP 10 p.nombre AS Producto, SUM(dp.cantidad) AS TotalCantidad " &
+                 "FROM DETALLE_PEDIDO dp " &
+                 "INNER JOIN PRODUCTO p ON dp.idProducto = p.idProducto " &
+                 "GROUP BY p.nombre " &
+                 "ORDER BY TotalCantidad DESC"
+        Try
+            Return objMan.listarComando(strSQL)
+        Catch ex As Exception
+            Throw New Exception("Error al generar reporte de productos: " & ex.Message)
+        End Try
+    End Function
+
+    Public Function GetReporteVentasPorCategoria() As DataTable
+        ' Devuelve el monto total de ventas agrupado por cada categoría de producto.
+        strSQL = "SELECT tp.nombre AS Categoria, SUM(dp.cantidad * dp.precioVenta) AS MontoTotal " &
+                 "FROM DETALLE_PEDIDO dp " &
+                 "INNER JOIN PRODUCTO p ON dp.idProducto = p.idProducto " &
+                 "INNER JOIN TIPO_PRODUCTO tp ON p.idTipo = tp.idTipo " &
+                 "GROUP BY tp.nombre " &
+                 "ORDER BY MontoTotal DESC"
+        Try
+            Return objMan.listarComando(strSQL)
+        Catch ex As Exception
+            Throw New Exception("Error al generar reporte de categorías: " & ex.Message)
+        End Try
+    End Function
 End Class
 
 Public Class DetalleDTO

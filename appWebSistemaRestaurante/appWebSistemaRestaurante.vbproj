@@ -1374,6 +1374,7 @@
     <Content Include="utilities\webfonts\fa-regular-400.svg" />
     <Content Include="utilities\webfonts\fa-solid-900.svg" />
     <Content Include="Web.config" />
+    <Content Include="wfReporte2.aspx" />
     <Content Include="wfCajero.aspx" />
     <Content Include="wfCarta.aspx" />
     <Content Include="wfCliente.aspx" />
@@ -1386,6 +1387,7 @@
     <Content Include="wfProducto.aspx" />
     <Content Include="wfPrueba.aspx" />
     <Content Include="wfReporte1.aspx" />
+    <Content Include="wfReporte3.aspx" />
     <Content Include="wfTipoProducto.aspx" />
     <Content Include="wfTipoUsuario.aspx" />
     <Content Include="wfUsuario.aspx" />
@@ -1416,6 +1418,13 @@
     <Compile Include="Plantilla.Master.vb">
       <DependentUpon>Plantilla.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="wfReporte2.aspx.designer.vb">
+      <DependentUpon>wfReporte2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="wfReporte2.aspx.vb">
+      <DependentUpon>wfReporte2.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="wfCajero.aspx.designer.vb">
       <DependentUpon>wfCajero.aspx</DependentUpon>
@@ -1500,6 +1509,13 @@
     <Compile Include="wfReporte1.aspx.vb">
       <DependentUpon>wfReporte1.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="wfReporte3.aspx.designer.vb">
+      <DependentUpon>wfReporte3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="wfReporte3.aspx.vb">
+      <DependentUpon>wfReporte3.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="wfTipoProducto.aspx.designer.vb">
       <DependentUpon>wfTipoProducto.aspx</DependentUpon>
