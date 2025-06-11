@@ -60,7 +60,7 @@ Public Class clsCierreCajaLogica
                 Next
 
                 ' Actualizar estado del cajero a CERRADO
-                Dim sqlCajero As String = "UPDATE Cajero SET estado = 'CERRADO' WHERE idCajero = @idCajero"
+                Dim sqlCajero As String = "UPDATE Cajero SET estado = 0 WHERE idCajero = @idCajero"
                 Using cmd As New SqlCommand(sqlCajero, conn, trans)
                     cmd.Parameters.AddWithValue("@idCajero", idCajero)
                     cmd.ExecuteNonQuery()
