@@ -61,7 +61,7 @@ Public Class Plantilla
             liPedidos.Attributes("class") &= " menu-open"
             aPedidos.Attributes("class") &= " active"
             aOperaciones.Attributes("class") &= " active"
-        ElseIf path.Contains("wfcajaapertura.aspx") Then
+        ElseIf path.Contains("wfaperturacaja.aspx") Then
             liApertura.Attributes("class") &= " menu-open"
             aApertura.Attributes("class") &= " active"
             aOperaciones.Attributes("class") &= " active"
