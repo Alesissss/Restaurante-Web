@@ -23,7 +23,7 @@ Public Class wfCierreCaja
             CargarCajeros()
             CargarCierres()
             InicializarDenominaciones()
-            CalcularTotales()
+
         End If
     End Sub
 
@@ -80,6 +80,7 @@ Public Class wfCierreCaja
 
     Protected Sub btnCerrarCaja_Click(sender As Object, e As EventArgs)
         Try
+            CalcularTotales()
             Dim idCajero As Integer = Integer.Parse(ddlCajero.SelectedValue)
             Dim nombreUsuario As String = Session("nombreUsuario")
             Dim fecha As DateTime = DateTime.Now
