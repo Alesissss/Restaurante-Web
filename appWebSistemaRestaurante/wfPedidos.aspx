@@ -36,7 +36,7 @@
                 <div class="tab-pane fade" id="historial" role="tabpanel">
                     <div class="py-3">
                         <table id="tbl_HistorialPedidos" class="table table-bordered table-striped" style="width:100%;">
-                            <thead class="bg-dark text-white"><tr><th>ID</th><th>Fecha</th><th>Mesa</th><th>Cliente</th><th>Mesero</th><th>Monto</th><th>Estado</th></tr></thead>
+                            <thead class="bg-dark text-white"><tr><th>ID</th><th>Fecha</th><th>Mesa</th><th>Cliente</th><th>Mesero</th><th>Cajero</th><th>Monto</th><th>Estado</th></tr></thead>
                             <tbody></tbody>
                         </table>
                     </div>
@@ -134,7 +134,7 @@
                     if (response.d) {
                         menuCompleto = response.d.Menu || [];
                         clientes = response.d.Clientes || [];
-                        usuariosParaCobro = response.d.UsuariosParaCobro || [];
+                        usuariosParaCobro = response.d.Cajeros || [];
                         meseros = response.d.Meseros || [];
                         const mesas = response.d.Mesas || [];
                         categorias = [...new Set(menuCompleto.map(p => p.Categoria))].filter(Boolean).map(c => ({ nombre: c }));
@@ -168,8 +168,15 @@
                 tablaHistorial = $('#tbl_HistorialPedidos').DataTable({
                     data: dataHistorial,
                     columns: [
-                        { data: 'IdPedido' }, { data: 'Fecha' }, { data: 'Mesa' }, { data: 'Cliente' },
-                        { data: 'Mesero' }, { data: 'Monto', render: $.fn.dataTable.render.number(',', '.', 2, 'S/ ') },
+                        { data: 'IdPedido' },
+                        {
+                            data: 'Fecha',
+                            render: function (data, type, row) {
+                                return moment(data).format("DD/MM/YYYY");
+                            },
+                        },
+                            { data: 'Mesa' }, { data: 'Cliente' },
+                        { data: 'Mesero' }, { data: 'Cajero' }, { data: 'Monto', render: $.fn.dataTable.render.number(',', '.', 2, 'S/ ') },
                         {
                             data: 'Estado', render: function (data) {
                                 let badge = data === 'Pagado' ? 'badge-success' : 'badge-warning';
@@ -317,10 +324,11 @@
             });
 
             const ddlCobro = $('#ddlPagoUsuarioCobro');
-            ddlCobro.empty().append('<option value="">-- Seleccione Usuario --</option>');
+            ddlCobro.empty().append('<option value="">-- Seleccione Cajero --</option>');
             usuariosParaCobro.forEach(u => ddlCobro.append(`<option value="${u.Id}">${u.Nombre}</option>`));
 
             $('#ddlPagoCliente').empty();
+            $('#ddlPagoCliente').append('<option value="-1" disabled selected>-- Seleccione Cliente --</option>');
             clientes.forEach(c => $('#ddlPagoCliente').append(`<option value="${c.Id}">${c.Nombre}</option>`));
             $('#ddlPagoCliente').val(pedidoActual.IdCliente);
 

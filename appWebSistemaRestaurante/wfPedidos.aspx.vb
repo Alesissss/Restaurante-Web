@@ -11,8 +11,8 @@ Public Class wfPedidos
         Public Property Mesas As List(Of MesaDTO)
         Public Property Menu As List(Of ProductoDTO)
         Public Property Clientes As List(Of ClienteDTO)
-        Public Property UsuariosParaCobro As List(Of UsuarioDTO)
-        Public Property Meseros As List(Of UsuarioDTO)
+        Public Property Cajeros As List(Of MeseroDTO)
+        Public Property Meseros As List(Of MeseroDTO)
         Public Property Historial As List(Of PedidoHistorialDTO)
     End Class
 
@@ -35,7 +35,7 @@ Public Class wfPedidos
         Public Property Nombre As String
     End Class
 
-    Public Class UsuarioDTO
+    Public Class MeseroDTO
         Public Property Id As Integer
         Public Property Nombre As String
     End Class
@@ -54,6 +54,7 @@ Public Class wfPedidos
         Public Property Mesa As Integer
         Public Property Cliente As String
         Public Property Mesero As String
+        Public Property Cajero As String
         Public Property Monto As Decimal
         Public Property Estado As String
     End Class
@@ -87,30 +88,28 @@ Public Class wfPedidos
             datos.Clientes = New List(Of ClienteDTO)
             Dim objCliente As New clsCliente()
             Dim dtClientes As DataTable = objCliente.listarClientesVigentes()
-            datos.Clientes.Add(New ClienteDTO With {.Id = 1, .Nombre = "Cliente Varios"})
             For Each row As DataRow In dtClientes.Rows
                 datos.Clientes.Add(New ClienteDTO With {
                     .Id = CInt(row("idCliente")), .Nombre = $"{row("nombres")} {row("apellidos")}"
                 })
             Next
 
-            Dim objUsuario As New clsUsuario()
-            Dim dtUsuarios As DataTable = objUsuario.listarUsuarios()
+            Dim objMesero As New clsMesero()
+            Dim dtMeseros As DataTable = objMesero.listarMesero()
 
-            datos.UsuariosParaCobro = New List(Of UsuarioDTO)
-            Dim rolesParaCobro As List(Of Integer) = New List(Of Integer) From {1, 2, 3} ' Reemplaza con tus IDs: 1=Admin, 2=Cajero, 3=Mesero
-            For Each row As DataRow In dtUsuarios.Rows
-                If CBool(row("vigencia")) AndAlso rolesParaCobro.Contains(CInt(row("idTipoUsuario"))) Then
-                    datos.UsuariosParaCobro.Add(New UsuarioDTO With {.Id = CInt(row("idUsuario")), .Nombre = row("nombresCompletos").ToString()})
+            datos.Meseros = New List(Of MeseroDTO)
+            For Each row As DataRow In dtMeseros.Rows
+                If row("estado") = "Activo" Then
+                    datos.Meseros.Add(New MeseroDTO With {.Id = CInt(row("idMesero")), .Nombre = row("nombres").ToString() & " " & row("apellidos").ToString()})
                 End If
             Next
 
-            datos.Meseros = New List(Of UsuarioDTO)
-            Dim rolesMesero As List(Of Integer) = New List(Of Integer) From {1, 3} ' Reemplaza con tus IDs: 1=Admin, 3=Mesero
-            For Each row As DataRow In dtUsuarios.Rows
-                If CBool(row("vigencia")) AndAlso rolesMesero.Contains(CInt(row("idTipoUsuario"))) Then
-                    datos.Meseros.Add(New UsuarioDTO With {.Id = CInt(row("idUsuario")), .Nombre = row("nombresCompletos").ToString()})
-                End If
+            Dim objCajero As New clsCajero()
+            Dim dtCajeros As DataTable = objCajero.listarCajerosVigentes()
+
+            datos.Cajeros = New List(Of MeseroDTO)
+            For Each row As DataRow In dtCajeros.Rows
+                datos.Cajeros.Add(New MeseroDTO With {.Id = CInt(row("idCajero")), .Nombre = row("nombres").ToString() & " " & row("apellidos").ToString()})
             Next
 
             datos.Historial = New List(Of PedidoHistorialDTO)
@@ -120,8 +119,8 @@ Public Class wfPedidos
                 datos.Historial.Add(New PedidoHistorialDTO With {
                     .IdPedido = CInt(row("idPedido")), .Fecha = Convert.ToDateTime(row("fecha")).ToString("g"),
                     .Mesa = CInt(row("Mesa")), .Cliente = row("Cliente").ToString(),
-                    .Mesero = row("Mesero").ToString(), .Monto = CDec(row("monto")),
-                    .Estado = row("Estado").ToString()
+                    .Mesero = row("Mesero").ToString(), .Cajero = row("Cajero").ToString(),
+                    .Monto = CDec(row("monto")), .Estado = row("Estado").ToString()
                 })
             Next
 
@@ -140,7 +139,7 @@ Public Class wfPedidos
                 Dim pedidoRow = dtPedidoActivo.Rows(0)
                 Dim pedidoResult As New PedidoDTO With {
                     .IdPedido = CInt(pedidoRow("idPedido")), .IdMesa = CInt(pedidoRow("idMesa")),
-                    .IdCliente = CInt(pedidoRow("idCliente")), .IdMesero = CInt(pedidoRow("idMesero")),
+                    .IdCliente = CInt(If(IsDBNull(pedidoRow("idCliente")), -1, pedidoRow("idCliente"))), .IdMesero = CInt(pedidoRow("idMesero")),
                     .Items = New List(Of DetalleDTO)()
                 }
 

@@ -25,13 +25,15 @@ Public Class clsPedido
 
     Public Function ListarHistorialDePedidos() As DataTable
         strSQL = "SELECT p.idPedido, p.fecha, p.monto, m.numero AS Mesa, " &
-                 "ISNULL(c.nombres + ' ' + c.apellidos, 'Cliente Varios') AS Cliente, " &
-                 "ISNULL(u.nombresCompletos, 'Mesero Eliminado') AS Mesero, " &
+                 "ISNULL(c.nombres + ' ' + c.apellidos, 'Sin cliente') AS Cliente, " &
+                 "ISNULL(mes.nombres + ' ' + mes.apellidos, 'Mesero Eliminado') AS Mesero, " &
+                 "ISNULL(caj.nombres + ' ' + caj.apellidos, 'Cajero Eliminado') AS Cajero, " &
                  "CASE p.estadoPago WHEN 0 THEN 'Pagado' ELSE 'Pendiente' END AS Estado " &
                  "FROM PEDIDO p " &
                  "LEFT JOIN MESA m ON p.idMesa = m.idMesa " &
                  "LEFT JOIN CLIENTE c ON p.idCliente = c.idCliente " &
-                 "LEFT JOIN USUARIO u ON p.idMesero = u.idUsuario " &
+                 "LEFT JOIN MESERO mes ON p.idMesero = mes.idMesero " &
+                 "LEFT JOIN CAJERO caj ON p.idCajero = caj.idCajero " &
                  "WHERE p.estadoPedido = 0 ORDER BY p.fecha DESC"
         Return objMan.listarComando(strSQL)
     End Function
@@ -48,12 +50,11 @@ Public Class clsPedido
 
                 Dim montoTotal As Decimal = detalles.Sum(Function(d) d.Precio * d.Cantidad)
 
-                Dim sqlPedido As String = "INSERT INTO PEDIDO (idPedido, fecha, monto, estadoPedido, estadoPago, idCliente, idMesero, idMesa) " &
-                                        "VALUES (@idPedido, GETDATE(), @monto, 1, 1, @idCliente, @idMesero, @idMesa)"
+                Dim sqlPedido As String = "INSERT INTO PEDIDO (idPedido, fecha, monto, estadoPedido, estadoPago, idMesero, idMesa) " &
+                                        "VALUES (@idPedido, GETDATE(), @monto, 1, 1, @idMesero, @idMesa)"
                 Using cmd As New SqlCommand(sqlPedido, conn, transaction)
                     cmd.Parameters.AddWithValue("@idPedido", idPedido)
                     cmd.Parameters.AddWithValue("@monto", montoTotal)
-                    cmd.Parameters.AddWithValue("@idCliente", idCliente)
                     cmd.Parameters.AddWithValue("@idMesero", idMesero)
                     cmd.Parameters.AddWithValue("@idMesa", idMesa)
                     cmd.ExecuteNonQuery()
@@ -82,29 +83,54 @@ Public Class clsPedido
             End Try
         End Using
     End Sub
-
     Public Sub ActualizarPedido(ByVal idPedido As Integer, ByVal nuevosDetalles As List(Of DetalleDTO))
         Using conn As New SqlConnection(objCon.gen_cad_cloud())
             conn.Open()
             Dim transaction As SqlTransaction = conn.BeginTransaction()
             Try
-                Dim sqlDetalle As String = "INSERT INTO DETALLE_PEDIDO (idPedido, idProducto, cantidad, precioVenta) VALUES (@idPedido, @idProducto, @cantidad, @precioVenta)"
                 For Each item In nuevosDetalles
-                    Using cmdDet As New SqlCommand(sqlDetalle, conn, transaction)
-                        cmdDet.Parameters.AddWithValue("@idPedido", idPedido)
-                        cmdDet.Parameters.AddWithValue("@idProducto", item.IdProducto)
-                        cmdDet.Parameters.AddWithValue("@cantidad", item.Cantidad)
-                        cmdDet.Parameters.AddWithValue("@precioVenta", item.Precio)
-                        cmdDet.ExecuteNonQuery()
+                    ' Verificar si ya existe el producto en el pedido
+                    Dim existeDetalle As Boolean = False
+                    Dim cantidadActual As Integer = 0
+
+                    Using cmdCheck As New SqlCommand("SELECT cantidad FROM DETALLE_PEDIDO WHERE idPedido = @idPedido AND idProducto = @idProducto", conn, transaction)
+                        cmdCheck.Parameters.AddWithValue("@idPedido", idPedido)
+                        cmdCheck.Parameters.AddWithValue("@idProducto", item.IdProducto)
+                        Dim result = cmdCheck.ExecuteScalar()
+                        If result IsNot Nothing Then
+                            existeDetalle = True
+                            cantidadActual = Convert.ToInt32(result)
+                        End If
                     End Using
+
+                    If existeDetalle Then
+                        ' Si ya existe, sumamos la cantidad (precio se mantiene igual)
+                        Using cmdUpdate As New SqlCommand("UPDATE DETALLE_PEDIDO SET cantidad = @cantidad WHERE idPedido = @idPedido AND idProducto = @idProducto", conn, transaction)
+                            cmdUpdate.Parameters.AddWithValue("@cantidad", cantidadActual + item.Cantidad)
+                            cmdUpdate.Parameters.AddWithValue("@idPedido", idPedido)
+                            cmdUpdate.Parameters.AddWithValue("@idProducto", item.IdProducto)
+                            cmdUpdate.ExecuteNonQuery()
+                        End Using
+                    Else
+                        ' Si no existe, insertamos normalmente
+                        Using cmdInsert As New SqlCommand("INSERT INTO DETALLE_PEDIDO (idPedido, idProducto, cantidad, precioVenta) VALUES (@idPedido, @idProducto, @cantidad, @precioVenta)", conn, transaction)
+                            cmdInsert.Parameters.AddWithValue("@idPedido", idPedido)
+                            cmdInsert.Parameters.AddWithValue("@idProducto", item.IdProducto)
+                            cmdInsert.Parameters.AddWithValue("@cantidad", item.Cantidad)
+                            cmdInsert.Parameters.AddWithValue("@precioVenta", item.Precio)
+                            cmdInsert.ExecuteNonQuery()
+                        End Using
+                    End If
                 Next
 
+                ' Recalcular monto total
                 Dim montoTotalActualizado As Decimal
                 Using cmdMonto As New SqlCommand("SELECT SUM(cantidad * precioVenta) FROM DETALLE_PEDIDO WHERE idPedido = @idPedido", conn, transaction)
                     cmdMonto.Parameters.AddWithValue("@idPedido", idPedido)
                     montoTotalActualizado = CDec(cmdMonto.ExecuteScalar())
                 End Using
 
+                ' Actualizar monto del pedido
                 Using cmdUpdateMonto As New SqlCommand("UPDATE PEDIDO SET monto = @monto WHERE idPedido = @idPedido", conn, transaction)
                     cmdUpdateMonto.Parameters.AddWithValue("@monto", montoTotalActualizado)
                     cmdUpdateMonto.Parameters.AddWithValue("@idPedido", idPedido)

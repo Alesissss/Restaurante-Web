@@ -32,7 +32,7 @@
                 <div class="col-md-6 mb-4">
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3>Gráfico por estados de pago</h3>
+                            <h3>Gráfico de pedidos por estado de pago</h3>
                         </div>
                         <div class="card-body">
                             <div id="graficoEstadoPedidos" style="height: 400px;"></div>
@@ -42,7 +42,7 @@
                 <div class="col-md-6 mb-4">
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3>Gráfico de montos por fecha</h3>
+                            <h3>Gráfico de ingresos en los últimos 7 días</h3>
                         </div>
                         <div class="card-body">
                             <div id="graficoVentasDiarias" style="height: 400px;"></div>

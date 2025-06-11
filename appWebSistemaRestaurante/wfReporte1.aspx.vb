@@ -32,7 +32,7 @@ Partial Class wfReporte1
         Dim ventas As New List(Of Decimal)
         For Each row As DataRow In dt.Rows
             fechas.Add(Convert.ToDateTime(row("fecha")).ToString("dd/MM"))
-            ventas.Add(Convert.ToDecimal(row("monto")))
+            ventas.Add(Convert.ToDecimal(row("totalVentas")))
         Next
         Return New With {.fechas = fechas, .ventas = ventas}
     End Function
