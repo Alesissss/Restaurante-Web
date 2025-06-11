@@ -1,4 +1,9 @@
-﻿Imports libNegocio
+﻿Imports System
+Imports System.Web.UI
+Imports System.Web.UI.WebControls
+Imports System.Data
+Imports System.Collections.Generic
+Imports libNegocio
 Imports libDatos
 
 Public Class wfAperturaCaja
@@ -18,14 +23,18 @@ Public Class wfAperturaCaja
             txtMoneda.Text = "Soles"
             txtUsuario.Text = Session("nombreUsuario")
             CargarCajeros()
+            CargarAperturas()
             InicializarDenominaciones()
             CalcularTotales()
         End If
     End Sub
-
+    Private Sub CargarAperturas()
+        gvAperturas.DataSource = logicaApertura.ListarAperturas()
+        gvAperturas.DataBind()
+    End Sub
     Private Sub CargarCajeros()
         ddlCajero.DataSource = logicaApertura.ListarCajeros()
-        ddlCajero.DataTextField = "nombre"
+        ddlCajero.DataTextField = "nombreCompleto"
         ddlCajero.DataValueField = "idCajero"
         ddlCajero.DataBind()
         ddlCajero.Items.Insert(0, New ListItem("-- Seleccione Cajero --", ""))
@@ -69,32 +78,40 @@ Public Class wfAperturaCaja
         txtMontoTexto.Text = NumeroATexto(total)
     End Sub
 
+
+
     Protected Sub btnGuardar_Click(sender As Object, e As EventArgs)
         Try
-            Dim idCajero As Integer = Integer.Parse(ddlCajero.SelectedValue)
-            Dim nombreUsuario As String = Session("nombreUsuario")
-            Dim fecha As DateTime = DateTime.Now
-            Dim montoBase As Decimal = Decimal.Parse(txtMontoTotal.Text)
+            If String.IsNullOrEmpty(hfIdArqueo.Value) Then
+                ' Nueva apertura
+                Dim idCajero As Integer = Integer.Parse(ddlCajero.SelectedValue)
+                Dim nombreUsuario As String = "1"
+                Dim fecha As DateTime = DateTime.Now
+                Dim montoBase As Decimal = Decimal.Parse(txtMontoTotal.Text)
 
-            Dim detalles As New List(Of Tuple(Of String, Decimal))
+                Dim detalles As New List(Of Tuple(Of String, Decimal))()
 
-            For Each row As GridViewRow In gvDenominaciones.Rows
-                Dim txtCantidad As TextBox = CType(row.FindControl("txtCantidad"), TextBox)
-                Dim cantidad As Integer = 0
-                Integer.TryParse(txtCantidad.Text, cantidad)
+                For Each row As GridViewRow In gvDenominaciones.Rows
+                    Dim txtCantidad As TextBox = CType(row.FindControl("txtCantidad"), TextBox)
+                    Dim cantidad As Integer = 0
+                    Integer.TryParse(txtCantidad.Text, cantidad)
 
-                Dim descripcion As String = row.Cells(0).Text
-                Dim valor As Decimal = denominaciones(descripcion)
-                Dim subtotal As Decimal = cantidad * valor
+                    Dim descripcion As String = row.Cells(0).Text
+                    Dim valor As Decimal = denominaciones(descripcion)
+                    Dim subtotal As Decimal = cantidad * valor
 
-                If subtotal > 0 Then
-                    detalles.Add(New Tuple(Of String, Decimal)(descripcion, subtotal))
-                End If
-            Next
+                    If subtotal > 0 Then
+                        detalles.Add(New Tuple(Of String, Decimal)(descripcion, subtotal))
+                    End If
+                Next
 
-            logicaApertura.AbrirCaja(idCajero, nombreUsuario, fecha, montoBase, "Soles", "ABIERTO", detalles)
+                logicaApertura.AbrirCaja(idCajero, nombreUsuario, fecha, montoBase, "Soles", "ABIERTO", detalles)
 
-            ClientScript.RegisterStartupScript(Me.GetType(), "msg", "Swal.fire('Éxito','Caja aperturada correctamente','success');", True)
+                ClientScript.RegisterStartupScript(Me.GetType(), "msg", "Swal.fire('Éxito','Caja aperturada correctamente','success');", True)
+                CargarAperturas()
+            Else
+                ' En el futuro podrías agregar lógica para actualizar si hfIdArqueo tiene valor
+            End If
         Catch ex As Exception
             ClientScript.RegisterStartupScript(Me.GetType(), "msg", $"Swal.fire('Error','{ex.Message}','error');", True)
         End Try
@@ -103,4 +120,7 @@ Public Class wfAperturaCaja
     Public Function NumeroATexto(ByVal numero As Decimal) As String
         Return "SOLES" ' Placeholder
     End Function
+
+
+
 End Class
