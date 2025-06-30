@@ -18,9 +18,46 @@
 
     <link rel="stylesheet" href="/utilities/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <link rel="stylesheet" href="/utilities/plugins/toastr/toastr.min.css">
-    <link rel="stylesheet" href="/utilities/plugins/select2/css/select2.min.css">
-    <link rel="stylesheet" href="/utilities/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Tempusdominus Bootstrap 4 -->
     <link rel="stylesheet" href="/utilities/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/utilities/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/utilities/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/utilities/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/utilities/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/utilities/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/utilities/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/utilities/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/utilities/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/utilities/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/utilities/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/utilities/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/utilities/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -77,10 +114,19 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 
-    <script src="/utilities/plugins/sweetalert2/sweetalert2.min.js"></script>
-    <script src="/utilities/plugins/toastr/toastr.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <!-- Select2 -->
     <script src="/utilities/plugins/select2/js/select2.full.min.js"></script>
+    <!-- InputMask -->
     <script src="/utilities/plugins/inputmask/jquery.inputmask.min.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="/utilities/plugins/moment/moment.min.js"></script>
+    <script src="/utilities/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="/utilities/plugins/select2/js/select2.full.min.js"></script>
+    <!-- InputMask -->
+    <script src="/utilities/plugins/inputmask/jquery.inputmask.min.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
     <script src="/utilities/plugins/moment/moment.min.js"></script>
     <script src="/utilities/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 

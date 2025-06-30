@@ -134,18 +134,36 @@ Public Class clsCajero
     End Function
 
     Public Function listarCajerosVigentes() As DataTable
-        strSQL = "SELECT idCajero,dniCajero, nombres, apellidos, telefono, correo, " &
-         "CASE estado " &
-         "WHEN 1 THEN 'Activo' " &
-         "WHEN 0 THEN 'Inactivo' " &
-         "ELSE 'Desconocido' END AS estado " &
-         "FROM CAJERO WHERE estado = 1"
+        Dim hoy As String = DateTime.Now.ToString("yyyy-MM-dd")
+        strSQL = "
+            SELECT C.idCajero, C.dniCajero, C.nombres, C.apellidos, C.telefono, C.correo,
+                CASE C.estado
+                    WHEN 1 THEN 'Activo'
+                    WHEN 0 THEN 'Inactivo'
+                    ELSE 'Desconocido'
+                END AS estado
+            FROM CAJERO C
+            WHERE C.estado = 1
+              AND EXISTS (
+                    SELECT 1 FROM ArqueoCaja A
+                    WHERE A.idCajero = C.idCajero
+                      AND CONVERT(DATE, A.fechaApertura) = CONVERT(DATE, GETDATE())
+                )
+              AND NOT EXISTS (
+                    SELECT 1 FROM ArqueoCaja AC
+                    WHERE AC.idCajero = C.idCajero
+                      AND CONVERT(DATE, AC.fechaApertura) = CONVERT(DATE, GETDATE())
+                      AND AC.estado = 'CERRADO'
+                )
+         "
+
         Try
             Return objMan.listarComando(strSQL)
         Catch ex As Exception
             Throw New Exception("Error al listar Cajeros: " & ex.Message)
         End Try
     End Function
+
     Public Function VerificarCajero(idCajero As Integer) As Boolean
         strSQL = "SELECT COUNT(*) FROM CAJERO WHERE idCajero = @idCajero and estado = 1"
         Try

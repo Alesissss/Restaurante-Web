@@ -60,7 +60,7 @@ Public Class clsCierreCajaLogica
                 Next
 
                 ' Actualizar estado del cajero a CERRADO
-                Dim sqlCajero As String = "UPDATE Cajero SET estado = 'CERRADO' WHERE idCajero = @idCajero"
+                Dim sqlCajero As String = "UPDATE Cajero SET estado = 0 WHERE idCajero = @idCajero"
                 Using cmd As New SqlCommand(sqlCajero, conn, trans)
                     cmd.Parameters.AddWithValue("@idCajero", idCajero)
                     cmd.ExecuteNonQuery()
@@ -78,13 +78,19 @@ Public Class clsCierreCajaLogica
 
     ' Lista los cierres de caja
     Public Function ListarCierres() As DataTable
-        Dim sql As String = "SELECT A.idArqueo, (C.nombres + ' ' + C.apellidos) AS nombreCajero, A.fechaApertura AS fechaCierre, A.base AS total, A.estado " &
-                            "FROM ArqueoCaja A " &
-                            "INNER JOIN Cajero C ON C.idCajero = A.idCajero " &
-                            "WHERE A.estado = 'CERRADO' " &
-                            "ORDER BY A.fechaApertura DESC"
+        Dim sql As String = "
+        SELECT A.idArqueo, 
+               (C.nombres + ' ' + C.apellidos) AS nombreCajero, 
+               A.fechaApertura AS fechaCierre, 
+               A.base AS totalCierre, 
+               A.estado
+        FROM ArqueoCaja A 
+        INNER JOIN Cajero C ON C.idCajero = A.idCajero 
+        WHERE A.estado = 'CERRADO'
+        ORDER BY A.fechaApertura DESC"
 
         Dim db As New clsMantenimiento()
         Return db.listarComando(sql)
     End Function
+
 End Class

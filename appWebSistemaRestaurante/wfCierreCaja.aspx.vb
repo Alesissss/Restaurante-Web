@@ -22,7 +22,7 @@ Public Class wfCierreCaja
             CargarCajeros()
             CargarCierres()
             InicializarDenominaciones()
-            CalcularTotales()
+
         End If
     End Sub
 
