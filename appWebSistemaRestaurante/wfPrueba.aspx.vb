@@ -1,8 +1,8 @@
-﻿Imports libNegocio
+﻿Imports appWebSistemaRestaurante.srUsuario
 
 Public Class wfPrueba
     Inherits System.Web.UI.Page
-    Dim objUsuario As New clsUsuario
+    Dim objUsuario As New wsUsuarioSoapClient()
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 

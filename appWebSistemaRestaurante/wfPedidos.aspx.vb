@@ -1,12 +1,23 @@
 ﻿' Archivo: wfPedidos.aspx.vb (Versión Final Completa)
 Imports System.Web.Services
 Imports System.Data
-Imports libNegocio
+Imports appWebSistemaRestaurante.srPedido
+Imports appWebSistemaRestaurante.srMesa
+Imports appWebSistemaRestaurante.srMesero
+Imports appWebSistemaRestaurante.srProducto
+Imports appWebSistemaRestaurante.srCliente
+
 Imports System.Web
+Imports appWebSistemaRestaurante.srCajero
 
 Public Class wfPedidos
     Inherits System.Web.UI.Page
-
+    Public Class DetalleDTO
+        Public Property IdProducto As Integer
+        Public Property Nombre As String
+        Public Property Precio As Decimal
+        Public Property Cantidad As Integer
+    End Class
     Public Class PaginaPedidosDTO
         Public Property Mesas As List(Of MesaDTO)
         Public Property Menu As List(Of ProductoDTO)
@@ -64,7 +75,7 @@ Public Class wfPedidos
         Dim datos As New PaginaPedidosDTO()
         Try
             datos.Mesas = New List(Of MesaDTO)()
-            Dim objMesa As New clsMesa()
+            Dim objMesa As New wsMesaSoapClient()
             Dim dtMesas As DataTable = objMesa.listarMesas()
             For Each row As DataRow In dtMesas.Rows
                 datos.Mesas.Add(New MesaDTO With {
@@ -74,7 +85,7 @@ Public Class wfPedidos
             Next
 
             datos.Menu = New List(Of ProductoDTO)()
-            Dim objProducto As New clsProducto()
+            Dim objProducto As New wsProductoSoapClient()
             Dim dtProductos As DataTable = objProducto.listarProductos()
             For Each row As DataRow In dtProductos.Rows
                 If row("estado").ToString().Equals("Activo", StringComparison.OrdinalIgnoreCase) Then
@@ -86,7 +97,7 @@ Public Class wfPedidos
             Next
 
             datos.Clientes = New List(Of ClienteDTO)
-            Dim objCliente As New clsCliente()
+            Dim objCliente As New wsClienteSoapClient()
             Dim dtClientes As DataTable = objCliente.listarClientesVigentes()
             For Each row As DataRow In dtClientes.Rows
                 datos.Clientes.Add(New ClienteDTO With {
@@ -94,7 +105,7 @@ Public Class wfPedidos
                 })
             Next
 
-            Dim objMesero As New clsMesero()
+            Dim objMesero As New wsMeseroSoapClient()
             Dim dtMeseros As DataTable = objMesero.listarMesero()
 
             datos.Meseros = New List(Of MeseroDTO)
@@ -104,7 +115,7 @@ Public Class wfPedidos
                 End If
             Next
 
-            Dim objCajero As New clsCajero()
+            Dim objCajero As New wsCajeroSoapClient()
             Dim dtCajeros As DataTable = objCajero.listarCajerosVigentes()
 
             datos.Cajeros = New List(Of MeseroDTO)
@@ -113,7 +124,7 @@ Public Class wfPedidos
             Next
 
             datos.Historial = New List(Of PedidoHistorialDTO)
-            Dim objPedido As New clsPedido()
+            Dim objPedido As New wsPedidoSoapClient()
             Dim dtHistorial As DataTable = objPedido.ListarHistorialDePedidos()
             For Each row As DataRow In dtHistorial.Rows
                 datos.Historial.Add(New PedidoHistorialDTO With {
@@ -132,7 +143,7 @@ Public Class wfPedidos
 
     <WebMethod()>
     Public Shared Function GetPedidoPorMesa(idMesa As Integer) As PedidoDTO
-        Dim objPedido As New clsPedido()
+        Dim objPedido As New wsPedidoSoapClient()
         Try
             Dim dtPedidoActivo As DataTable = objPedido.BuscarPedidoActivoPorMesa(idMesa)
             If dtPedidoActivo IsNot Nothing AndAlso dtPedidoActivo.Rows.Count > 0 Then
@@ -160,13 +171,37 @@ Public Class wfPedidos
 
     <WebMethod()>
     Public Shared Function RegistrarOModificarPedido(pedido As PedidoDTO) As String
-        Dim objPedido As New clsPedido()
+        Dim objPedido As New wsPedidoSoapClient()
         Try
-            If pedido.IdPedido = 0 Then
-                objPedido.RegistrarPedido(pedido.IdCliente, pedido.IdMesero, pedido.IdMesa, pedido.Items)
-            Else
-                objPedido.ActualizarPedido(pedido.IdPedido, pedido.Items)
+            ' 1) Mapeo de tus DTO locales a DetallePedidoItem del servicio
+            Dim listaSvc As New List(Of DetallePedidoItem)()
+            If pedido.Items IsNot Nothing Then
+                For Each it In pedido.Items
+                    listaSvc.Add(New DetallePedidoItem() With {
+                    .IdProducto = it.IdProducto,
+                    .Nombre = it.Nombre,
+                    .Precio = it.Precio,
+                    .Cantidad = it.Cantidad
+                })
+                Next
             End If
+
+            ' 2) Lo convertimos a array
+            Dim detallesArray() As DetallePedidoItem = listaSvc.ToArray()
+
+            ' 3) Llamada al servicio con el array correcto
+            If pedido.IdPedido = 0 Then
+                objPedido.RegistrarPedido(
+                pedido.IdCliente,
+                pedido.IdMesero,
+                pedido.IdMesa,
+                detallesArray)
+            Else
+                objPedido.ActualizarPedido(
+                pedido.IdPedido,
+                detallesArray)
+            End If
+
             Return "ok"
         Catch ex As Exception
             Return "Error: " & ex.Message
@@ -175,7 +210,7 @@ Public Class wfPedidos
 
     <WebMethod()>
     Public Shared Function ProcesarPago(idPedido As Integer, idCajero As Integer, idCliente As Integer) As String
-        Dim objPedido As New clsPedido()
+        Dim objPedido As New wsPedidoSoapClient()
         Try
             objPedido.ProcesarPago(idPedido, idCajero, idCliente)
             Return "ok"

@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://tempuri.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="BuscarPedidoActivoPorMesa">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idMesa" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BuscarPedidoActivoPorMesaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BuscarPedidoActivoPorMesaResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListarDetallesPorId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idPedido" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListarDetallesPorIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListarDetallesPorIdResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListarHistorialDePedidos">
+        <s:complexType />
+      </s:element>
+      <s:element name="ListarHistorialDePedidosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListarHistorialDePedidosResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegistrarPedido">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idCliente" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="idMesero" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="idMesa" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="detalles" type="tns:ArrayOfDetallePedidoItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDetallePedidoItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DetallePedidoItem" nillable="true" type="tns:DetallePedidoItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DetallePedidoItem">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="IdProducto" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nombre" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Precio" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Cantidad" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RegistrarPedidoResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="ActualizarPedido">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idPedido" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="nuevosDetalles" type="tns:ArrayOfDetallePedidoItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ActualizarPedidoResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="ProcesarPago">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idPedido" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="idCajero" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="idCliente" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProcesarPagoResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="ContarPedidosHoy">
+        <s:complexType />
+      </s:element>
+      <s:element name="ContarPedidosHoyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ContarPedidosHoyResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ContarPedidosPendientes">
+        <s:complexType />
+      </s:element>
+      <s:element name="ContarPedidosPendientesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ContarPedidosPendientesResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ProductoMasVendido">
+        <s:complexType />
+      </s:element>
+      <s:element name="ProductoMasVendidoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ProductoMasVendidoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VentasUltimos7Dias">
+        <s:complexType />
+      </s:element>
+      <s:element name="VentasUltimos7DiasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VentasUltimos7DiasResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ContarPedidosPorEstado">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="estadoPago" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ContarPedidosPorEstadoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ContarPedidosPorEstadoResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetReporteDesempenoMeseros">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetReporteDesempenoMeserosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetReporteDesempenoMeserosResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetReporteProductosVendidos">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetReporteProductosVendidosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetReporteProductosVendidosResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetReporteVentasPorCategoria">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetReporteVentasPorCategoriaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetReporteVentasPorCategoriaResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="BuscarPedidoActivoPorMesaSoapIn">
+    <wsdl:part name="parameters" element="tns:BuscarPedidoActivoPorMesa" />
+  </wsdl:message>
+  <wsdl:message name="BuscarPedidoActivoPorMesaSoapOut">
+    <wsdl:part name="parameters" element="tns:BuscarPedidoActivoPorMesaResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListarDetallesPorIdSoapIn">
+    <wsdl:part name="parameters" element="tns:ListarDetallesPorId" />
+  </wsdl:message>
+  <wsdl:message name="ListarDetallesPorIdSoapOut">
+    <wsdl:part name="parameters" element="tns:ListarDetallesPorIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListarHistorialDePedidosSoapIn">
+    <wsdl:part name="parameters" element="tns:ListarHistorialDePedidos" />
+  </wsdl:message>
+  <wsdl:message name="ListarHistorialDePedidosSoapOut">
+    <wsdl:part name="parameters" element="tns:ListarHistorialDePedidosResponse" />
+  </wsdl:message>
+  <wsdl:message name="RegistrarPedidoSoapIn">
+    <wsdl:part name="parameters" element="tns:RegistrarPedido" />
+  </wsdl:message>
+  <wsdl:message name="RegistrarPedidoSoapOut">
+    <wsdl:part name="parameters" element="tns:RegistrarPedidoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ActualizarPedidoSoapIn">
+    <wsdl:part name="parameters" element="tns:ActualizarPedido" />
+  </wsdl:message>
+  <wsdl:message name="ActualizarPedidoSoapOut">
+    <wsdl:part name="parameters" element="tns:ActualizarPedidoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProcesarPagoSoapIn">
+    <wsdl:part name="parameters" element="tns:ProcesarPago" />
+  </wsdl:message>
+  <wsdl:message name="ProcesarPagoSoapOut">
+    <wsdl:part name="parameters" element="tns:ProcesarPagoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ContarPedidosHoySoapIn">
+    <wsdl:part name="parameters" element="tns:ContarPedidosHoy" />
+  </wsdl:message>
+  <wsdl:message name="ContarPedidosHoySoapOut">
+    <wsdl:part name="parameters" element="tns:ContarPedidosHoyResponse" />
+  </wsdl:message>
+  <wsdl:message name="ContarPedidosPendientesSoapIn">
+    <wsdl:part name="parameters" element="tns:ContarPedidosPendientes" />
+  </wsdl:message>
+  <wsdl:message name="ContarPedidosPendientesSoapOut">
+    <wsdl:part name="parameters" element="tns:ContarPedidosPendientesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ProductoMasVendidoSoapIn">
+    <wsdl:part name="parameters" element="tns:ProductoMasVendido" />
+  </wsdl:message>
+  <wsdl:message name="ProductoMasVendidoSoapOut">
+    <wsdl:part name="parameters" element="tns:ProductoMasVendidoResponse" />
+  </wsdl:message>
+  <wsdl:message name="VentasUltimos7DiasSoapIn">
+    <wsdl:part name="parameters" element="tns:VentasUltimos7Dias" />
+  </wsdl:message>
+  <wsdl:message name="VentasUltimos7DiasSoapOut">
+    <wsdl:part name="parameters" element="tns:VentasUltimos7DiasResponse" />
+  </wsdl:message>
+  <wsdl:message name="ContarPedidosPorEstadoSoapIn">
+    <wsdl:part name="parameters" element="tns:ContarPedidosPorEstado" />
+  </wsdl:message>
+  <wsdl:message name="ContarPedidosPorEstadoSoapOut">
+    <wsdl:part name="parameters" element="tns:ContarPedidosPorEstadoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetReporteDesempenoMeserosSoapIn">
+    <wsdl:part name="parameters" element="tns:GetReporteDesempenoMeseros" />
+  </wsdl:message>
+  <wsdl:message name="GetReporteDesempenoMeserosSoapOut">
+    <wsdl:part name="parameters" element="tns:GetReporteDesempenoMeserosResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetReporteProductosVendidosSoapIn">
+    <wsdl:part name="parameters" element="tns:GetReporteProductosVendidos" />
+  </wsdl:message>
+  <wsdl:message name="GetReporteProductosVendidosSoapOut">
+    <wsdl:part name="parameters" element="tns:GetReporteProductosVendidosResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetReporteVentasPorCategoriaSoapIn">
+    <wsdl:part name="parameters" element="tns:GetReporteVentasPorCategoria" />
+  </wsdl:message>
+  <wsdl:message name="GetReporteVentasPorCategoriaSoapOut">
+    <wsdl:part name="parameters" element="tns:GetReporteVentasPorCategoriaResponse" />
+  </wsdl:message>
+  <wsdl:portType name="wsPedidoSoap">
+    <wsdl:operation name="BuscarPedidoActivoPorMesa">
+      <wsdl:input message="tns:BuscarPedidoActivoPorMesaSoapIn" />
+      <wsdl:output message="tns:BuscarPedidoActivoPorMesaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListarDetallesPorId">
+      <wsdl:input message="tns:ListarDetallesPorIdSoapIn" />
+      <wsdl:output message="tns:ListarDetallesPorIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListarHistorialDePedidos">
+      <wsdl:input message="tns:ListarHistorialDePedidosSoapIn" />
+      <wsdl:output message="tns:ListarHistorialDePedidosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RegistrarPedido">
+      <wsdl:input message="tns:RegistrarPedidoSoapIn" />
+      <wsdl:output message="tns:RegistrarPedidoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarPedido">
+      <wsdl:input message="tns:ActualizarPedidoSoapIn" />
+      <wsdl:output message="tns:ActualizarPedidoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcesarPago">
+      <wsdl:input message="tns:ProcesarPagoSoapIn" />
+      <wsdl:output message="tns:ProcesarPagoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ContarPedidosHoy">
+      <wsdl:input message="tns:ContarPedidosHoySoapIn" />
+      <wsdl:output message="tns:ContarPedidosHoySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ContarPedidosPendientes">
+      <wsdl:input message="tns:ContarPedidosPendientesSoapIn" />
+      <wsdl:output message="tns:ContarPedidosPendientesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ProductoMasVendido">
+      <wsdl:input message="tns:ProductoMasVendidoSoapIn" />
+      <wsdl:output message="tns:ProductoMasVendidoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VentasUltimos7Dias">
+      <wsdl:input message="tns:VentasUltimos7DiasSoapIn" />
+      <wsdl:output message="tns:VentasUltimos7DiasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ContarPedidosPorEstado">
+      <wsdl:input message="tns:ContarPedidosPorEstadoSoapIn" />
+      <wsdl:output message="tns:ContarPedidosPorEstadoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetReporteDesempenoMeseros">
+      <wsdl:input message="tns:GetReporteDesempenoMeserosSoapIn" />
+      <wsdl:output message="tns:GetReporteDesempenoMeserosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetReporteProductosVendidos">
+      <wsdl:input message="tns:GetReporteProductosVendidosSoapIn" />
+      <wsdl:output message="tns:GetReporteProductosVendidosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetReporteVentasPorCategoria">
+      <wsdl:input message="tns:GetReporteVentasPorCategoriaSoapIn" />
+      <wsdl:output message="tns:GetReporteVentasPorCategoriaSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsPedidoSoap" type="tns:wsPedidoSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="BuscarPedidoActivoPorMesa">
+      <soap:operation soapAction="http://tempuri.org/BuscarPedidoActivoPorMesa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarDetallesPorId">
+      <soap:operation soapAction="http://tempuri.org/ListarDetallesPorId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarHistorialDePedidos">
+      <soap:operation soapAction="http://tempuri.org/ListarHistorialDePedidos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegistrarPedido">
+      <soap:operation soapAction="http://tempuri.org/RegistrarPedido" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarPedido">
+      <soap:operation soapAction="http://tempuri.org/ActualizarPedido" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcesarPago">
+      <soap:operation soapAction="http://tempuri.org/ProcesarPago" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ContarPedidosHoy">
+      <soap:operation soapAction="http://tempuri.org/ContarPedidosHoy" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ContarPedidosPendientes">
+      <soap:operation soapAction="http://tempuri.org/ContarPedidosPendientes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProductoMasVendido">
+      <soap:operation soapAction="http://tempuri.org/ProductoMasVendido" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VentasUltimos7Dias">
+      <soap:operation soapAction="http://tempuri.org/VentasUltimos7Dias" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ContarPedidosPorEstado">
+      <soap:operation soapAction="http://tempuri.org/ContarPedidosPorEstado" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReporteDesempenoMeseros">
+      <soap:operation soapAction="http://tempuri.org/GetReporteDesempenoMeseros" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReporteProductosVendidos">
+      <soap:operation soapAction="http://tempuri.org/GetReporteProductosVendidos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReporteVentasPorCategoria">
+      <soap:operation soapAction="http://tempuri.org/GetReporteVentasPorCategoria" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsPedidoSoap12" type="tns:wsPedidoSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="BuscarPedidoActivoPorMesa">
+      <soap12:operation soapAction="http://tempuri.org/BuscarPedidoActivoPorMesa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarDetallesPorId">
+      <soap12:operation soapAction="http://tempuri.org/ListarDetallesPorId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarHistorialDePedidos">
+      <soap12:operation soapAction="http://tempuri.org/ListarHistorialDePedidos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegistrarPedido">
+      <soap12:operation soapAction="http://tempuri.org/RegistrarPedido" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarPedido">
+      <soap12:operation soapAction="http://tempuri.org/ActualizarPedido" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcesarPago">
+      <soap12:operation soapAction="http://tempuri.org/ProcesarPago" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ContarPedidosHoy">
+      <soap12:operation soapAction="http://tempuri.org/ContarPedidosHoy" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ContarPedidosPendientes">
+      <soap12:operation soapAction="http://tempuri.org/ContarPedidosPendientes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProductoMasVendido">
+      <soap12:operation soapAction="http://tempuri.org/ProductoMasVendido" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VentasUltimos7Dias">
+      <soap12:operation soapAction="http://tempuri.org/VentasUltimos7Dias" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ContarPedidosPorEstado">
+      <soap12:operation soapAction="http://tempuri.org/ContarPedidosPorEstado" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReporteDesempenoMeseros">
+      <soap12:operation soapAction="http://tempuri.org/GetReporteDesempenoMeseros" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReporteProductosVendidos">
+      <soap12:operation soapAction="http://tempuri.org/GetReporteProductosVendidos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReporteVentasPorCategoria">
+      <soap12:operation soapAction="http://tempuri.org/GetReporteVentasPorCategoria" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsPedido">
+    <wsdl:port name="wsPedidoSoap" binding="tns:wsPedidoSoap">
+      <soap:address location="https://grupo-distribuidos-webservices.somee.com/wsPedido.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsPedidoSoap12" binding="tns:wsPedidoSoap12">
+      <soap12:address location="https://grupo-distribuidos-webservices.somee.com/wsPedido.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

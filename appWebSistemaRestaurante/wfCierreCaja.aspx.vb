@@ -3,13 +3,12 @@ Imports System.Web.UI
 Imports System.Web.UI.WebControls
 Imports System.Data
 Imports System.Collections.Generic
-Imports libNegocio
-Imports libDatos
+Imports appWebSistemaRestaurante.srCierreCajaLogica
 
 Public Class wfCierreCaja
     Inherits System.Web.UI.Page
 
-    Dim logicaCierre As New clsCierreCajaLogica()
+    Dim logicaCierre As New wsCierreCajaLogicaSoapClient()
 
     Private Shared ReadOnly denominaciones As New Dictionary(Of String, Decimal) From {
         {"Billete de S/200", 200}, {"Billete de S/100", 100}, {"Billete de S/50", 50}, {"Billete de S/20", 20},
@@ -77,36 +76,65 @@ Public Class wfCierreCaja
         txtMontoTotal.Text = total.ToString("N2")
         txtMontoTexto.Text = NumeroATexto(total)
     End Sub
-
     Protected Sub btnCerrarCaja_Click(sender As Object, e As EventArgs)
         Try
-            Dim idCajero As Integer = Integer.Parse(ddlCajero.SelectedValue)
-            Dim nombreUsuario As String = Session("nombreUsuario")
-            Dim fecha As DateTime = DateTime.Now
-            Dim totalCierre As Decimal = Decimal.Parse(txtMontoTotal.Text)
+            Dim idCajero = Integer.Parse(ddlCajero.SelectedValue)
+            Dim nombreUsuario = Session("nombreUsuario").ToString()
+            Dim fecha = DateTime.Now
+            Dim totalCierre = Decimal.Parse(txtMontoTotal.Text)
 
-            Dim detalles As New List(Of Tuple(Of String, Decimal))()
+            ' 1) Creamos una lista de DetalleArqueoItem
+            Dim listaDetalles As New List(Of DetalleArqueoItem)()
 
             For Each row As GridViewRow In gvDenominaciones.Rows
                 Dim txtCantidad As TextBox = CType(row.FindControl("txtCantidad"), TextBox)
                 Dim cantidad As Integer = 0
                 Integer.TryParse(txtCantidad.Text, cantidad)
 
-                Dim descripcion As String = row.Cells(0).Text
-                Dim valor As Decimal = denominaciones(descripcion)
-                Dim subtotal As Decimal = cantidad * valor
+                Dim descripcion = row.Cells(0).Text
+                Dim valor = denominaciones(descripcion)
+                Dim subtotal = cantidad * valor
 
                 If subtotal > 0 Then
-                    detalles.Add(New Tuple(Of String, Decimal)(descripcion, subtotal))
+                    listaDetalles.Add(
+                    New DetalleArqueoItem() With {
+                        .descripcion = descripcion,
+                        .monto = subtotal
+                    })
                 End If
             Next
 
-            logicaCierre.CerrarCaja(idCajero, nombreUsuario, fecha, totalCierre, "Soles", detalles)
+            ' 2) Convertimos la lista a array
+            Dim detallesArray() As DetalleArqueoItem = listaDetalles.ToArray()
 
-            ClientScript.RegisterStartupScript(Me.GetType(), "msg", "Swal.fire('Éxito','Caja cerrada correctamente','success');", True)
+            ' 3) Invocamos al servicio pasando el array
+            logicaCierre.CerrarCaja(
+            idCajero,
+            nombreUsuario,
+            fecha,
+            totalCierre,
+            "Soles",
+            detallesArray)
+
+            ClientScript.RegisterStartupScript(
+            Me.GetType(),
+            "msg",
+            "Swal.fire('Éxito','Caja cerrada correctamente','success');",
+            True)
+
             CargarCierres()
+        Catch ex As System.ServiceModel.FaultException
+            ClientScript.RegisterStartupScript(
+            Me.GetType(),
+            "msg",
+            $"Swal.fire('Error','Error en el servicio: {ex.Message}','error');",
+            True)
         Catch ex As Exception
-            ClientScript.RegisterStartupScript(Me.GetType(), "msg", $"Swal.fire('Error','{ex.Message}','error');", True)
+            ClientScript.RegisterStartupScript(
+            Me.GetType(),
+            "msg",
+            $"Swal.fire('Error','{ex.Message}','error');",
+            True)
         End Try
     End Sub
 

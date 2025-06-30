@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://tempuri.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="generarIDTipoUsuario">
+        <s:complexType />
+      </s:element>
+      <s:element name="generarIDTipoUsuarioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="generarIDTipoUsuarioResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="guardarTipoUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="nom" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="desc" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="vig" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="guardarTipoUsuarioResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="modificarTipoUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="nom" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="desc" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="vig" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="modificarTipoUsuarioResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="eliminarTipoUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="eliminarTipoUsuarioResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="darBajaTipoUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="darBajaTipoUsuarioResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="darAltaTipoUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="darAltaTipoUsuarioResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="buscarTipoUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="buscarTipoUsuarioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="buscarTipoUsuarioResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listarTiposUsuario">
+        <s:complexType />
+      </s:element>
+      <s:element name="listarTiposUsuarioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listarTiposUsuarioResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="generarIDTipoUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:generarIDTipoUsuario" />
+  </wsdl:message>
+  <wsdl:message name="generarIDTipoUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:generarIDTipoUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="guardarTipoUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:guardarTipoUsuario" />
+  </wsdl:message>
+  <wsdl:message name="guardarTipoUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:guardarTipoUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="modificarTipoUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:modificarTipoUsuario" />
+  </wsdl:message>
+  <wsdl:message name="modificarTipoUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:modificarTipoUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="eliminarTipoUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:eliminarTipoUsuario" />
+  </wsdl:message>
+  <wsdl:message name="eliminarTipoUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:eliminarTipoUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="darBajaTipoUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:darBajaTipoUsuario" />
+  </wsdl:message>
+  <wsdl:message name="darBajaTipoUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:darBajaTipoUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="darAltaTipoUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:darAltaTipoUsuario" />
+  </wsdl:message>
+  <wsdl:message name="darAltaTipoUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:darAltaTipoUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="buscarTipoUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:buscarTipoUsuario" />
+  </wsdl:message>
+  <wsdl:message name="buscarTipoUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:buscarTipoUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="listarTiposUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:listarTiposUsuario" />
+  </wsdl:message>
+  <wsdl:message name="listarTiposUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:listarTiposUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:portType name="wsTipoUsuarioSoap">
+    <wsdl:operation name="generarIDTipoUsuario">
+      <wsdl:input message="tns:generarIDTipoUsuarioSoapIn" />
+      <wsdl:output message="tns:generarIDTipoUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="guardarTipoUsuario">
+      <wsdl:input message="tns:guardarTipoUsuarioSoapIn" />
+      <wsdl:output message="tns:guardarTipoUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="modificarTipoUsuario">
+      <wsdl:input message="tns:modificarTipoUsuarioSoapIn" />
+      <wsdl:output message="tns:modificarTipoUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="eliminarTipoUsuario">
+      <wsdl:input message="tns:eliminarTipoUsuarioSoapIn" />
+      <wsdl:output message="tns:eliminarTipoUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="darBajaTipoUsuario">
+      <wsdl:input message="tns:darBajaTipoUsuarioSoapIn" />
+      <wsdl:output message="tns:darBajaTipoUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="darAltaTipoUsuario">
+      <wsdl:input message="tns:darAltaTipoUsuarioSoapIn" />
+      <wsdl:output message="tns:darAltaTipoUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="buscarTipoUsuario">
+      <wsdl:input message="tns:buscarTipoUsuarioSoapIn" />
+      <wsdl:output message="tns:buscarTipoUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listarTiposUsuario">
+      <wsdl:input message="tns:listarTiposUsuarioSoapIn" />
+      <wsdl:output message="tns:listarTiposUsuarioSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsTipoUsuarioSoap" type="tns:wsTipoUsuarioSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="generarIDTipoUsuario">
+      <soap:operation soapAction="http://tempuri.org/generarIDTipoUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="guardarTipoUsuario">
+      <soap:operation soapAction="http://tempuri.org/guardarTipoUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificarTipoUsuario">
+      <soap:operation soapAction="http://tempuri.org/modificarTipoUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eliminarTipoUsuario">
+      <soap:operation soapAction="http://tempuri.org/eliminarTipoUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darBajaTipoUsuario">
+      <soap:operation soapAction="http://tempuri.org/darBajaTipoUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darAltaTipoUsuario">
+      <soap:operation soapAction="http://tempuri.org/darAltaTipoUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarTipoUsuario">
+      <soap:operation soapAction="http://tempuri.org/buscarTipoUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarTiposUsuario">
+      <soap:operation soapAction="http://tempuri.org/listarTiposUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsTipoUsuarioSoap12" type="tns:wsTipoUsuarioSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="generarIDTipoUsuario">
+      <soap12:operation soapAction="http://tempuri.org/generarIDTipoUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="guardarTipoUsuario">
+      <soap12:operation soapAction="http://tempuri.org/guardarTipoUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificarTipoUsuario">
+      <soap12:operation soapAction="http://tempuri.org/modificarTipoUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eliminarTipoUsuario">
+      <soap12:operation soapAction="http://tempuri.org/eliminarTipoUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darBajaTipoUsuario">
+      <soap12:operation soapAction="http://tempuri.org/darBajaTipoUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darAltaTipoUsuario">
+      <soap12:operation soapAction="http://tempuri.org/darAltaTipoUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarTipoUsuario">
+      <soap12:operation soapAction="http://tempuri.org/buscarTipoUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarTiposUsuario">
+      <soap12:operation soapAction="http://tempuri.org/listarTiposUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsTipoUsuario">
+    <wsdl:port name="wsTipoUsuarioSoap" binding="tns:wsTipoUsuarioSoap">
+      <soap:address location="https://grupo-distribuidos-webservices.somee.com/wsTipoUsuario.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsTipoUsuarioSoap12" binding="tns:wsTipoUsuarioSoap12">
+      <soap12:address location="https://grupo-distribuidos-webservices.somee.com/wsTipoUsuario.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

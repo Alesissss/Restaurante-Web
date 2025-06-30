@@ -1,6 +1,6 @@
 ﻿Imports System.Web.Script.Services
 Imports System.Web.Services
-Imports libNegocio
+Imports appWebSistemaRestaurante.srPedido
 Imports Newtonsoft.Json
 
 <ScriptService()>
@@ -9,7 +9,7 @@ Partial Class wfReporte1
 
     <WebMethod()>
     Public Shared Function GetIndicadores() As Object
-        Dim obj As New clsPedido()
+        Dim obj As New wsPedidoSoapClient()
         Dim pedidosDia = obj.ContarPedidosHoy()
         Dim pendientes = obj.ContarPedidosPendientes()
         Dim productoTop = obj.ProductoMasVendido()
@@ -18,7 +18,7 @@ Partial Class wfReporte1
 
     <WebMethod()>
     Public Shared Function GetGraficoEstadoPedidos() As Object
-        Dim obj As New clsPedido()
+        Dim obj As New wsPedidoSoapClient()
         Dim pagado = obj.ContarPedidosPorEstado(0)
         Dim pendiente = obj.ContarPedidosPorEstado(1)
         Return New With {.pagado = pagado, .pendiente = pendiente}
@@ -26,7 +26,7 @@ Partial Class wfReporte1
 
     <WebMethod()>
     Public Shared Function GetGraficoVentasDiarias() As Object
-        Dim obj As New clsPedido()
+        Dim obj As New wsPedidoSoapClient()
         Dim dt As DataTable = obj.VentasUltimos7Dias()
         Dim fechas As New List(Of String)
         Dim ventas As New List(Of Decimal)

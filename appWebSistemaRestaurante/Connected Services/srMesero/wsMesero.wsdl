@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://tempuri.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="generarIDMesero">
+        <s:complexType />
+      </s:element>
+      <s:element name="generarIDMeseroResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="generarIDMeseroResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="guardarMesero">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dni" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nom" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ape" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sex" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="fec" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="dir" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tel" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cor" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="est" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="guardarMeseroResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="modificarMesero">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dni" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nom" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ape" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sex" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="fec" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="dir" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tel" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cor" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="est" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="modificarMeseroResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="eliminarMesero">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="eliminarMeseroResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="darBajaMesero">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="darBajaMeseroResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="darAltaMesero">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="darAltaMeseroResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="buscarMesero">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="buscarMeseroResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="buscarMeseroResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listarMesero">
+        <s:complexType />
+      </s:element>
+      <s:element name="listarMeseroResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listarMeseroResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerificarMesero">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idMesero" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerificarMeseroResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="VerificarMeseroResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="generarIDMeseroSoapIn">
+    <wsdl:part name="parameters" element="tns:generarIDMesero" />
+  </wsdl:message>
+  <wsdl:message name="generarIDMeseroSoapOut">
+    <wsdl:part name="parameters" element="tns:generarIDMeseroResponse" />
+  </wsdl:message>
+  <wsdl:message name="guardarMeseroSoapIn">
+    <wsdl:part name="parameters" element="tns:guardarMesero" />
+  </wsdl:message>
+  <wsdl:message name="guardarMeseroSoapOut">
+    <wsdl:part name="parameters" element="tns:guardarMeseroResponse" />
+  </wsdl:message>
+  <wsdl:message name="modificarMeseroSoapIn">
+    <wsdl:part name="parameters" element="tns:modificarMesero" />
+  </wsdl:message>
+  <wsdl:message name="modificarMeseroSoapOut">
+    <wsdl:part name="parameters" element="tns:modificarMeseroResponse" />
+  </wsdl:message>
+  <wsdl:message name="eliminarMeseroSoapIn">
+    <wsdl:part name="parameters" element="tns:eliminarMesero" />
+  </wsdl:message>
+  <wsdl:message name="eliminarMeseroSoapOut">
+    <wsdl:part name="parameters" element="tns:eliminarMeseroResponse" />
+  </wsdl:message>
+  <wsdl:message name="darBajaMeseroSoapIn">
+    <wsdl:part name="parameters" element="tns:darBajaMesero" />
+  </wsdl:message>
+  <wsdl:message name="darBajaMeseroSoapOut">
+    <wsdl:part name="parameters" element="tns:darBajaMeseroResponse" />
+  </wsdl:message>
+  <wsdl:message name="darAltaMeseroSoapIn">
+    <wsdl:part name="parameters" element="tns:darAltaMesero" />
+  </wsdl:message>
+  <wsdl:message name="darAltaMeseroSoapOut">
+    <wsdl:part name="parameters" element="tns:darAltaMeseroResponse" />
+  </wsdl:message>
+  <wsdl:message name="buscarMeseroSoapIn">
+    <wsdl:part name="parameters" element="tns:buscarMesero" />
+  </wsdl:message>
+  <wsdl:message name="buscarMeseroSoapOut">
+    <wsdl:part name="parameters" element="tns:buscarMeseroResponse" />
+  </wsdl:message>
+  <wsdl:message name="listarMeseroSoapIn">
+    <wsdl:part name="parameters" element="tns:listarMesero" />
+  </wsdl:message>
+  <wsdl:message name="listarMeseroSoapOut">
+    <wsdl:part name="parameters" element="tns:listarMeseroResponse" />
+  </wsdl:message>
+  <wsdl:message name="VerificarMeseroSoapIn">
+    <wsdl:part name="parameters" element="tns:VerificarMesero" />
+  </wsdl:message>
+  <wsdl:message name="VerificarMeseroSoapOut">
+    <wsdl:part name="parameters" element="tns:VerificarMeseroResponse" />
+  </wsdl:message>
+  <wsdl:portType name="wsMeseroSoap">
+    <wsdl:operation name="generarIDMesero">
+      <wsdl:input message="tns:generarIDMeseroSoapIn" />
+      <wsdl:output message="tns:generarIDMeseroSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="guardarMesero">
+      <wsdl:input message="tns:guardarMeseroSoapIn" />
+      <wsdl:output message="tns:guardarMeseroSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="modificarMesero">
+      <wsdl:input message="tns:modificarMeseroSoapIn" />
+      <wsdl:output message="tns:modificarMeseroSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="eliminarMesero">
+      <wsdl:input message="tns:eliminarMeseroSoapIn" />
+      <wsdl:output message="tns:eliminarMeseroSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="darBajaMesero">
+      <wsdl:input message="tns:darBajaMeseroSoapIn" />
+      <wsdl:output message="tns:darBajaMeseroSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="darAltaMesero">
+      <wsdl:input message="tns:darAltaMeseroSoapIn" />
+      <wsdl:output message="tns:darAltaMeseroSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="buscarMesero">
+      <wsdl:input message="tns:buscarMeseroSoapIn" />
+      <wsdl:output message="tns:buscarMeseroSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listarMesero">
+      <wsdl:input message="tns:listarMeseroSoapIn" />
+      <wsdl:output message="tns:listarMeseroSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VerificarMesero">
+      <wsdl:input message="tns:VerificarMeseroSoapIn" />
+      <wsdl:output message="tns:VerificarMeseroSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsMeseroSoap" type="tns:wsMeseroSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="generarIDMesero">
+      <soap:operation soapAction="http://tempuri.org/generarIDMesero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="guardarMesero">
+      <soap:operation soapAction="http://tempuri.org/guardarMesero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificarMesero">
+      <soap:operation soapAction="http://tempuri.org/modificarMesero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eliminarMesero">
+      <soap:operation soapAction="http://tempuri.org/eliminarMesero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darBajaMesero">
+      <soap:operation soapAction="http://tempuri.org/darBajaMesero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darAltaMesero">
+      <soap:operation soapAction="http://tempuri.org/darAltaMesero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarMesero">
+      <soap:operation soapAction="http://tempuri.org/buscarMesero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarMesero">
+      <soap:operation soapAction="http://tempuri.org/listarMesero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerificarMesero">
+      <soap:operation soapAction="http://tempuri.org/VerificarMesero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsMeseroSoap12" type="tns:wsMeseroSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="generarIDMesero">
+      <soap12:operation soapAction="http://tempuri.org/generarIDMesero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="guardarMesero">
+      <soap12:operation soapAction="http://tempuri.org/guardarMesero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificarMesero">
+      <soap12:operation soapAction="http://tempuri.org/modificarMesero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eliminarMesero">
+      <soap12:operation soapAction="http://tempuri.org/eliminarMesero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darBajaMesero">
+      <soap12:operation soapAction="http://tempuri.org/darBajaMesero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darAltaMesero">
+      <soap12:operation soapAction="http://tempuri.org/darAltaMesero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarMesero">
+      <soap12:operation soapAction="http://tempuri.org/buscarMesero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarMesero">
+      <soap12:operation soapAction="http://tempuri.org/listarMesero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerificarMesero">
+      <soap12:operation soapAction="http://tempuri.org/VerificarMesero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsMesero">
+    <wsdl:port name="wsMeseroSoap" binding="tns:wsMeseroSoap">
+      <soap:address location="https://grupo-distribuidos-webservices.somee.com/wsMesero.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsMeseroSoap12" binding="tns:wsMeseroSoap12">
+      <soap12:address location="https://grupo-distribuidos-webservices.somee.com/wsMesero.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

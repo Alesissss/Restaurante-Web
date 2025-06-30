@@ -1,6 +1,6 @@
 ﻿Imports System.Web.Services
 Imports System.Data
-Imports libNegocio
+Imports appWebSistemaRestaurante.srPedido
 
 Public Class wfReporte2
     Inherits System.Web.UI.Page
@@ -16,7 +16,7 @@ Public Class wfReporte2
         datosReporte.NombresEmpleados = New List(Of String)()
         datosReporte.TotalesVenta = New List(Of Decimal)()
 
-        Dim objPedido As New clsPedido()
+        Dim objPedido As New wsPedidoSoapClient()
         Try
             Dim dt As DataTable = objPedido.GetReporteDesempenoMeseros()
             For Each row As DataRow In dt.Rows

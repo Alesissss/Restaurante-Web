@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://tempuri.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="iniciarSesion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="usu" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="con" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="iniciarSesionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="iniciarSesionResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="obtenerPreguntaSec">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="usu" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="obtenerPreguntaSecResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="obtenerPreguntaSecResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="validarRespuestaPregSec">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="usu" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="rpta" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="validarRespuestaPregSecResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="validarRespuestaPregSecResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="obtenerNombreUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="usu" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="obtenerNombreUsuarioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="obtenerNombreUsuarioResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="generarIDUsuario">
+        <s:complexType />
+      </s:element>
+      <s:element name="generarIDUsuarioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="generarIDUsuarioResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="guardarUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="nom" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="contrasena" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nombresCompletos" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="preguntaSecreta" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="respuesta" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="vig" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="idTipoUsuario" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="guardarUsuarioResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="modificarUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="nom" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="contrasena" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nombresCompletos" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="preguntaSecreta" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="respuesta" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="vig" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="idTipoUsuario" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="modificarUsuarioResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="eliminarUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="eliminarUsuarioResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="darBajaUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="darBajaUsuarioResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="darAltaUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="darAltaUsuarioResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="buscarUsuario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="buscarUsuarioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="buscarUsuarioResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="buscarUsuarioPorNombre">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="nombres" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="buscarUsuarioPorNombreResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="buscarUsuarioPorNombreResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listarUsuarios">
+        <s:complexType />
+      </s:element>
+      <s:element name="listarUsuariosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listarUsuariosResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="iniciarSesionSoapIn">
+    <wsdl:part name="parameters" element="tns:iniciarSesion" />
+  </wsdl:message>
+  <wsdl:message name="iniciarSesionSoapOut">
+    <wsdl:part name="parameters" element="tns:iniciarSesionResponse" />
+  </wsdl:message>
+  <wsdl:message name="obtenerPreguntaSecSoapIn">
+    <wsdl:part name="parameters" element="tns:obtenerPreguntaSec" />
+  </wsdl:message>
+  <wsdl:message name="obtenerPreguntaSecSoapOut">
+    <wsdl:part name="parameters" element="tns:obtenerPreguntaSecResponse" />
+  </wsdl:message>
+  <wsdl:message name="validarRespuestaPregSecSoapIn">
+    <wsdl:part name="parameters" element="tns:validarRespuestaPregSec" />
+  </wsdl:message>
+  <wsdl:message name="validarRespuestaPregSecSoapOut">
+    <wsdl:part name="parameters" element="tns:validarRespuestaPregSecResponse" />
+  </wsdl:message>
+  <wsdl:message name="obtenerNombreUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:obtenerNombreUsuario" />
+  </wsdl:message>
+  <wsdl:message name="obtenerNombreUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:obtenerNombreUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="generarIDUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:generarIDUsuario" />
+  </wsdl:message>
+  <wsdl:message name="generarIDUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:generarIDUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="guardarUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:guardarUsuario" />
+  </wsdl:message>
+  <wsdl:message name="guardarUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:guardarUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="modificarUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:modificarUsuario" />
+  </wsdl:message>
+  <wsdl:message name="modificarUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:modificarUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="eliminarUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:eliminarUsuario" />
+  </wsdl:message>
+  <wsdl:message name="eliminarUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:eliminarUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="darBajaUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:darBajaUsuario" />
+  </wsdl:message>
+  <wsdl:message name="darBajaUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:darBajaUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="darAltaUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:darAltaUsuario" />
+  </wsdl:message>
+  <wsdl:message name="darAltaUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:darAltaUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="buscarUsuarioSoapIn">
+    <wsdl:part name="parameters" element="tns:buscarUsuario" />
+  </wsdl:message>
+  <wsdl:message name="buscarUsuarioSoapOut">
+    <wsdl:part name="parameters" element="tns:buscarUsuarioResponse" />
+  </wsdl:message>
+  <wsdl:message name="buscarUsuarioPorNombreSoapIn">
+    <wsdl:part name="parameters" element="tns:buscarUsuarioPorNombre" />
+  </wsdl:message>
+  <wsdl:message name="buscarUsuarioPorNombreSoapOut">
+    <wsdl:part name="parameters" element="tns:buscarUsuarioPorNombreResponse" />
+  </wsdl:message>
+  <wsdl:message name="listarUsuariosSoapIn">
+    <wsdl:part name="parameters" element="tns:listarUsuarios" />
+  </wsdl:message>
+  <wsdl:message name="listarUsuariosSoapOut">
+    <wsdl:part name="parameters" element="tns:listarUsuariosResponse" />
+  </wsdl:message>
+  <wsdl:portType name="wsUsuarioSoap">
+    <wsdl:operation name="iniciarSesion">
+      <wsdl:input message="tns:iniciarSesionSoapIn" />
+      <wsdl:output message="tns:iniciarSesionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="obtenerPreguntaSec">
+      <wsdl:input message="tns:obtenerPreguntaSecSoapIn" />
+      <wsdl:output message="tns:obtenerPreguntaSecSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="validarRespuestaPregSec">
+      <wsdl:input message="tns:validarRespuestaPregSecSoapIn" />
+      <wsdl:output message="tns:validarRespuestaPregSecSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="obtenerNombreUsuario">
+      <wsdl:input message="tns:obtenerNombreUsuarioSoapIn" />
+      <wsdl:output message="tns:obtenerNombreUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="generarIDUsuario">
+      <wsdl:input message="tns:generarIDUsuarioSoapIn" />
+      <wsdl:output message="tns:generarIDUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="guardarUsuario">
+      <wsdl:input message="tns:guardarUsuarioSoapIn" />
+      <wsdl:output message="tns:guardarUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="modificarUsuario">
+      <wsdl:input message="tns:modificarUsuarioSoapIn" />
+      <wsdl:output message="tns:modificarUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="eliminarUsuario">
+      <wsdl:input message="tns:eliminarUsuarioSoapIn" />
+      <wsdl:output message="tns:eliminarUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="darBajaUsuario">
+      <wsdl:input message="tns:darBajaUsuarioSoapIn" />
+      <wsdl:output message="tns:darBajaUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="darAltaUsuario">
+      <wsdl:input message="tns:darAltaUsuarioSoapIn" />
+      <wsdl:output message="tns:darAltaUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="buscarUsuario">
+      <wsdl:input message="tns:buscarUsuarioSoapIn" />
+      <wsdl:output message="tns:buscarUsuarioSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="buscarUsuarioPorNombre">
+      <wsdl:input message="tns:buscarUsuarioPorNombreSoapIn" />
+      <wsdl:output message="tns:buscarUsuarioPorNombreSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listarUsuarios">
+      <wsdl:input message="tns:listarUsuariosSoapIn" />
+      <wsdl:output message="tns:listarUsuariosSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsUsuarioSoap" type="tns:wsUsuarioSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="iniciarSesion">
+      <soap:operation soapAction="http://tempuri.org/iniciarSesion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="obtenerPreguntaSec">
+      <soap:operation soapAction="http://tempuri.org/obtenerPreguntaSec" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="validarRespuestaPregSec">
+      <soap:operation soapAction="http://tempuri.org/validarRespuestaPregSec" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="obtenerNombreUsuario">
+      <soap:operation soapAction="http://tempuri.org/obtenerNombreUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="generarIDUsuario">
+      <soap:operation soapAction="http://tempuri.org/generarIDUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="guardarUsuario">
+      <soap:operation soapAction="http://tempuri.org/guardarUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificarUsuario">
+      <soap:operation soapAction="http://tempuri.org/modificarUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eliminarUsuario">
+      <soap:operation soapAction="http://tempuri.org/eliminarUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darBajaUsuario">
+      <soap:operation soapAction="http://tempuri.org/darBajaUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darAltaUsuario">
+      <soap:operation soapAction="http://tempuri.org/darAltaUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarUsuario">
+      <soap:operation soapAction="http://tempuri.org/buscarUsuario" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarUsuarioPorNombre">
+      <soap:operation soapAction="http://tempuri.org/buscarUsuarioPorNombre" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarUsuarios">
+      <soap:operation soapAction="http://tempuri.org/listarUsuarios" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsUsuarioSoap12" type="tns:wsUsuarioSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="iniciarSesion">
+      <soap12:operation soapAction="http://tempuri.org/iniciarSesion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="obtenerPreguntaSec">
+      <soap12:operation soapAction="http://tempuri.org/obtenerPreguntaSec" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="validarRespuestaPregSec">
+      <soap12:operation soapAction="http://tempuri.org/validarRespuestaPregSec" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="obtenerNombreUsuario">
+      <soap12:operation soapAction="http://tempuri.org/obtenerNombreUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="generarIDUsuario">
+      <soap12:operation soapAction="http://tempuri.org/generarIDUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="guardarUsuario">
+      <soap12:operation soapAction="http://tempuri.org/guardarUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificarUsuario">
+      <soap12:operation soapAction="http://tempuri.org/modificarUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eliminarUsuario">
+      <soap12:operation soapAction="http://tempuri.org/eliminarUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darBajaUsuario">
+      <soap12:operation soapAction="http://tempuri.org/darBajaUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darAltaUsuario">
+      <soap12:operation soapAction="http://tempuri.org/darAltaUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarUsuario">
+      <soap12:operation soapAction="http://tempuri.org/buscarUsuario" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarUsuarioPorNombre">
+      <soap12:operation soapAction="http://tempuri.org/buscarUsuarioPorNombre" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarUsuarios">
+      <soap12:operation soapAction="http://tempuri.org/listarUsuarios" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsUsuario">
+    <wsdl:port name="wsUsuarioSoap" binding="tns:wsUsuarioSoap">
+      <soap:address location="https://grupo-distribuidos-webservices.somee.com/wsUsuario.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsUsuarioSoap12" binding="tns:wsUsuarioSoap12">
+      <soap12:address location="https://grupo-distribuidos-webservices.somee.com/wsUsuario.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

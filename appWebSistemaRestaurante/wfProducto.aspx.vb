@@ -1,16 +1,18 @@
 ﻿Imports System.Web.Services
 Imports System.Text
 Imports System.Data
-Imports libNegocio ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
+Imports appWebSistemaRestaurante.srProducto ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
+Imports appWebSistemaRestaurante.srTipoProducto
+Imports appWebSistemaRestaurante.srCarta
 
 Public Class wfProducto
     Inherits System.Web.UI.Page
 
     ' Instancias de las clases de negocio
-    Private objProducto As New clsProducto()
+    Private objProducto As New wsProductoSoapClient()
     ' Asumo que estas clases existen en tu capa de lógica
-    Private objTipoProducto As New clsTipoProducto()
-    Private objCarta As New clsCarta()
+    Private objTipoProducto As New wsTipoProductoSoapClient()
+    Private objCarta As New wsCartaSoapClient()
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not IsPostBack Then
@@ -107,7 +109,7 @@ Public Class wfProducto
 
     <WebMethod>
     Public Shared Function GuardarProducto(id As Integer, nombre As String, descripcion As String, precio As Decimal, idTipo As Integer, idCarta As Integer, vigente As Boolean) As String
-        Dim objP As New clsProducto()
+        Dim objP As New wsProductoSoapClient()
         Try
             If id = 0 Then
                 Dim newId As Integer = objP.generarIDProducto()
@@ -123,7 +125,7 @@ Public Class wfProducto
 
     <WebMethod>
     Public Shared Function EliminarProducto(id As Integer) As String
-        Dim objP As New clsProducto()
+        Dim objP As New wsProductoSoapClient()
         Try
             objP.eliminarProducto(id)
             Return "success"
@@ -134,7 +136,7 @@ Public Class wfProducto
 
     <WebMethod>
     Public Shared Function DarBajaProducto(id As Integer) As String
-        Dim objP As New clsProducto()
+        Dim objP As New wsProductoSoapClient()
         Try
             objP.darBajaProducto(id)
             Return "success"
@@ -145,7 +147,7 @@ Public Class wfProducto
 
     <WebMethod>
     Public Shared Function DarAltaProducto(id As Integer) As String
-        Dim objP As New clsProducto()
+        Dim objP As New wsProductoSoapClient()
         Try
             objP.darAltaProducto(id)
             Return "success"

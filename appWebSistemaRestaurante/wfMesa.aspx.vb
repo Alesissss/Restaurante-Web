@@ -2,12 +2,12 @@
 Imports System.Web.Services
 Imports System.Text
 Imports System.Data
-Imports libNegocio
+Imports appWebSistemaRestaurante.srMesa
 
 Public Class wfMesa
     Inherits System.Web.UI.Page
 
-    Private objMesa As New clsMesa()
+    Private objMesa As New wsMesaSoapClient()
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not IsPostBack Then
@@ -70,7 +70,7 @@ Public Class wfMesa
 
     <WebMethod>
     Public Shared Function GuardarMesa(id As Integer, numero As Integer, capacidad As Byte, vigencia As Boolean) As String
-        Dim objM As New clsMesa()
+        Dim objM As New wsMesaSoapClient()
         Try
             Dim dtExistente As DataTable = objM.listarMesas()
             For Each row As DataRow In dtExistente.Rows
@@ -93,7 +93,7 @@ Public Class wfMesa
 
     <WebMethod>
     Public Shared Function EliminarMesa(id As Integer) As String
-        Dim objM As New clsMesa()
+        Dim objM As New wsMesaSoapClient()
         Try
             objM.eliminarMesa(id)
             Return "success"
@@ -104,7 +104,7 @@ Public Class wfMesa
 
     <WebMethod>
     Public Shared Function CambiarVigenciaMesa(id As Integer, nuevaVigencia As Boolean) As String
-        Dim objM As New clsMesa()
+        Dim objM As New wsMesaSoapClient()
         Try
             If nuevaVigencia Then
                 objM.darAltaMesa(id)

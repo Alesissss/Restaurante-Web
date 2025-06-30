@@ -1,6 +1,6 @@
 ﻿Imports System.Web.Services
 Imports System.Data
-Imports libNegocio
+Imports appWebSistemaRestaurante.srPedido
 
 Public Class wfReporte3
     Inherits System.Web.UI.Page
@@ -23,7 +23,7 @@ Public Class wfReporte3
         datosReporte.CantidadesVendidas = New List(Of Integer)()
         datosReporte.VentasPorCategoria = New List(Of DataPoint)()
 
-        Dim objPedido As New clsPedido()
+        Dim objPedido As New wsPedidoSoapClient()
         Try
             ' Cargar Top 10 Productos
             Dim dtTop As DataTable = objPedido.GetReporteProductosVendidos()

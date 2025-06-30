@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://tempuri.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="generarIDMesa">
+        <s:complexType />
+      </s:element>
+      <s:element name="generarIDMesaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="generarIDMesaResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="guardarMesa">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="numero" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="capacidad" type="s:unsignedByte" />
+            <s:element minOccurs="1" maxOccurs="1" name="vig" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="guardarMesaResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="modificarMesa">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="numero" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="capacidad" type="s:unsignedByte" />
+            <s:element minOccurs="1" maxOccurs="1" name="vig" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="modificarMesaResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="eliminarMesa">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="eliminarMesaResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="darBajaMesa">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="darBajaMesaResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="darAltaMesa">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="darAltaMesaResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="listarMesas">
+        <s:complexType />
+      </s:element>
+      <s:element name="listarMesasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listarMesasResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="buscarMesa">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="buscarMesaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="buscarMesaResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerificarMesa">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idMesa" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerificarMesaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="VerificarMesaResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="generarIDMesaSoapIn">
+    <wsdl:part name="parameters" element="tns:generarIDMesa" />
+  </wsdl:message>
+  <wsdl:message name="generarIDMesaSoapOut">
+    <wsdl:part name="parameters" element="tns:generarIDMesaResponse" />
+  </wsdl:message>
+  <wsdl:message name="guardarMesaSoapIn">
+    <wsdl:part name="parameters" element="tns:guardarMesa" />
+  </wsdl:message>
+  <wsdl:message name="guardarMesaSoapOut">
+    <wsdl:part name="parameters" element="tns:guardarMesaResponse" />
+  </wsdl:message>
+  <wsdl:message name="modificarMesaSoapIn">
+    <wsdl:part name="parameters" element="tns:modificarMesa" />
+  </wsdl:message>
+  <wsdl:message name="modificarMesaSoapOut">
+    <wsdl:part name="parameters" element="tns:modificarMesaResponse" />
+  </wsdl:message>
+  <wsdl:message name="eliminarMesaSoapIn">
+    <wsdl:part name="parameters" element="tns:eliminarMesa" />
+  </wsdl:message>
+  <wsdl:message name="eliminarMesaSoapOut">
+    <wsdl:part name="parameters" element="tns:eliminarMesaResponse" />
+  </wsdl:message>
+  <wsdl:message name="darBajaMesaSoapIn">
+    <wsdl:part name="parameters" element="tns:darBajaMesa" />
+  </wsdl:message>
+  <wsdl:message name="darBajaMesaSoapOut">
+    <wsdl:part name="parameters" element="tns:darBajaMesaResponse" />
+  </wsdl:message>
+  <wsdl:message name="darAltaMesaSoapIn">
+    <wsdl:part name="parameters" element="tns:darAltaMesa" />
+  </wsdl:message>
+  <wsdl:message name="darAltaMesaSoapOut">
+    <wsdl:part name="parameters" element="tns:darAltaMesaResponse" />
+  </wsdl:message>
+  <wsdl:message name="listarMesasSoapIn">
+    <wsdl:part name="parameters" element="tns:listarMesas" />
+  </wsdl:message>
+  <wsdl:message name="listarMesasSoapOut">
+    <wsdl:part name="parameters" element="tns:listarMesasResponse" />
+  </wsdl:message>
+  <wsdl:message name="buscarMesaSoapIn">
+    <wsdl:part name="parameters" element="tns:buscarMesa" />
+  </wsdl:message>
+  <wsdl:message name="buscarMesaSoapOut">
+    <wsdl:part name="parameters" element="tns:buscarMesaResponse" />
+  </wsdl:message>
+  <wsdl:message name="VerificarMesaSoapIn">
+    <wsdl:part name="parameters" element="tns:VerificarMesa" />
+  </wsdl:message>
+  <wsdl:message name="VerificarMesaSoapOut">
+    <wsdl:part name="parameters" element="tns:VerificarMesaResponse" />
+  </wsdl:message>
+  <wsdl:portType name="wsMesaSoap">
+    <wsdl:operation name="generarIDMesa">
+      <wsdl:input message="tns:generarIDMesaSoapIn" />
+      <wsdl:output message="tns:generarIDMesaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="guardarMesa">
+      <wsdl:input message="tns:guardarMesaSoapIn" />
+      <wsdl:output message="tns:guardarMesaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="modificarMesa">
+      <wsdl:input message="tns:modificarMesaSoapIn" />
+      <wsdl:output message="tns:modificarMesaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="eliminarMesa">
+      <wsdl:input message="tns:eliminarMesaSoapIn" />
+      <wsdl:output message="tns:eliminarMesaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="darBajaMesa">
+      <wsdl:input message="tns:darBajaMesaSoapIn" />
+      <wsdl:output message="tns:darBajaMesaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="darAltaMesa">
+      <wsdl:input message="tns:darAltaMesaSoapIn" />
+      <wsdl:output message="tns:darAltaMesaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listarMesas">
+      <wsdl:input message="tns:listarMesasSoapIn" />
+      <wsdl:output message="tns:listarMesasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="buscarMesa">
+      <wsdl:input message="tns:buscarMesaSoapIn" />
+      <wsdl:output message="tns:buscarMesaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VerificarMesa">
+      <wsdl:input message="tns:VerificarMesaSoapIn" />
+      <wsdl:output message="tns:VerificarMesaSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsMesaSoap" type="tns:wsMesaSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="generarIDMesa">
+      <soap:operation soapAction="http://tempuri.org/generarIDMesa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="guardarMesa">
+      <soap:operation soapAction="http://tempuri.org/guardarMesa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificarMesa">
+      <soap:operation soapAction="http://tempuri.org/modificarMesa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eliminarMesa">
+      <soap:operation soapAction="http://tempuri.org/eliminarMesa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darBajaMesa">
+      <soap:operation soapAction="http://tempuri.org/darBajaMesa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darAltaMesa">
+      <soap:operation soapAction="http://tempuri.org/darAltaMesa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarMesas">
+      <soap:operation soapAction="http://tempuri.org/listarMesas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarMesa">
+      <soap:operation soapAction="http://tempuri.org/buscarMesa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerificarMesa">
+      <soap:operation soapAction="http://tempuri.org/VerificarMesa" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsMesaSoap12" type="tns:wsMesaSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="generarIDMesa">
+      <soap12:operation soapAction="http://tempuri.org/generarIDMesa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="guardarMesa">
+      <soap12:operation soapAction="http://tempuri.org/guardarMesa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificarMesa">
+      <soap12:operation soapAction="http://tempuri.org/modificarMesa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eliminarMesa">
+      <soap12:operation soapAction="http://tempuri.org/eliminarMesa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darBajaMesa">
+      <soap12:operation soapAction="http://tempuri.org/darBajaMesa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darAltaMesa">
+      <soap12:operation soapAction="http://tempuri.org/darAltaMesa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarMesas">
+      <soap12:operation soapAction="http://tempuri.org/listarMesas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarMesa">
+      <soap12:operation soapAction="http://tempuri.org/buscarMesa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerificarMesa">
+      <soap12:operation soapAction="http://tempuri.org/VerificarMesa" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsMesa">
+    <wsdl:port name="wsMesaSoap" binding="tns:wsMesaSoap">
+      <soap:address location="https://grupo-distribuidos-webservices.somee.com/wsMesa.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsMesaSoap12" binding="tns:wsMesaSoap12">
+      <soap12:address location="https://grupo-distribuidos-webservices.somee.com/wsMesa.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

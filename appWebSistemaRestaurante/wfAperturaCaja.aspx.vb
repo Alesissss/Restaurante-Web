@@ -3,13 +3,12 @@ Imports System.Web.UI
 Imports System.Web.UI.WebControls
 Imports System.Data
 Imports System.Collections.Generic
-Imports libNegocio
-Imports libDatos
+Imports appWebSistemaRestaurante.srAperturaCajaLogica
 
 Public Class wfAperturaCaja
     Inherits System.Web.UI.Page
 
-    Dim logicaApertura As New clsAperturaCajaLogica()
+    Dim logicaApertura As New wsAperturaCajaLogicaSoapClient()
 
     Private Shared ReadOnly denominaciones As New Dictionary(Of String, Decimal) From {
         {"Billete de S/200", 200}, {"Billete de S/100", 100}, {"Billete de S/50", 50}, {"Billete de S/20", 20},
@@ -77,50 +76,58 @@ Public Class wfAperturaCaja
         txtMontoTotal.Text = total.ToString("N2")
         txtMontoTexto.Text = NumeroATexto(total)
     End Sub
-
-
-
     Protected Sub btnGuardar_Click(sender As Object, e As EventArgs)
         Try
             If String.IsNullOrEmpty(hfIdArqueo.Value) Then
-                ' Nueva apertura
-                Dim idCajero As Integer = Integer.Parse(ddlCajero.SelectedValue)
-                Dim nombreUsuario As String = "1"
-                Dim fecha As DateTime = DateTime.Now
-                Dim montoBase As Decimal = Decimal.Parse(txtMontoTotal.Text)
+                Dim idCajero = Integer.Parse(ddlCajero.SelectedValue)
+                Dim nombreUsuario = "1"
+                Dim fecha = DateTime.Now
+                Dim montoBase = Decimal.Parse(txtMontoTotal.Text)
 
-                Dim detalles As New List(Of Tuple(Of String, Decimal))()
+                ' 2) Creamos una lista de DetalleArqueoItem
+                Dim listaDetalles As New List(Of DetalleArqueoItem)()
 
                 For Each row As GridViewRow In gvDenominaciones.Rows
-                    Dim txtCantidad As TextBox = CType(row.FindControl("txtCantidad"), TextBox)
+                    Dim txtCant As TextBox = CType(row.FindControl("txtCantidad"), TextBox)
                     Dim cantidad As Integer = 0
-                    Integer.TryParse(txtCantidad.Text, cantidad)
-
-                    Dim descripcion As String = row.Cells(0).Text
-                    Dim valor As Decimal = denominaciones(descripcion)
-                    Dim subtotal As Decimal = cantidad * valor
+                    Integer.TryParse(txtCant.Text, cantidad)
+                    Dim descripcion = row.Cells(0).Text
+                    Dim valor = denominaciones(descripcion)
+                    Dim subtotal = cantidad * valor
 
                     If subtotal > 0 Then
-                        detalles.Add(New Tuple(Of String, Decimal)(descripcion, subtotal))
+                        Dim item As New DetalleArqueoItem() With {
+                        .descripcion = descripcion,
+                        .monto = subtotal
+                    }
+                        listaDetalles.Add(item)
                     End If
                 Next
 
-                logicaApertura.AbrirCaja(idCajero, nombreUsuario, fecha, montoBase, "Soles", "ABIERTO", detalles)
+                ' 3) Convertimos la lista a array
+                Dim detallesArray() As DetalleArqueoItem = listaDetalles.ToArray()
 
-                ClientScript.RegisterStartupScript(Me.GetType(), "msg", "Swal.fire('Éxito','Caja aperturada correctamente','success');", True)
+                ' 4) Llamamos al servicio pasando el array
+                logicaApertura.AbrirCaja(idCajero,
+                                      nombreUsuario,
+                                      fecha,
+                                      montoBase,
+                                      "Soles",
+                                      "ABIERTO",
+                                      detallesArray)
+
+                ClientScript.RegisterStartupScript(Me.GetType(),
+                "msg", "Swal.fire('Éxito','Caja aperturada correctamente','success');", True)
                 CargarAperturas()
-            Else
-                ' En el futuro podrías agregar lógica para actualizar si hfIdArqueo tiene valor
             End If
         Catch ex As Exception
-            ClientScript.RegisterStartupScript(Me.GetType(), "msg", $"Swal.fire('Error','{ex.Message}','error');", True)
+            ClientScript.RegisterStartupScript(Me.GetType(),
+            "msg", $"Swal.fire('Error','{ex.Message}','error');", True)
         End Try
     End Sub
 
     Public Function NumeroATexto(ByVal numero As Decimal) As String
         Return "SOLES" ' Placeholder
     End Function
-
-
 
 End Class

@@ -1,12 +1,12 @@
 ﻿Imports System.Web.Services
 Imports System.Text
 Imports System.Data
-Imports libNegocio ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
+Imports appWebSistemaRestaurante.srMesero ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
 
 Public Class wfMesero
     Inherits System.Web.UI.Page
 
-    Private objMesero As New clsMesero()
+    Private objMesero As New wsMeseroSoapClient()
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not IsPostBack Then
@@ -77,7 +77,7 @@ Public Class wfMesero
 
     <WebMethod>
     Public Shared Function GuardarMesero(id As Integer, dni As String, nom As String, ape As String, sex As String, fec As String, dir As String, tel As String, cor As String, est As Boolean) As String
-        Dim objM As New clsMesero()
+        Dim objM As New wsMeseroSoapClient()
         Try
             ' Convertir la fecha de string a Date
             Dim fechaNacDate As Date = Date.Parse(fec)
@@ -96,7 +96,7 @@ Public Class wfMesero
 
     <WebMethod>
     Public Shared Function EliminarMesero(id As Integer) As String
-        Dim objM As New clsMesero()
+        Dim objM As New wsMeseroSoapClient()
         Try
             objM.eliminarMesero(id)
             Return "success"
@@ -107,7 +107,7 @@ Public Class wfMesero
 
     <WebMethod>
     Public Shared Function DarBajaMesero(id As Integer) As String
-        Dim objM As New clsMesero()
+        Dim objM As New wsMeseroSoapClient()
         Try
             objM.darBajaMesero(id)
             Return "success"
@@ -120,7 +120,7 @@ Public Class wfMesero
     ' Debes agregar el método 'darAltaMesero' a tu clase clsMesero.
     <WebMethod>
     Public Shared Function DarAltaMesero(id As Integer) As String
-        Dim objM As New clsMesero()
+        Dim objM As New wsMeseroSoapClient()
         Try
             ' Ahora llamamos directamente al método de la clase de negocio
             objM.darAltaMesero(id)

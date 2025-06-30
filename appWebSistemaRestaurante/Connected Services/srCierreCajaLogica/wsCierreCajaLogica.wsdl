@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://tempuri.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="ListarCajeros">
+        <s:complexType />
+      </s:element>
+      <s:element name="ListarCajerosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListarCajerosResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CerrarCaja">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idCajero" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="nombreUsuario" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="fecha" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="total" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="moneda" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="detalles" type="tns:ArrayOfDetalleArqueoItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDetalleArqueoItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DetalleArqueoItem" nillable="true" type="tns:DetalleArqueoItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DetalleArqueoItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="descripcion" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="monto" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CerrarCajaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CerrarCajaResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListarCierres">
+        <s:complexType />
+      </s:element>
+      <s:element name="ListarCierresResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListarCierresResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ListarCajerosSoapIn">
+    <wsdl:part name="parameters" element="tns:ListarCajeros" />
+  </wsdl:message>
+  <wsdl:message name="ListarCajerosSoapOut">
+    <wsdl:part name="parameters" element="tns:ListarCajerosResponse" />
+  </wsdl:message>
+  <wsdl:message name="CerrarCajaSoapIn">
+    <wsdl:part name="parameters" element="tns:CerrarCaja" />
+  </wsdl:message>
+  <wsdl:message name="CerrarCajaSoapOut">
+    <wsdl:part name="parameters" element="tns:CerrarCajaResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListarCierresSoapIn">
+    <wsdl:part name="parameters" element="tns:ListarCierres" />
+  </wsdl:message>
+  <wsdl:message name="ListarCierresSoapOut">
+    <wsdl:part name="parameters" element="tns:ListarCierresResponse" />
+  </wsdl:message>
+  <wsdl:portType name="wsCierreCajaLogicaSoap">
+    <wsdl:operation name="ListarCajeros">
+      <wsdl:input message="tns:ListarCajerosSoapIn" />
+      <wsdl:output message="tns:ListarCajerosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CerrarCaja">
+      <wsdl:input message="tns:CerrarCajaSoapIn" />
+      <wsdl:output message="tns:CerrarCajaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListarCierres">
+      <wsdl:input message="tns:ListarCierresSoapIn" />
+      <wsdl:output message="tns:ListarCierresSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsCierreCajaLogicaSoap" type="tns:wsCierreCajaLogicaSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ListarCajeros">
+      <soap:operation soapAction="http://tempuri.org/ListarCajeros" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CerrarCaja">
+      <soap:operation soapAction="http://tempuri.org/CerrarCaja" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarCierres">
+      <soap:operation soapAction="http://tempuri.org/ListarCierres" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsCierreCajaLogicaSoap12" type="tns:wsCierreCajaLogicaSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ListarCajeros">
+      <soap12:operation soapAction="http://tempuri.org/ListarCajeros" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CerrarCaja">
+      <soap12:operation soapAction="http://tempuri.org/CerrarCaja" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListarCierres">
+      <soap12:operation soapAction="http://tempuri.org/ListarCierres" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsCierreCajaLogica">
+    <wsdl:port name="wsCierreCajaLogicaSoap" binding="tns:wsCierreCajaLogicaSoap">
+      <soap:address location="https://grupo-distribuidos-webservices.somee.com/wsCierreCajaLogica.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsCierreCajaLogicaSoap12" binding="tns:wsCierreCajaLogicaSoap12">
+      <soap12:address location="https://grupo-distribuidos-webservices.somee.com/wsCierreCajaLogica.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

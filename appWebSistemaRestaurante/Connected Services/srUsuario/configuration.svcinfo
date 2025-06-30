@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configurationSnapshot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:schemas-microsoft-com:xml-wcfconfigurationsnapshot">
+  <behaviors />
+  <bindings>
+    <binding digest="System.ServiceModel.Configuration.BasicHttpBindingElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089:&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&lt;Data name=&quot;wsUsuarioSoap&quot;&gt;&lt;security mode=&quot;Transport&quot; /&gt;&lt;/Data&gt;" bindingType="basicHttpBinding" name="wsUsuarioSoap" />
+    <binding digest="System.ServiceModel.Configuration.BasicHttpBindingElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089:&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&lt;Data name=&quot;wsUsuarioSoap1&quot; /&gt;" bindingType="basicHttpBinding" name="wsUsuarioSoap1" />
+  </bindings>
+  <endpoints>
+    <endpoint normalizedDigest="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&lt;Data address=&quot;https://grupo-distribuidos-webservices.somee.com/wsUsuario.asmx&quot; binding=&quot;basicHttpBinding&quot; bindingConfiguration=&quot;wsUsuarioSoap&quot; contract=&quot;srUsuario.wsUsuarioSoap&quot; name=&quot;wsUsuarioSoap&quot; /&gt;" digest="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&lt;Data address=&quot;https://grupo-distribuidos-webservices.somee.com/wsUsuario.asmx&quot; binding=&quot;basicHttpBinding&quot; bindingConfiguration=&quot;wsUsuarioSoap&quot; contract=&quot;srUsuario.wsUsuarioSoap&quot; name=&quot;wsUsuarioSoap&quot; /&gt;" contractName="srUsuario.wsUsuarioSoap" name="wsUsuarioSoap" />
+  </endpoints>
+</configurationSnapshot>

@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://tempuri.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="generarIDCajero">
+        <s:complexType />
+      </s:element>
+      <s:element name="generarIDCajeroResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="generarIDCajeroResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="guardarCajero">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dni" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nom" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ape" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tel" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cor" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="est" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="guardarCajeroResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="modificarCajero">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dni" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nom" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ape" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tel" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cor" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="est" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="modificarCajeroResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="eliminarCajero">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="eliminarCajeroResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="darBajaCajero">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="darBajaCajeroResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="darAltaCajero">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="darAltaCajeroResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="buscarCajero">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="buscarCajeroResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="buscarCajeroResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="buscarCajeroPorDNI">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dni" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="buscarCajeroPorDNIResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="buscarCajeroPorDNIResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listarCajeros">
+        <s:complexType />
+      </s:element>
+      <s:element name="listarCajerosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listarCajerosResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listarCajerosCompleto">
+        <s:complexType />
+      </s:element>
+      <s:element name="listarCajerosCompletoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listarCajerosCompletoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listarCajerosVigentes">
+        <s:complexType />
+      </s:element>
+      <s:element name="listarCajerosVigentesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listarCajerosVigentesResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerificarCajero">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idCajero" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerificarCajeroResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="VerificarCajeroResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="generarIDCajeroSoapIn">
+    <wsdl:part name="parameters" element="tns:generarIDCajero" />
+  </wsdl:message>
+  <wsdl:message name="generarIDCajeroSoapOut">
+    <wsdl:part name="parameters" element="tns:generarIDCajeroResponse" />
+  </wsdl:message>
+  <wsdl:message name="guardarCajeroSoapIn">
+    <wsdl:part name="parameters" element="tns:guardarCajero" />
+  </wsdl:message>
+  <wsdl:message name="guardarCajeroSoapOut">
+    <wsdl:part name="parameters" element="tns:guardarCajeroResponse" />
+  </wsdl:message>
+  <wsdl:message name="modificarCajeroSoapIn">
+    <wsdl:part name="parameters" element="tns:modificarCajero" />
+  </wsdl:message>
+  <wsdl:message name="modificarCajeroSoapOut">
+    <wsdl:part name="parameters" element="tns:modificarCajeroResponse" />
+  </wsdl:message>
+  <wsdl:message name="eliminarCajeroSoapIn">
+    <wsdl:part name="parameters" element="tns:eliminarCajero" />
+  </wsdl:message>
+  <wsdl:message name="eliminarCajeroSoapOut">
+    <wsdl:part name="parameters" element="tns:eliminarCajeroResponse" />
+  </wsdl:message>
+  <wsdl:message name="darBajaCajeroSoapIn">
+    <wsdl:part name="parameters" element="tns:darBajaCajero" />
+  </wsdl:message>
+  <wsdl:message name="darBajaCajeroSoapOut">
+    <wsdl:part name="parameters" element="tns:darBajaCajeroResponse" />
+  </wsdl:message>
+  <wsdl:message name="darAltaCajeroSoapIn">
+    <wsdl:part name="parameters" element="tns:darAltaCajero" />
+  </wsdl:message>
+  <wsdl:message name="darAltaCajeroSoapOut">
+    <wsdl:part name="parameters" element="tns:darAltaCajeroResponse" />
+  </wsdl:message>
+  <wsdl:message name="buscarCajeroSoapIn">
+    <wsdl:part name="parameters" element="tns:buscarCajero" />
+  </wsdl:message>
+  <wsdl:message name="buscarCajeroSoapOut">
+    <wsdl:part name="parameters" element="tns:buscarCajeroResponse" />
+  </wsdl:message>
+  <wsdl:message name="buscarCajeroPorDNISoapIn">
+    <wsdl:part name="parameters" element="tns:buscarCajeroPorDNI" />
+  </wsdl:message>
+  <wsdl:message name="buscarCajeroPorDNISoapOut">
+    <wsdl:part name="parameters" element="tns:buscarCajeroPorDNIResponse" />
+  </wsdl:message>
+  <wsdl:message name="listarCajerosSoapIn">
+    <wsdl:part name="parameters" element="tns:listarCajeros" />
+  </wsdl:message>
+  <wsdl:message name="listarCajerosSoapOut">
+    <wsdl:part name="parameters" element="tns:listarCajerosResponse" />
+  </wsdl:message>
+  <wsdl:message name="listarCajerosCompletoSoapIn">
+    <wsdl:part name="parameters" element="tns:listarCajerosCompleto" />
+  </wsdl:message>
+  <wsdl:message name="listarCajerosCompletoSoapOut">
+    <wsdl:part name="parameters" element="tns:listarCajerosCompletoResponse" />
+  </wsdl:message>
+  <wsdl:message name="listarCajerosVigentesSoapIn">
+    <wsdl:part name="parameters" element="tns:listarCajerosVigentes" />
+  </wsdl:message>
+  <wsdl:message name="listarCajerosVigentesSoapOut">
+    <wsdl:part name="parameters" element="tns:listarCajerosVigentesResponse" />
+  </wsdl:message>
+  <wsdl:message name="VerificarCajeroSoapIn">
+    <wsdl:part name="parameters" element="tns:VerificarCajero" />
+  </wsdl:message>
+  <wsdl:message name="VerificarCajeroSoapOut">
+    <wsdl:part name="parameters" element="tns:VerificarCajeroResponse" />
+  </wsdl:message>
+  <wsdl:portType name="wsCajeroSoap">
+    <wsdl:operation name="generarIDCajero">
+      <wsdl:input message="tns:generarIDCajeroSoapIn" />
+      <wsdl:output message="tns:generarIDCajeroSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="guardarCajero">
+      <wsdl:input message="tns:guardarCajeroSoapIn" />
+      <wsdl:output message="tns:guardarCajeroSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="modificarCajero">
+      <wsdl:input message="tns:modificarCajeroSoapIn" />
+      <wsdl:output message="tns:modificarCajeroSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="eliminarCajero">
+      <wsdl:input message="tns:eliminarCajeroSoapIn" />
+      <wsdl:output message="tns:eliminarCajeroSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="darBajaCajero">
+      <wsdl:input message="tns:darBajaCajeroSoapIn" />
+      <wsdl:output message="tns:darBajaCajeroSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="darAltaCajero">
+      <wsdl:input message="tns:darAltaCajeroSoapIn" />
+      <wsdl:output message="tns:darAltaCajeroSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="buscarCajero">
+      <wsdl:input message="tns:buscarCajeroSoapIn" />
+      <wsdl:output message="tns:buscarCajeroSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="buscarCajeroPorDNI">
+      <wsdl:input message="tns:buscarCajeroPorDNISoapIn" />
+      <wsdl:output message="tns:buscarCajeroPorDNISoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listarCajeros">
+      <wsdl:input message="tns:listarCajerosSoapIn" />
+      <wsdl:output message="tns:listarCajerosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listarCajerosCompleto">
+      <wsdl:input message="tns:listarCajerosCompletoSoapIn" />
+      <wsdl:output message="tns:listarCajerosCompletoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listarCajerosVigentes">
+      <wsdl:input message="tns:listarCajerosVigentesSoapIn" />
+      <wsdl:output message="tns:listarCajerosVigentesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VerificarCajero">
+      <wsdl:input message="tns:VerificarCajeroSoapIn" />
+      <wsdl:output message="tns:VerificarCajeroSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsCajeroSoap" type="tns:wsCajeroSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="generarIDCajero">
+      <soap:operation soapAction="http://tempuri.org/generarIDCajero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="guardarCajero">
+      <soap:operation soapAction="http://tempuri.org/guardarCajero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificarCajero">
+      <soap:operation soapAction="http://tempuri.org/modificarCajero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eliminarCajero">
+      <soap:operation soapAction="http://tempuri.org/eliminarCajero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darBajaCajero">
+      <soap:operation soapAction="http://tempuri.org/darBajaCajero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darAltaCajero">
+      <soap:operation soapAction="http://tempuri.org/darAltaCajero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarCajero">
+      <soap:operation soapAction="http://tempuri.org/buscarCajero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarCajeroPorDNI">
+      <soap:operation soapAction="http://tempuri.org/buscarCajeroPorDNI" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarCajeros">
+      <soap:operation soapAction="http://tempuri.org/listarCajeros" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarCajerosCompleto">
+      <soap:operation soapAction="http://tempuri.org/listarCajerosCompleto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarCajerosVigentes">
+      <soap:operation soapAction="http://tempuri.org/listarCajerosVigentes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerificarCajero">
+      <soap:operation soapAction="http://tempuri.org/VerificarCajero" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsCajeroSoap12" type="tns:wsCajeroSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="generarIDCajero">
+      <soap12:operation soapAction="http://tempuri.org/generarIDCajero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="guardarCajero">
+      <soap12:operation soapAction="http://tempuri.org/guardarCajero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificarCajero">
+      <soap12:operation soapAction="http://tempuri.org/modificarCajero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eliminarCajero">
+      <soap12:operation soapAction="http://tempuri.org/eliminarCajero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darBajaCajero">
+      <soap12:operation soapAction="http://tempuri.org/darBajaCajero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darAltaCajero">
+      <soap12:operation soapAction="http://tempuri.org/darAltaCajero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarCajero">
+      <soap12:operation soapAction="http://tempuri.org/buscarCajero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarCajeroPorDNI">
+      <soap12:operation soapAction="http://tempuri.org/buscarCajeroPorDNI" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarCajeros">
+      <soap12:operation soapAction="http://tempuri.org/listarCajeros" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarCajerosCompleto">
+      <soap12:operation soapAction="http://tempuri.org/listarCajerosCompleto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarCajerosVigentes">
+      <soap12:operation soapAction="http://tempuri.org/listarCajerosVigentes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerificarCajero">
+      <soap12:operation soapAction="http://tempuri.org/VerificarCajero" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsCajero">
+    <wsdl:port name="wsCajeroSoap" binding="tns:wsCajeroSoap">
+      <soap:address location="https://grupo-distribuidos-webservices.somee.com/wsCajero.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsCajeroSoap12" binding="tns:wsCajeroSoap12">
+      <soap12:address location="https://grupo-distribuidos-webservices.somee.com/wsCajero.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

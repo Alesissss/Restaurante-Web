@@ -1,12 +1,12 @@
 ﻿Imports System.Web.Services
 Imports System.Text
 Imports System.Data
-Imports libNegocio ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
+Imports appWebSistemaRestaurante.srTipoUsuario ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
 
 Public Class wfTipoUsuario
     Inherits System.Web.UI.Page
 
-    Private objTipoUsuario As New clsTipoUsuario()
+    Private objTipoUsuario As New wsTipoUsuarioSoapClient()
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not IsPostBack Then
@@ -61,7 +61,7 @@ Public Class wfTipoUsuario
 
     <WebMethod>
     Public Shared Function GuardarTipoUsuario(id As Integer, nombre As String, descripcion As String, vigente As Boolean) As String
-        Dim objTU As New clsTipoUsuario()
+        Dim objTU As New wsTipoUsuarioSoapClient()
         Try
             If id = 0 Then
                 Dim newId As Integer = objTU.generarIDTipoUsuario()
@@ -77,7 +77,7 @@ Public Class wfTipoUsuario
 
     <WebMethod>
     Public Shared Function EliminarTipoUsuario(id As Integer) As String
-        Dim objTU As New clsTipoUsuario()
+        Dim objTU As New wsTipoUsuarioSoapClient()
         Try
             ' NOTA: La eliminación puede fallar si hay usuarios que usan este tipo (restricción de clave foránea).
             objTU.eliminarTipoUsuario(id)
@@ -92,7 +92,7 @@ Public Class wfTipoUsuario
 
     <WebMethod>
     Public Shared Function DarBajaTipoUsuario(id As Integer) As String
-        Dim objTU As New clsTipoUsuario()
+        Dim objTU As New wsTipoUsuarioSoapClient()
         Try
             objTU.darBajaTipoUsuario(id)
             Return "success"
@@ -103,7 +103,7 @@ Public Class wfTipoUsuario
 
     <WebMethod>
     Public Shared Function DarAltaTipoUsuario(id As Integer) As String
-        Dim objTU As New clsTipoUsuario()
+        Dim objTU As New wsTipoUsuarioSoapClient()
         Try
             objTU.darAltaTipoUsuario(id)
             Return "success"

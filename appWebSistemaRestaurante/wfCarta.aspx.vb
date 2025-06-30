@@ -1,12 +1,12 @@
 ﻿Imports System.Web.Services
 Imports System.Text
 Imports System.Data
-Imports libNegocio ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
+Imports appWebSistemaRestaurante.srCarta ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
 
 Public Class wfCarta
     Inherits System.Web.UI.Page
 
-    Private objCarta As New clsCarta()
+    Private objCarta As New wsCartaSoapClient()
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not IsPostBack Then
@@ -61,7 +61,7 @@ Public Class wfCarta
 
     <WebMethod>
     Public Shared Function GuardarCarta(id As Integer, nombre As String, descripcion As String, vigente As Boolean) As String
-        Dim objC As New clsCarta()
+        Dim objC As New wsCartaSoapClient()
         Try
             If id = 0 Then
                 Dim newId As Integer = objC.generarIDCarta()
@@ -77,7 +77,7 @@ Public Class wfCarta
 
     <WebMethod>
     Public Shared Function EliminarCarta(id As Integer) As String
-        Dim objC As New clsCarta()
+        Dim objC As New wsCartaSoapClient()
         Try
             ' Aquí podrías agregar una validación para no eliminar cartas en uso si fuera necesario
             objC.eliminarCarta(id)
@@ -89,7 +89,7 @@ Public Class wfCarta
 
     <WebMethod>
     Public Shared Function DarBajaCarta(id As Integer) As String
-        Dim objC As New clsCarta()
+        Dim objC As New wsCartaSoapClient()
         Try
             objC.darBajaCarta(id)
             Return "success"
@@ -100,7 +100,7 @@ Public Class wfCarta
 
     <WebMethod>
     Public Shared Function DarAltaCarta(id As Integer) As String
-        Dim objC As New clsCarta()
+        Dim objC As New wsCartaSoapClient()
         Try
             objC.darAltaCarta(id)
             Return "success"

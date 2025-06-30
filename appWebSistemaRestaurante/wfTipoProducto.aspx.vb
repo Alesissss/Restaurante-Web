@@ -1,12 +1,12 @@
 ﻿Imports System.Web.Services
 Imports System.Text
 Imports System.Data
-Imports libNegocio ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
+Imports appWebSistemaRestaurante.srTipoProducto ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
 
 Public Class wfTipoProducto
     Inherits System.Web.UI.Page
 
-    Private objTipoProducto As New clsTipoProducto()
+    Private objTipoProducto As New wsTipoProductoSoapClient()
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not IsPostBack Then
@@ -61,7 +61,7 @@ Public Class wfTipoProducto
 
     <WebMethod>
     Public Shared Function GuardarTipoProducto(id As Integer, nombre As String, descripcion As String, vigente As Boolean) As String
-        Dim objTP As New clsTipoProducto()
+        Dim objTP As New wsTipoProductoSoapClient()
         Try
             If id = 0 Then
                 Dim newId As Integer = objTP.generarIDTipoProducto()
@@ -77,7 +77,7 @@ Public Class wfTipoProducto
 
     <WebMethod>
     Public Shared Function EliminarTipoProducto(id As Integer) As String
-        Dim objTP As New clsTipoProducto()
+        Dim objTP As New wsTipoProductoSoapClient()
         Try
             ' NOTA: La eliminación fallará si hay productos que usan este tipo (debido a restricciones de clave foránea en la BD).
             ' Esto es un comportamiento deseado para mantener la integridad de los datos.
@@ -93,7 +93,7 @@ Public Class wfTipoProducto
 
     <WebMethod>
     Public Shared Function DarBajaTipoProducto(id As Integer) As String
-        Dim objTP As New clsTipoProducto()
+        Dim objTP As New wsTipoProductoSoapClient()
         Try
             objTP.darBajaTipoProducto(id)
             Return "success"
@@ -104,7 +104,7 @@ Public Class wfTipoProducto
 
     <WebMethod>
     Public Shared Function DarAltaTipoProducto(id As Integer) As String
-        Dim objTP As New clsTipoProducto()
+        Dim objTP As New wsTipoProductoSoapClient()
         Try
             objTP.darAltaTipoProducto(id)
             Return "success"

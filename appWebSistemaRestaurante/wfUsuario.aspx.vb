@@ -1,14 +1,15 @@
 ﻿Imports System.Web.Services
 Imports System.Text
 Imports System.Data
-Imports libNegocio ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
+Imports appWebSistemaRestaurante.srUsuario ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
+Imports appWebSistemaRestaurante.srTipoUsuario
 
 Public Class wfUsuario
     Inherits System.Web.UI.Page
 
     ' Instancias de las clases de negocio
-    Private objUsuario As New clsUsuario()
-    Private objTipoUsuario As New clsTipoUsuario()
+    Private objUsuario As New wsUsuarioSoapClient()
+    Private objTipoUsuario As New wsTipoUsuarioSoapClient()
 
     ' --- EVENTOS DE LA PÁGINA ---
 
@@ -119,7 +120,7 @@ Public Class wfUsuario
 
     <WebMethod>
     Public Shared Function GuardarUsuario(oUsuario As UsuarioDTO) As String
-        Dim objU As New clsUsuario()
+        Dim objU As New wsUsuarioSoapClient()
         Try
             If oUsuario.id = 0 Then ' Es un nuevo usuario
                 Dim newId As Integer = objU.generarIDUsuario()
@@ -144,7 +145,7 @@ Public Class wfUsuario
 
     <WebMethod>
     Public Shared Function EliminarUsuario(id As Integer) As String
-        Dim objU As New clsUsuario()
+        Dim objU As New wsUsuarioSoapClient()
         Try
             objU.eliminarUsuario(id)
             Return "success"
@@ -155,7 +156,7 @@ Public Class wfUsuario
 
     <WebMethod>
     Public Shared Function DarBajaUsuario(id As Integer) As String
-        Dim objU As New clsUsuario()
+        Dim objU As New wsUsuarioSoapClient()
         Try
             objU.darBajaUsuario(id)
             Return "success"

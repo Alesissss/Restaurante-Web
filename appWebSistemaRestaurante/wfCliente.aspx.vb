@@ -1,12 +1,12 @@
 ﻿Imports System.Web.Services
 Imports System.Text
 Imports System.Data
-Imports libNegocio ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
+Imports appWebSistemaRestaurante.srCliente ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
 
 Public Class wfCliente
     Inherits System.Web.UI.Page
 
-    Private objCliente As New clsCliente()
+    Private objCliente As New wsClienteSoapClient()
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not IsPostBack Then
@@ -74,7 +74,7 @@ Public Class wfCliente
 
     <WebMethod>
     Public Shared Function GuardarCliente(id As Integer, dni As String, nombres As String, apellidos As String, telefono As String, correo As String, estado As Boolean) As String
-        Dim objC As New clsCliente()
+        Dim objC As New wsClienteSoapClient()
         Try
             ' Validación de DNI duplicado
             Dim dtExistente As DataTable = objC.buscarClientePorDNI(dni)
@@ -96,7 +96,7 @@ Public Class wfCliente
 
     <WebMethod>
     Public Shared Function EliminarCliente(id As Integer) As String
-        Dim objC As New clsCliente()
+        Dim objC As New wsClienteSoapClient()
         Try
             objC.eliminarCliente(id)
             Return "success"
@@ -107,7 +107,7 @@ Public Class wfCliente
 
     <WebMethod>
     Public Shared Function DarBajaCliente(id As Integer) As String
-        Dim objC As New clsCliente()
+        Dim objC As New wsClienteSoapClient()
         Try
             objC.darBajaCliente(id)
             Return "success"
@@ -118,7 +118,7 @@ Public Class wfCliente
 
     <WebMethod>
     Public Shared Function DarAltaCliente(id As Integer) As String
-        Dim objC As New clsCliente()
+        Dim objC As New wsClienteSoapClient()
         Try
             objC.darAltaCliente(id)
             Return "success"

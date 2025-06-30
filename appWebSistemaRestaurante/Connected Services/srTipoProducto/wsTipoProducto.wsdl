@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://tempuri.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="generarIDTipoProducto">
+        <s:complexType />
+      </s:element>
+      <s:element name="generarIDTipoProductoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="generarIDTipoProductoResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="guardarTipoProducto">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="nom" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="desc" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="vig" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="guardarTipoProductoResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="modificarTipoProducto">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="nom" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="desc" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="vig" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="modificarTipoProductoResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="eliminarTipoProducto">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="eliminarTipoProductoResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="darBajaTipoProducto">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="darBajaTipoProductoResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="darAltaTipoProducto">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="darAltaTipoProductoResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="buscarTipoProducto">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="buscarTipoProductoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="buscarTipoProductoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="listarTiposProducto">
+        <s:complexType />
+      </s:element>
+      <s:element name="listarTiposProductoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="listarTiposProductoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="generarIDTipoProductoSoapIn">
+    <wsdl:part name="parameters" element="tns:generarIDTipoProducto" />
+  </wsdl:message>
+  <wsdl:message name="generarIDTipoProductoSoapOut">
+    <wsdl:part name="parameters" element="tns:generarIDTipoProductoResponse" />
+  </wsdl:message>
+  <wsdl:message name="guardarTipoProductoSoapIn">
+    <wsdl:part name="parameters" element="tns:guardarTipoProducto" />
+  </wsdl:message>
+  <wsdl:message name="guardarTipoProductoSoapOut">
+    <wsdl:part name="parameters" element="tns:guardarTipoProductoResponse" />
+  </wsdl:message>
+  <wsdl:message name="modificarTipoProductoSoapIn">
+    <wsdl:part name="parameters" element="tns:modificarTipoProducto" />
+  </wsdl:message>
+  <wsdl:message name="modificarTipoProductoSoapOut">
+    <wsdl:part name="parameters" element="tns:modificarTipoProductoResponse" />
+  </wsdl:message>
+  <wsdl:message name="eliminarTipoProductoSoapIn">
+    <wsdl:part name="parameters" element="tns:eliminarTipoProducto" />
+  </wsdl:message>
+  <wsdl:message name="eliminarTipoProductoSoapOut">
+    <wsdl:part name="parameters" element="tns:eliminarTipoProductoResponse" />
+  </wsdl:message>
+  <wsdl:message name="darBajaTipoProductoSoapIn">
+    <wsdl:part name="parameters" element="tns:darBajaTipoProducto" />
+  </wsdl:message>
+  <wsdl:message name="darBajaTipoProductoSoapOut">
+    <wsdl:part name="parameters" element="tns:darBajaTipoProductoResponse" />
+  </wsdl:message>
+  <wsdl:message name="darAltaTipoProductoSoapIn">
+    <wsdl:part name="parameters" element="tns:darAltaTipoProducto" />
+  </wsdl:message>
+  <wsdl:message name="darAltaTipoProductoSoapOut">
+    <wsdl:part name="parameters" element="tns:darAltaTipoProductoResponse" />
+  </wsdl:message>
+  <wsdl:message name="buscarTipoProductoSoapIn">
+    <wsdl:part name="parameters" element="tns:buscarTipoProducto" />
+  </wsdl:message>
+  <wsdl:message name="buscarTipoProductoSoapOut">
+    <wsdl:part name="parameters" element="tns:buscarTipoProductoResponse" />
+  </wsdl:message>
+  <wsdl:message name="listarTiposProductoSoapIn">
+    <wsdl:part name="parameters" element="tns:listarTiposProducto" />
+  </wsdl:message>
+  <wsdl:message name="listarTiposProductoSoapOut">
+    <wsdl:part name="parameters" element="tns:listarTiposProductoResponse" />
+  </wsdl:message>
+  <wsdl:portType name="wsTipoProductoSoap">
+    <wsdl:operation name="generarIDTipoProducto">
+      <wsdl:input message="tns:generarIDTipoProductoSoapIn" />
+      <wsdl:output message="tns:generarIDTipoProductoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="guardarTipoProducto">
+      <wsdl:input message="tns:guardarTipoProductoSoapIn" />
+      <wsdl:output message="tns:guardarTipoProductoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="modificarTipoProducto">
+      <wsdl:input message="tns:modificarTipoProductoSoapIn" />
+      <wsdl:output message="tns:modificarTipoProductoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="eliminarTipoProducto">
+      <wsdl:input message="tns:eliminarTipoProductoSoapIn" />
+      <wsdl:output message="tns:eliminarTipoProductoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="darBajaTipoProducto">
+      <wsdl:input message="tns:darBajaTipoProductoSoapIn" />
+      <wsdl:output message="tns:darBajaTipoProductoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="darAltaTipoProducto">
+      <wsdl:input message="tns:darAltaTipoProductoSoapIn" />
+      <wsdl:output message="tns:darAltaTipoProductoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="buscarTipoProducto">
+      <wsdl:input message="tns:buscarTipoProductoSoapIn" />
+      <wsdl:output message="tns:buscarTipoProductoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="listarTiposProducto">
+      <wsdl:input message="tns:listarTiposProductoSoapIn" />
+      <wsdl:output message="tns:listarTiposProductoSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsTipoProductoSoap" type="tns:wsTipoProductoSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="generarIDTipoProducto">
+      <soap:operation soapAction="http://tempuri.org/generarIDTipoProducto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="guardarTipoProducto">
+      <soap:operation soapAction="http://tempuri.org/guardarTipoProducto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificarTipoProducto">
+      <soap:operation soapAction="http://tempuri.org/modificarTipoProducto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eliminarTipoProducto">
+      <soap:operation soapAction="http://tempuri.org/eliminarTipoProducto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darBajaTipoProducto">
+      <soap:operation soapAction="http://tempuri.org/darBajaTipoProducto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darAltaTipoProducto">
+      <soap:operation soapAction="http://tempuri.org/darAltaTipoProducto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarTipoProducto">
+      <soap:operation soapAction="http://tempuri.org/buscarTipoProducto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarTiposProducto">
+      <soap:operation soapAction="http://tempuri.org/listarTiposProducto" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wsTipoProductoSoap12" type="tns:wsTipoProductoSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="generarIDTipoProducto">
+      <soap12:operation soapAction="http://tempuri.org/generarIDTipoProducto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="guardarTipoProducto">
+      <soap12:operation soapAction="http://tempuri.org/guardarTipoProducto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modificarTipoProducto">
+      <soap12:operation soapAction="http://tempuri.org/modificarTipoProducto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eliminarTipoProducto">
+      <soap12:operation soapAction="http://tempuri.org/eliminarTipoProducto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darBajaTipoProducto">
+      <soap12:operation soapAction="http://tempuri.org/darBajaTipoProducto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="darAltaTipoProducto">
+      <soap12:operation soapAction="http://tempuri.org/darAltaTipoProducto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buscarTipoProducto">
+      <soap12:operation soapAction="http://tempuri.org/buscarTipoProducto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listarTiposProducto">
+      <soap12:operation soapAction="http://tempuri.org/listarTiposProducto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsTipoProducto">
+    <wsdl:port name="wsTipoProductoSoap" binding="tns:wsTipoProductoSoap">
+      <soap:address location="https://grupo-distribuidos-webservices.somee.com/wsTipoProducto.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wsTipoProductoSoap12" binding="tns:wsTipoProductoSoap12">
+      <soap12:address location="https://grupo-distribuidos-webservices.somee.com/wsTipoProducto.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,12 +1,12 @@
 ﻿Imports System.Web.Services
 Imports System.Text
 Imports System.Data
-Imports libNegocio ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
+Imports appWebSistemaRestaurante.srCajero ' Asegúrate que este sea el nombre de tu proyecto de capa lógica
 
 Public Class wfCajero
     Inherits System.Web.UI.Page
 
-    Private objCajero As New clsCajero()
+    Private objCajero As New wsCajeroSoapClient()
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not IsPostBack Then
@@ -74,7 +74,7 @@ Public Class wfCajero
 
     <WebMethod>
     Public Shared Function GuardarCajero(id As Integer, dni As String, nombres As String, apellidos As String, telefono As String, correo As String, estado As Boolean) As String
-        Dim objC As New clsCajero()
+        Dim objC As New wsCajeroSoapClient()
         Try
             ' Validación de DNI duplicado
             Dim dtExistente As DataTable = objC.buscarCajeroPorDNI(dni)
@@ -96,7 +96,7 @@ Public Class wfCajero
 
     <WebMethod>
     Public Shared Function EliminarCajero(id As Integer) As String
-        Dim objC As New clsCajero()
+        Dim objC As New wsCajeroSoapClient()
         Try
             objC.eliminarCajero(id)
             Return "success"
@@ -107,7 +107,7 @@ Public Class wfCajero
 
     <WebMethod>
     Public Shared Function DarBajaCajero(id As Integer) As String
-        Dim objC As New clsCajero()
+        Dim objC As New wsCajeroSoapClient()
         Try
             objC.darBajaCajero(id)
             Return "success"
@@ -118,7 +118,7 @@ Public Class wfCajero
 
     <WebMethod>
     Public Shared Function DarAltaCajero(id As Integer) As String
-        Dim objC As New clsCajero()
+        Dim objC As New wsCajeroSoapClient()
         Try
             objC.darAltaCajero(id)
             Return "success"
